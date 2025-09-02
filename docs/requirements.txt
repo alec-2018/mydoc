@@ -26,7 +26,7 @@ zipp==3.16.2
 # Markdown 相关
 commonmark==0.9.1
 Markdown==3.4.3
-recommonmark==0.7.1
+# recommonmark==0.7.1
 
 # Sphinx 扩展
 sphinx-markdown-tables==0.0.17
@@ -40,3 +40,5 @@ sphinxcontrib-serializinghtml==1.1.5
 
 # 可选：如果您需要 breathe（用于C++文档）
 breathe==4.35.0
+
+myst-parser==0.18.1

@@ -22,8 +22,9 @@ import sys
 import subprocess
 sys.path.insert(0, os.path.abspath('./_ext'))
 
-import recommonmark
-from recommonmark.transform import AutoStructify
+# 移除 recommonmark 相关导入
+# import recommonmark
+# from recommonmark.transform import AutoStructify
 from sphinx.builders.html import StandaloneHTMLBuilder
 from subprocess import Popen, PIPE
 
@@ -36,30 +37,32 @@ from subprocess import Popen, PIPE
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.autodoc',
+extensions = [
+    'sphinx.ext.autodoc',
     'sphinx.ext.intersphinx',
     'sphinx.ext.todo',
-    'recommonmark',
+    # 'recommonmark',  # 移除不兼容的 recommonmark
+    'myst_parser',     # 替换为 myst-parser
     'sphinx_markdown_tables',
     'breathe',
     'sphinx_sitemap',
     'lv_example'
-    ]
+]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
 # The default language to highlight source code in. The default is 'python'. 
 # The value should be a valid Pygments lexer name, see Showing code examples for more details.
-
-
 highlight_language = 'c'
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
 #
-source_suffix = ['.rst', '.md']
-
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.md': 'markdown',  # 使用 myst-parser 处理 markdown
+}
 
 # The master toctree document.
 master_doc = 'index'
@@ -84,7 +87,7 @@ version = '0.0.1'
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = 'zh_CN'
+language = 'zh_CN'  # 确保这是有效的语言代码
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -98,6 +101,14 @@ pygments_style = 'sphinx'
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
 
+# -- Options for Myst-Parser ----------------------------------------------
+# 添加 myst-parser 配置
+myst_enable_extensions = [
+    "dollarmath",
+    "linkify",
+    "substitution",
+    "colon_fence",
+]
 
 # -- Options for HTML output ----------------------------------------------
 
@@ -111,7 +122,7 @@ html_theme = 'sphinx_rtd_theme'
 # documentation.
 #
 html_theme_options = {
-    'collapse_navigation' : False,
+    'collapse_navigation': False,
     'logo_only': True,
 }
 # For site map generation
@@ -150,22 +161,6 @@ html_last_updated_fmt = ''
 latex_engine = 'xelatex'
 latex_use_xindy = False
 latex_elements = {
-    # The paper size ('letterpaper' or 'a4paper').
-    #
-    # 'papersize': 'letterpaper',
-
-    # The font size ('10pt', '11pt' or '12pt').
-    #
-    # 'pointsize': '10pt',
-
-    # Additional stuff for the LaTeX preamble.
-    #
-    # 'preamble': '',
-
-    # Latex figure (float) alignment
-    #
-    # 'figure_align': 'htbp',
-    
     'inputenc': '',
     'utf8extra': '',
     'classoptions': ',openany,oneside',
@@ -189,7 +184,6 @@ latex_documents = [
      'LVGL community', 'manual'),
 ]
 
-
 # -- Options for manual page output ---------------------------------------
 
 # One entry per manual page. List of tuples
@@ -198,7 +192,6 @@ man_pages = [
     (master_doc, 'lvgl', 'LVGL Documentation ' + version,
      [author], 1)
 ]
-
 
 # -- Options for Texinfo output -------------------------------------------
 
@@ -211,9 +204,8 @@ texinfo_documents = [
      'Miscellaneous'),
 ]
 
-
 breathe_projects = {
-  "lvgl":"xml/",
+  "lvgl": "xml/",
 }
 
 StandaloneHTMLBuilder.supported_image_types = [
@@ -227,14 +219,15 @@ smartquotes = False
 
 _, repo_commit_hash = subprocess.getstatusoutput("git rev-parse HEAD")
 
-
 # Example configuration for intersphinx: refer to the Python standard library.
 
 def setup(app):
-    app.add_config_value('recommonmark_config', {
-            'enable_eval_rst': True,
-            'enable_auto_toc_tree': 'True',
-            }, True)
-    app.add_transform(AutoStructify)
+    # 移除 recommonmark 相关配置
+    # app.add_config_value('recommonmark_config', {
+    #         'enable_eval_rst': True,
+    #         'enable_auto_toc_tree': 'True',
+    #         }, True)
+    # app.add_transform(AutoStructify)
+    
     app.add_css_file('css/custom.css')
     app.add_css_file('css/fontawesome.min.css')
