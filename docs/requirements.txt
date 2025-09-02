@@ -41,4 +41,8 @@ sphinxcontrib-serializinghtml==1.1.5
 # 可选：如果您需要 breathe（用于C++文档）
 breathe==4.35.0
 
+# 添加这两行
+linkify-it-py==1.0.3
+uc-micro-py==1.0.2
+
 myst-parser==0.18.1
