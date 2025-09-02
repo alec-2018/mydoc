@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Displays &mdash; LVGL  文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/fontawesome.min.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="canonical" href="https://docs.lvgl.io/0.0.1/overview/display.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78811084-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+	gtag('config', 'UA-78811084-3', { 'anonymize_ip': true });
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_lvgl.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Displays</a><ul>
+<li><a class="reference internal" href="#multiple-display-support">Multiple display support</a><ul>
+<li><a class="reference internal" href="#using-only-one-display">Using only one display</a></li>
+<li><a class="reference internal" href="#mirror-display">Mirror display</a></li>
+<li><a class="reference internal" href="#split-image">Split image</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#screens">Screens</a><ul>
+<li><a class="reference internal" href="#transparent-screens">Transparent screens</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#features-of-displays">Features of displays</a><ul>
+<li><a class="reference internal" href="#inactivity">Inactivity</a></li>
+<li><a class="reference internal" href="#background">Background</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#api">API</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LVGL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Displays</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/overview/display.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>.. include:: /header.rst 
+:github_url: |github_link_base|/overview/display.md
+</pre></div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="displays">
+<h1>Displays<a class="headerlink" href="#displays" title="此标题的永久链接"></a></h1>
+<div class="highlight-important:: notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<section id="multiple-display-support">
+<h2>Multiple display support<a class="headerlink" href="#multiple-display-support" title="此标题的永久链接"></a></h2>
+<p>In LVGL you can have multiple displays, each with their own driver and objects. The only limitation is that every display needs to have the same color depth (as defined in <code class="docutils literal notranslate"><span class="pre">LV_COLOR_DEPTH</span></code>).
+If the displays are different in this regard the rendered image can be converted to the correct format in the drivers <code class="docutils literal notranslate"><span class="pre">flush_cb</span></code>.</p>
+<p>Creating more displays is easy: just initialize more display buffers and register another driver for every display.
+When you create the UI, use <code class="docutils literal notranslate"><span class="pre">lv_disp_set_default(disp)</span></code> to tell the library on which display to create objects.</p>
+<p>Why would you want multi-display support? Here are some examples:</p>
+<ul class="simple">
+<li><p>Have a &quot;normal&quot; TFT display with local UI and create &quot;virtual&quot; screens on VNC on demand. (You need to add your VNC driver).</p></li>
+<li><p>Have a large TFT display and a small monochrome display.</p></li>
+<li><p>Have some smaller and simple displays in a large instrument or technology.</p></li>
+<li><p>Have two large TFT displays: one for a customer and one for the shop assistant.</p></li>
+</ul>
+<section id="using-only-one-display">
+<h3>Using only one display<a class="headerlink" href="#using-only-one-display" title="此标题的永久链接"></a></h3>
+<p>Using more displays can be useful but in most cases it's not required. Therefore, the whole concept of multi-display handling is completely hidden if you register only one display.
+By default, the last created (and only) display is used.</p>
+<p><code class="docutils literal notranslate"><span class="pre">lv_scr_act()</span></code>, <code class="docutils literal notranslate"><span class="pre">lv_scr_load(scr)</span></code>, <code class="docutils literal notranslate"><span class="pre">lv_layer_top()</span></code>, <code class="docutils literal notranslate"><span class="pre">lv_layer_sys()</span></code>, <code class="docutils literal notranslate"><span class="pre">LV_HOR_RES</span></code> and <code class="docutils literal notranslate"><span class="pre">LV_VER_RES</span></code> are always applied on the most recently created (default) display.
+If you pass <code class="docutils literal notranslate"><span class="pre">NULL</span></code> as <code class="docutils literal notranslate"><span class="pre">disp</span></code> parameter to display related functions the default display will usually be used.
+E.g. <code class="docutils literal notranslate"><span class="pre">lv_disp_trig_activity(NULL)</span></code> will trigger a user activity on the default display. (See below in <span class="xref myst">Inactivity</span>).</p>
+</section>
+<section id="mirror-display">
+<h3>Mirror display<a class="headerlink" href="#mirror-display" title="此标题的永久链接"></a></h3>
+<p>To mirror the image of a display to another display, you don't need to use multi-display support. Just transfer the buffer received in <code class="docutils literal notranslate"><span class="pre">drv.flush_cb</span></code> to the other display too.</p>
+</section>
+<section id="split-image">
+<h3>Split image<a class="headerlink" href="#split-image" title="此标题的永久链接"></a></h3>
+<p>You can create a larger virtual display from an array of smaller ones. You can create it as below:</p>
+<ol class="arabic simple">
+<li><p>Set the resolution of the displays to the large display's resolution.</p></li>
+<li><p>In <code class="docutils literal notranslate"><span class="pre">drv.flush_cb</span></code>, truncate and modify the <code class="docutils literal notranslate"><span class="pre">area</span></code> parameter for each display.</p></li>
+<li><p>Send the buffer's content to each real display with the truncated area.</p></li>
+</ol>
+</section>
+</section>
+<section id="screens">
+<h2>Screens<a class="headerlink" href="#screens" title="此标题的永久链接"></a></h2>
+<p>Every display has its own set of <span class="xref myst">screens</span> and the objects on each screen.</p>
+<p>Be sure not to confuse displays and screens:</p>
+<ul class="simple">
+<li><p><strong>Displays</strong> are the physical hardware drawing the pixels.</p></li>
+<li><p><strong>Screens</strong> are the high-level root objects associated with a particular display. One display can have multiple screens associated with it, but not vice versa.</p></li>
+</ul>
+<p>Screens can be considered the highest level containers which have no parent.
+A screen's size is always equal to its display and their origin is (0;0). Therefore, a screen's coordinates can't be changed, i.e. <code class="docutils literal notranslate"><span class="pre">lv_obj_set_pos()</span></code>, <code class="docutils literal notranslate"><span class="pre">lv_obj_set_size()</span></code> or similar functions can't be used on screens.</p>
+<p>A screen can be created from any object type but the two most typical types are <a class="reference internal" href="../widgets/obj.html"><span class="doc std std-doc">Base object</span></a> and <a class="reference internal" href="../widgets/core/img.html"><span class="doc std std-doc">Image</span></a> (to create a wallpaper).</p>
+<p>To create a screen, use <code class="docutils literal notranslate"><span class="pre">lv_obj_t</span> <span class="pre">*</span> <span class="pre">scr</span> <span class="pre">=</span> <span class="pre">lv_&lt;type&gt;_create(NULL,</span> <span class="pre">copy)</span></code>. <code class="docutils literal notranslate"><span class="pre">copy</span></code> can be an existing screen copied into the new screen.</p>
+<p>To load a screen, use <code class="docutils literal notranslate"><span class="pre">lv_scr_load(scr)</span></code>. To get the active screen, use <code class="docutils literal notranslate"><span class="pre">lv_scr_act()</span></code>. These functions work on the default display. If you want to specify which display to work on, use <code class="docutils literal notranslate"><span class="pre">lv_disp_get_scr_act(disp)</span></code> and <code class="docutils literal notranslate"><span class="pre">lv_disp_load_scr(disp,</span> <span class="pre">scr)</span></code>. A screen can be loaded with animations too. Read more <span class="xref myst">here</span>.</p>
+<p>Screens can be deleted with <code class="docutils literal notranslate"><span class="pre">lv_obj_del(scr)</span></code>, but ensure that you do not delete the currently loaded screen.</p>
+<section id="transparent-screens">
+<h3>Transparent screens<a class="headerlink" href="#transparent-screens" title="此标题的永久链接"></a></h3>
+<p>Usually, the opacity of the screen is <code class="docutils literal notranslate"><span class="pre">LV_OPA_COVER</span></code> to provide a solid background for its children. If this is not the case (opacity &lt; 100%) the display's background color or image will be visible.
+See the <span class="xref myst">Display background</span> section for more details. If the display's background opacity is also not <code class="docutils literal notranslate"><span class="pre">LV_OPA_COVER</span></code> LVGL has no solid background to draw.</p>
+<p>This configuration (transparent screen and display) could be used to create for example OSD menus where a video is played on a lower layer, and a menu is overlayed on an upper layer.</p>
+<p>To handle transparent displays, special (slower) color mixing algorithms need to be used by LVGL so this feature needs to enabled with <code class="docutils literal notranslate"><span class="pre">LV_COLOR_SCREEN_TRANSP</span></code> in <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code>.
+As this mode operates on the Alpha channel of the pixels <code class="docutils literal notranslate"><span class="pre">LV_COLOR_DEPTH</span> <span class="pre">=</span> <span class="pre">32</span></code> is also required. The Alpha channel of 32-bit colors will be 0 where there are no objects and 255 where there are solid objects.</p>
+<p>In summary, to enable transparent screens and displays for OSD menu-like UIs:</p>
+<ul class="simple">
+<li><p>Enable <code class="docutils literal notranslate"><span class="pre">LV_COLOR_SCREEN_TRANSP</span></code> in <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code></p></li>
+<li><p>Be sure to use <code class="docutils literal notranslate"><span class="pre">LV_COLOR_DEPTH</span> <span class="pre">32</span></code></p></li>
+<li><p>Set the screen's opacity to <code class="docutils literal notranslate"><span class="pre">LV_OPA_TRANSP</span></code> e.g. with <code class="docutils literal notranslate"><span class="pre">lv_obj_set_style_local_bg_opa(lv_scr_act(),</span> <span class="pre">LV_OBJMASK_PART_MAIN,</span> <span class="pre">LV_STATE_DEFAULT,</span> <span class="pre">LV_OPA_TRANSP)</span></code></p></li>
+<li><p>Set the display opacity to <code class="docutils literal notranslate"><span class="pre">LV_OPA_TRANSP</span></code> with <code class="docutils literal notranslate"><span class="pre">lv_disp_set_bg_opa(NULL,</span> <span class="pre">LV_OPA_TRANSP);</span></code></p></li>
+</ul>
+</section>
+</section>
+<section id="features-of-displays">
+<h2>Features of displays<a class="headerlink" href="#features-of-displays" title="此标题的永久链接"></a></h2>
+<section id="inactivity">
+<h3>Inactivity<a class="headerlink" href="#inactivity" title="此标题的永久链接"></a></h3>
+<p>A user's inactivity time is measured on each display. Every use of an <a class="reference internal" href="indev.html"><span class="doc std std-doc">Input device</span></a> (if <span class="xref myst">associated with the display</span>) counts as an activity.
+To get time elapsed since the last activity, use <code class="docutils literal notranslate"><span class="pre">lv_disp_get_inactive_time(disp)</span></code>. If <code class="docutils literal notranslate"><span class="pre">NULL</span></code> is passed, the lowest inactivity time among all displays will be returned (<strong>NULL isn't just the default display</strong>).</p>
+<p>You can manually trigger an activity using <code class="docutils literal notranslate"><span class="pre">lv_disp_trig_activity(disp)</span></code>. If <code class="docutils literal notranslate"><span class="pre">disp</span></code> is <code class="docutils literal notranslate"><span class="pre">NULL</span></code>, the default screen will be used (<strong>and not all displays</strong>).</p>
+</section>
+<section id="background">
+<h3>Background<a class="headerlink" href="#background" title="此标题的永久链接"></a></h3>
+<p>Every display has a background color, background image and background opacity properties. They become visible when the current screen is transparent or not positioned to cover the whole display.</p>
+<p>The background color is a simple color to fill the display. It can be adjusted with <code class="docutils literal notranslate"><span class="pre">lv_disp_set_bg_color(disp,</span> <span class="pre">color)</span></code>;</p>
+<p>The display background image is a path to a file or a pointer to an <code class="docutils literal notranslate"><span class="pre">lv_img_dsc_t</span></code> variable (converted image data) to be used as wallpaper. It can be set with <code class="docutils literal notranslate"><span class="pre">lv_disp_set_bg_image(disp,</span> <span class="pre">&amp;my_img)</span></code>;
+If a background image is configured the background won't be filled with <code class="docutils literal notranslate"><span class="pre">bg_color</span></code>.</p>
+<p>The opacity of the background color or image can be adjusted with <code class="docutils literal notranslate"><span class="pre">lv_disp_set_bg_opa(disp,</span> <span class="pre">opa)</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">disp</span></code> parameter of these functions can be <code class="docutils literal notranslate"><span class="pre">NULL</span></code> to select the default display.</p>
+</section>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="此标题的永久链接"></a></h2>
+<div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>
+.. doxygenfile:: lv_disp.h
+  :project: lvgl
+
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2021, LVGL Kft.
+      <span class="lastupdated">最后更新于 2025 年 09 月 02 日.
+      </span></p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<style>
+  .wy-side-nav-search > div[role="search"] {
+    color: black;
+  }
+</style>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            let p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => {
+                let versionName = "";  
+                if(version == "master") versionName = "master (latest)";
+                else versionName = "v" + ((version.indexOf(".") != -1) ? version : (version + " (latest minor)"));
+                return `<option value="${version}">${versionName}</option>`;
+            })}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+document.addEventListener('DOMContentLoaded', (event) => {
+    function onIntersection(entries) {
+        entries.forEach(entry => {
+            let currentlyLoaded = entry.target.getAttribute("data-is-loaded") == "true";
+            let shouldBeLoaded = entry.intersectionRatio > 0;
+            if(currentlyLoaded != shouldBeLoaded) {
+                entry.target.setAttribute("data-is-loaded", shouldBeLoaded);
+                if(shouldBeLoaded) {
+                    let iframe = document.createElement("iframe");
+                    iframe.src = entry.target.getAttribute("data-real-src");
+                    entry.target.appendChild(iframe);
+                } else {
+                    let iframe = entry.target.querySelector("iframe");
+                    iframe.parentNode.removeChild(iframe);
+                }
+            }
+        });
+    }
+    const config = {
+        rootMargin: '600px 0px',
+        threshold: 0.01
+    };
+    let observer = new IntersectionObserver(onIntersection, config);
+    document.querySelectorAll(".lv-example").forEach(iframe => {
+        observer.observe(iframe);
+    });
+});
+</script>
+
+
+</body>
+</html>

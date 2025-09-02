@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Images &mdash; LVGL  文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/fontawesome.min.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="canonical" href="https://docs.lvgl.io/0.0.1/overview/image.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78811084-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+	gtag('config', 'UA-78811084-3', { 'anonymize_ip': true });
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_lvgl.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Images</a><ul>
+<li><a class="reference internal" href="#store-images">Store images</a><ul>
+<li><a class="reference internal" href="#variables">Variables</a></li>
+<li><a class="reference internal" href="#files">Files</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#color-formats">Color formats</a></li>
+<li><a class="reference internal" href="#add-and-use-images">Add and use images</a><ul>
+<li><a class="reference internal" href="#online-converter">Online converter</a></li>
+<li><a class="reference internal" href="#manually-create-an-image">Manually create an image</a></li>
+<li><a class="reference internal" href="#use-images">Use images</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#image-decoder">Image decoder</a><ul>
+<li><a class="reference internal" href="#custom-image-formats">Custom image formats</a></li>
+<li><a class="reference internal" href="#register-an-image-decoder">Register an image decoder</a></li>
+<li><a class="reference internal" href="#manually-use-an-image-decoder">Manually use an image decoder</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#image-caching">Image caching</a><ul>
+<li><a class="reference internal" href="#cache-size">Cache size</a></li>
+<li><a class="reference internal" href="#value-of-images">Value of images</a></li>
+<li><a class="reference internal" href="#memory-usage">Memory usage</a></li>
+<li><a class="reference internal" href="#clean-the-cache">Clean the cache</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#api">API</a><ul>
+<li><a class="reference internal" href="#image-buffer">Image buffer</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LVGL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Images</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/overview/image.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>.. include:: /header.rst 
+:github_url: |github_link_base|/overview/image.md
+</pre></div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="images">
+<h1>Images<a class="headerlink" href="#images" title="此标题的永久链接"></a></h1>
+<p>An image can be a file or a variable which stores the bitmap itself and some metadata.</p>
+<section id="store-images">
+<h2>Store images<a class="headerlink" href="#store-images" title="此标题的永久链接"></a></h2>
+<p>You can store images in two places</p>
+<ul class="simple">
+<li><p>as a variable in internal memory (RAM or ROM)</p></li>
+<li><p>as a file</p></li>
+</ul>
+<section id="variables">
+<h3>Variables<a class="headerlink" href="#variables" title="此标题的永久链接"></a></h3>
+<p>Images stored internally in a variable are composed mainly of an <code class="docutils literal notranslate"><span class="pre">lv_img_dsc_t</span></code> structure with the following fields:</p>
+<ul class="simple">
+<li><p><strong>header</strong></p>
+<ul>
+<li><p><em>cf</em> Color format. See <span class="xref myst">below</span></p></li>
+<li><p><em>w</em> width in pixels (&lt;= 2048)</p></li>
+<li><p><em>h</em> height in pixels (&lt;= 2048)</p></li>
+<li><p><em>always zero</em> 3 bits which need to be always zero</p></li>
+<li><p><em>reserved</em> reserved for future use</p></li>
+</ul>
+</li>
+<li><p><strong>data</strong> pointer to an array where the image itself is stored</p></li>
+<li><p><strong>data_size</strong> length of <code class="docutils literal notranslate"><span class="pre">data</span></code> in bytes</p></li>
+</ul>
+<p>These are usually stored within a project as C files. They are linked into the resulting executable like any other constant data.</p>
+</section>
+<section id="files">
+<h3>Files<a class="headerlink" href="#files" title="此标题的永久链接"></a></h3>
+<p>To deal with files you need to add a storage <em>Drive</em> to LVGL. In short, a <em>Drive</em> is a collection of functions (<em>open</em>, <em>read</em>, <em>close</em>, etc.) registered in LVGL to make file operations.
+You can add an interface to a standard file system (FAT32 on SD card) or you create your simple file system to read data from an SPI Flash memory.
+In every case, a <em>Drive</em> is just an abstraction to read and/or write data to memory.
+See the <a class="reference internal" href="file-system.html"><span class="doc std std-doc">File system</span></a> section to learn more.</p>
+<p>Images stored as files are not linked into the resulting executable, and must be read into RAM before being drawn. As a result, they are not as resource-friendly as images linked at compile time. However, they are easier to replace without needing to rebuild the main program.</p>
+</section>
+</section>
+<section id="color-formats">
+<h2>Color formats<a class="headerlink" href="#color-formats" title="此标题的永久链接"></a></h2>
+<p>Various built-in color formats are supported:</p>
+<ul class="simple">
+<li><p><strong>LV_IMG_CF_TRUE_COLOR</strong> Simply stores the RGB colors (in whatever color depth LVGL is configured for).</p></li>
+<li><p><strong>LV_IMG_CF_TRUE_COLOR_ALPHA</strong> Like <code class="docutils literal notranslate"><span class="pre">LV_IMG_CF_TRUE_COLOR</span></code> but it also adds an alpha (transparency) byte for every pixel.</p></li>
+<li><p><strong>LV_IMG_CF_TRUE_COLOR_CHROMA_KEYED</strong> Like <code class="docutils literal notranslate"><span class="pre">LV_IMG_CF_TRUE_COLOR</span></code> but if a pixel has the <code class="docutils literal notranslate"><span class="pre">LV_COLOR_TRANSP</span></code> color (set in <em>lv_conf.h</em>) it will be transparent.</p></li>
+<li><p><strong>LV_IMG_CF_INDEXED_1/2/4/8BIT</strong> Uses a palette with 2, 4, 16 or 256 colors and stores each pixel in 1, 2, 4 or 8 bits.</p></li>
+<li><p><strong>LV_IMG_CF_ALPHA_1/2/4/8BIT</strong> <strong>Only stores the Alpha value with 1, 2, 4 or 8 bits.</strong> The pixels take the color of <code class="docutils literal notranslate"><span class="pre">style.img_recolor</span></code> and the set opacity. The source image has to be an alpha channel. This is ideal for bitmaps similar to fonts where the whole image is one color that can be altered.</p></li>
+</ul>
+<p>The bytes of <code class="docutils literal notranslate"><span class="pre">LV_IMG_CF_TRUE_COLOR</span></code> images are stored in the following order.</p>
+<p>For 32-bit color depth:</p>
+<ul class="simple">
+<li><p>Byte 0: Blue</p></li>
+<li><p>Byte 1: Green</p></li>
+<li><p>Byte 2: Red</p></li>
+<li><p>Byte 3: Alpha</p></li>
+</ul>
+<p>For 16-bit color depth:</p>
+<ul class="simple">
+<li><p>Byte 0: Green 3 lower bit, Blue 5 bit</p></li>
+<li><p>Byte 1: Red 5 bit, Green 3 higher bit</p></li>
+<li><p>Byte 2: Alpha byte (only with LV_IMG_CF_TRUE_COLOR_ALPHA)</p></li>
+</ul>
+<p>For 8-bit color depth:</p>
+<ul class="simple">
+<li><p>Byte 0: Red 3 bit, Green 3 bit, Blue 2 bit</p></li>
+<li><p>Byte 2: Alpha byte (only with LV_IMG_CF_TRUE_COLOR_ALPHA)</p></li>
+</ul>
+<p>You can store images in a <em>Raw</em> format to indicate that it's not encoded with one of the built-in color formats and an external <span class="xref myst">Image decoder</span> needs to be used to decode the image.</p>
+<ul class="simple">
+<li><p><strong>LV_IMG_CF_RAW</strong> Indicates a basic raw image (e.g. a PNG or JPG image).</p></li>
+<li><p><strong>LV_IMG_CF_RAW_ALPHA</strong> Indicates that an image has alpha and an alpha byte is added for every pixel.</p></li>
+<li><p><strong>LV_IMG_CF_RAW_CHROMA_KEYED</strong> Indicates that an image is chroma-keyed as described in <code class="docutils literal notranslate"><span class="pre">LV_IMG_CF_TRUE_COLOR_CHROMA_KEYED</span></code> above.</p></li>
+</ul>
+</section>
+<section id="add-and-use-images">
+<h2>Add and use images<a class="headerlink" href="#add-and-use-images" title="此标题的永久链接"></a></h2>
+<p>You can add images to LVGL in two ways:</p>
+<ul class="simple">
+<li><p>using the online converter</p></li>
+<li><p>manually create images</p></li>
+</ul>
+<section id="online-converter">
+<h3>Online converter<a class="headerlink" href="#online-converter" title="此标题的永久链接"></a></h3>
+<p>The online Image converter is available here: <a class="reference external" href="https://lvgl.io/tools/imageconverter">https://lvgl.io/tools/imageconverter</a></p>
+<p>Adding an image to LVGL via the online converter is easy.</p>
+<ol class="arabic simple">
+<li><p>You need to select a <em>BMP</em>, <em>PNG</em> or <em>JPG</em> image first.</p></li>
+<li><p>Give the image a name that will be used within LVGL.</p></li>
+<li><p>Select the <span class="xref myst">Color format</span>.</p></li>
+<li><p>Select the type of image you want. Choosing a binary will generate a <code class="docutils literal notranslate"><span class="pre">.bin</span></code> file that must be stored separately and read using the <span class="xref myst">file support</span>. Choosing a variable will generate a standard C file that can be linked into your project.</p></li>
+<li><p>Hit the <em>Convert</em> button. Once the conversion is finished, your browser will automatically download the resulting file.</p></li>
+</ol>
+<p>In the generated C arrays (variables), bitmaps for all the color depths (1, 8, 16 or 32) are included in the C file, but only the color depth that matches <code class="docutils literal notranslate"><span class="pre">LV_COLOR_DEPTH</span></code> in <em>lv_conf.h</em> will actually be linked into the resulting executable.</p>
+<p>In the case of binary files, you need to specify the color format you want:</p>
+<ul class="simple">
+<li><p>RGB332 for 8-bit color depth</p></li>
+<li><p>RGB565 for 16-bit color depth</p></li>
+<li><p>RGB565 Swap for 16-bit color depth (two bytes are swapped)</p></li>
+<li><p>RGB888 for 32-bit color depth</p></li>
+</ul>
+</section>
+<section id="manually-create-an-image">
+<h3>Manually create an image<a class="headerlink" href="#manually-create-an-image" title="此标题的永久链接"></a></h3>
+<p>If you are generating an image at run-time, you can craft an image variable to display it using LVGL. For example:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">my_img_data</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span><span class="w"> </span><span class="p">...};</span>
+
+<span class="k">static</span><span class="w"> </span><span class="n">lv_img_dsc_t</span><span class="w"> </span><span class="n">my_img_dsc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">always_zero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">80</span><span class="p">,</span>
+<span class="w">    </span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">60</span><span class="p">,</span>
+<span class="w">    </span><span class="p">.</span><span class="n">data_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">80</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">60</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">LV_COLOR_DEPTH</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span>
+<span class="w">    </span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">cf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LV_IMG_CF_TRUE_COLOR</span><span class="p">,</span><span class="w">          </span><span class="cm">/*Set the color format*/</span>
+<span class="w">    </span><span class="p">.</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">my_img_data</span><span class="p">,</span>
+<span class="p">};</span>
+
+</pre></div>
+</div>
+<p>If the color format is <code class="docutils literal notranslate"><span class="pre">LV_IMG_CF_TRUE_COLOR_ALPHA</span></code> you can set <code class="docutils literal notranslate"><span class="pre">data_size</span></code> like <code class="docutils literal notranslate"><span class="pre">80</span> <span class="pre">*</span> <span class="pre">60</span> <span class="pre">*</span> <span class="pre">LV_IMG_PX_SIZE_ALPHA_BYTE</span></code>.</p>
+<p>Another (possibly simpler) option to create and display an image at run-time is to use the <a class="reference internal" href="../widgets/core/canvas.html"><span class="doc std std-doc">Canvas</span></a> object.</p>
+</section>
+<section id="use-images">
+<h3>Use images<a class="headerlink" href="#use-images" title="此标题的永久链接"></a></h3>
+<p>The simplest way to use an image in LVGL is to display it with an <a class="reference internal" href="../widgets/core/img.html"><span class="doc std std-doc">lv_img</span></a> object:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_obj_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">icon</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_img_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+
+<span class="cm">/*From variable*/</span>
+<span class="n">lv_img_set_src</span><span class="p">(</span><span class="n">icon</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">my_icon_dsc</span><span class="p">);</span>
+
+<span class="cm">/*From file*/</span>
+<span class="n">lv_img_set_src</span><span class="p">(</span><span class="n">icon</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;S:my_icon.bin&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If the image was converted with the online converter, you should use <code class="docutils literal notranslate"><span class="pre">LV_IMG_DECLARE(my_icon_dsc)</span></code> to declare the image in the file where you want to use it.</p>
+</section>
+</section>
+<section id="image-decoder">
+<h2>Image decoder<a class="headerlink" href="#image-decoder" title="此标题的永久链接"></a></h2>
+<p>As you can see in the <span class="xref myst">Color formats</span> section, LVGL supports several built-in image formats. In many cases, these will be all you need. LVGL doesn't directly support, however, generic image formats like PNG or JPG.</p>
+<p>To handle non-built-in image formats, you need to use external libraries and attach them to LVGL via the <em>Image decoder</em> interface.</p>
+<p>An image decoder consists of 4 callbacks:</p>
+<ul class="simple">
+<li><p><strong>info</strong> get some basic info about the image (width, height and color format).</p></li>
+<li><p><strong>open</strong> open an image: either store a decoded image or set it to <code class="docutils literal notranslate"><span class="pre">NULL</span></code> to indicate the image can be read line-by-line.</p></li>
+<li><p><strong>read</strong> if <em>open</em> didn't fully open an image this function should give some decoded data (max 1 line) from a given position.</p></li>
+<li><p><strong>close</strong> close an opened image, free the allocated resources.</p></li>
+</ul>
+<p>You can add any number of image decoders. When an image needs to be drawn, the library will try all the registered image decoders until it finds one which can open the image, i.e. one which knows that format.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">LV_IMG_CF_TRUE_COLOR_...</span></code>, <code class="docutils literal notranslate"><span class="pre">LV_IMG_INDEXED_...</span></code> and <code class="docutils literal notranslate"><span class="pre">LV_IMG_ALPHA_...</span></code> formats (essentially, all non-<code class="docutils literal notranslate"><span class="pre">RAW</span></code> formats) are understood by the built-in decoder.</p>
+<section id="custom-image-formats">
+<h3>Custom image formats<a class="headerlink" href="#custom-image-formats" title="此标题的永久链接"></a></h3>
+<p>The easiest way to create a custom image is to use the online image converter and select <code class="docutils literal notranslate"><span class="pre">Raw</span></code>, <code class="docutils literal notranslate"><span class="pre">Raw</span> <span class="pre">with</span> <span class="pre">alpha</span></code> or <code class="docutils literal notranslate"><span class="pre">Raw</span> <span class="pre">with</span> <span class="pre">chroma-keyed</span></code> format. It will just take every byte of the binary file you uploaded and write it as an image &quot;bitmap&quot;. You then need to attach an image decoder that will parse that bitmap and generate the real, renderable bitmap.</p>
+<p><code class="docutils literal notranslate"><span class="pre">header.cf</span></code> will be <code class="docutils literal notranslate"><span class="pre">LV_IMG_CF_RAW</span></code>, <code class="docutils literal notranslate"><span class="pre">LV_IMG_CF_RAW_ALPHA</span></code> or <code class="docutils literal notranslate"><span class="pre">LV_IMG_CF_RAW_CHROMA_KEYED</span></code> accordingly. You should choose the correct format according to your needs: a fully opaque image, using an alpha channel or using a chroma key.</p>
+<p>After decoding, the <em>raw</em> formats are considered <em>True color</em> by the library. In other words, the image decoder must decode the <em>Raw</em> images to <em>True color</em> according to the format described in the <span class="xref myst">Color formats</span> section.</p>
+<p>If you want to create a custom image, you should use <code class="docutils literal notranslate"><span class="pre">LV_IMG_CF_USER_ENCODED_0..7</span></code> color formats. However, the library can draw images only in <em>True color</em> format (or <em>Raw</em> but ultimately it will be in <em>True color</em> format).
+The <code class="docutils literal notranslate"><span class="pre">LV_IMG_CF_USER_ENCODED_...</span></code> formats are not known by the library and therefore they should be decoded to one of the known formats from the <span class="xref myst">Color formats</span> section.
+It's possible to decode an image to a non-true color format first (for example: <code class="docutils literal notranslate"><span class="pre">LV_IMG_INDEXED_4BITS</span></code>) and then call the built-in decoder functions to convert it to <em>True color</em>.</p>
+<p>With <em>User encoded</em> formats, the color format in the open function (<code class="docutils literal notranslate"><span class="pre">dsc-&gt;header.cf</span></code>) should be changed according to the new format.</p>
+</section>
+<section id="register-an-image-decoder">
+<h3>Register an image decoder<a class="headerlink" href="#register-an-image-decoder" title="此标题的永久链接"></a></h3>
+<p>Here's an example of getting LVGL to work with PNG images.</p>
+<p>First, you need to create a new image decoder and set some functions to open/close the PNG files. It should look like this:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*Create a new decoder and register functions */</span>
+<span class="n">lv_img_decoder_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_img_decoder_create</span><span class="p">();</span>
+<span class="n">lv_img_decoder_set_info_cb</span><span class="p">(</span><span class="n">dec</span><span class="p">,</span><span class="w"> </span><span class="n">decoder_info</span><span class="p">);</span>
+<span class="n">lv_img_decoder_set_open_cb</span><span class="p">(</span><span class="n">dec</span><span class="p">,</span><span class="w"> </span><span class="n">decoder_open</span><span class="p">);</span>
+<span class="n">lv_img_decoder_set_close_cb</span><span class="p">(</span><span class="n">dec</span><span class="p">,</span><span class="w"> </span><span class="n">decoder_close</span><span class="p">);</span>
+
+
+<span class="cm">/**</span>
+<span class="cm"> * Get info about a PNG image</span>
+<span class="cm"> * @param decoder pointer to the decoder where this function belongs</span>
+<span class="cm"> * @param src can be file name or pointer to a C array</span>
+<span class="cm"> * @param header store the info here</span>
+<span class="cm"> * @return LV_RES_OK: no error; LV_RES_INV: can&#39;t get the info</span>
+<span class="cm"> */</span>
+<span class="k">static</span><span class="w"> </span><span class="n">lv_res_t</span><span class="w"> </span><span class="nf">decoder_info</span><span class="p">(</span><span class="n">lv_img_decoder_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">decoder</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="n">lv_img_header_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">header</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="cm">/*Check whether the type `src` is known by the decoder*/</span>
+<span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="n">is_png</span><span class="p">(</span><span class="n">src</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">false</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">LV_RES_INV</span><span class="p">;</span>
+
+<span class="w">  </span><span class="cm">/* Read the PNG header and find `width` and `height` */</span>
+<span class="w">  </span><span class="p">...</span>
+
+<span class="w">  </span><span class="n">header</span><span class="o">-&gt;</span><span class="n">cf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LV_IMG_CF_RAW_ALPHA</span><span class="p">;</span>
+<span class="w">  </span><span class="n">header</span><span class="o">-&gt;</span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">width</span><span class="p">;</span>
+<span class="w">  </span><span class="n">header</span><span class="o">-&gt;</span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">height</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Open a PNG image and return the decided image</span>
+<span class="cm"> * @param decoder pointer to the decoder where this function belongs</span>
+<span class="cm"> * @param dsc pointer to a descriptor which describes this decoding session</span>
+<span class="cm"> * @return LV_RES_OK: no error; LV_RES_INV: can&#39;t get the info</span>
+<span class="cm"> */</span>
+<span class="k">static</span><span class="w"> </span><span class="n">lv_res_t</span><span class="w"> </span><span class="nf">decoder_open</span><span class="p">(</span><span class="n">lv_img_decoder_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">decoder</span><span class="p">,</span><span class="w"> </span><span class="n">lv_img_decoder_dsc_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dsc</span><span class="p">)</span>
+<span class="p">{</span>
+
+<span class="w">  </span><span class="cm">/*Check whether the type `src` is known by the decoder*/</span>
+<span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="n">is_png</span><span class="p">(</span><span class="n">src</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">false</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">LV_RES_INV</span><span class="p">;</span>
+
+<span class="w">  </span><span class="cm">/*Decode and store the image. If `dsc-&gt;img_data` is `NULL`, the `read_line` function will be called to get the image data line-by-line*/</span>
+<span class="w">  </span><span class="n">dsc</span><span class="o">-&gt;</span><span class="n">img_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">my_png_decoder</span><span class="p">(</span><span class="n">src</span><span class="p">);</span>
+
+<span class="w">  </span><span class="cm">/*Change the color format if required. For PNG usually &#39;Raw&#39; is fine*/</span>
+<span class="w">  </span><span class="n">dsc</span><span class="o">-&gt;</span><span class="n">header</span><span class="p">.</span><span class="n">cf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LV_IMG_CF_</span><span class="p">...</span>
+
+<span class="w">  </span><span class="cm">/*Call a built in decoder function if required. It&#39;s not required if`my_png_decoder` opened the image in true color format.*/</span>
+<span class="w">  </span><span class="n">lv_res_t</span><span class="w"> </span><span class="n">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_img_decoder_built_in_open</span><span class="p">(</span><span class="n">decoder</span><span class="p">,</span><span class="w"> </span><span class="n">dsc</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">res</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Decode `len` pixels starting from the given `x`, `y` coordinates and store them in `buf`.</span>
+<span class="cm"> * Required only if the &quot;open&quot; function can&#39;t open the whole decoded pixel array. (dsc-&gt;img_data == NULL)</span>
+<span class="cm"> * @param decoder pointer to the decoder the function associated with</span>
+<span class="cm"> * @param dsc pointer to decoder descriptor</span>
+<span class="cm"> * @param x start x coordinate</span>
+<span class="cm"> * @param y start y coordinate</span>
+<span class="cm"> * @param len number of pixels to decode</span>
+<span class="cm"> * @param buf a buffer to store the decoded pixels</span>
+<span class="cm"> * @return LV_RES_OK: ok; LV_RES_INV: failed</span>
+<span class="cm"> */</span>
+<span class="n">lv_res_t</span><span class="w"> </span><span class="nf">decoder_built_in_read_line</span><span class="p">(</span><span class="n">lv_img_decoder_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">decoder</span><span class="p">,</span><span class="w"> </span><span class="n">lv_img_decoder_dsc_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dsc</span><span class="p">,</span><span class="w"> </span><span class="n">lv_coord_t</span><span class="w"> </span><span class="n">x</span><span class="p">,</span>
+<span class="w">                                                  </span><span class="n">lv_coord_t</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">lv_coord_t</span><span class="w"> </span><span class="n">len</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">buf</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">   </span><span class="cm">/*With PNG it&#39;s usually not required*/</span>
+
+<span class="w">   </span><span class="cm">/*Copy `len` pixels from `x` and `y` coordinates in True color format to `buf` */</span>
+
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Free the allocated resources</span>
+<span class="cm"> * @param decoder pointer to the decoder where this function belongs</span>
+<span class="cm"> * @param dsc pointer to a descriptor which describes this decoding session</span>
+<span class="cm"> */</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">decoder_close</span><span class="p">(</span><span class="n">lv_img_decoder_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">decoder</span><span class="p">,</span><span class="w"> </span><span class="n">lv_img_decoder_dsc_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dsc</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="cm">/*Free all allocated data*/</span>
+
+<span class="w">  </span><span class="cm">/*Call the built-in close function if the built-in open/read_line was used*/</span>
+<span class="w">  </span><span class="n">lv_img_decoder_built_in_close</span><span class="p">(</span><span class="n">decoder</span><span class="p">,</span><span class="w"> </span><span class="n">dsc</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+</pre></div>
+</div>
+<p>So in summary:</p>
+<ul class="simple">
+<li><p>In <code class="docutils literal notranslate"><span class="pre">decoder_info</span></code>, you should collect some basic information about the image and store it in <code class="docutils literal notranslate"><span class="pre">header</span></code>.</p></li>
+<li><p>In <code class="docutils literal notranslate"><span class="pre">decoder_open</span></code>, you should try to open the image source pointed by <code class="docutils literal notranslate"><span class="pre">dsc-&gt;src</span></code>. Its type is already in <code class="docutils literal notranslate"><span class="pre">dsc-&gt;src_type</span> <span class="pre">==</span> <span class="pre">LV_IMG_SRC_FILE/VARIABLE</span></code>.
+If this format/type is not supported by the decoder, return <code class="docutils literal notranslate"><span class="pre">LV_RES_INV</span></code>.
+However, if you can open the image, a pointer to the decoded <em>True color</em> image should be set in <code class="docutils literal notranslate"><span class="pre">dsc-&gt;img_data</span></code>.
+If the format is known, but you don't want to decode the entire image (e.g. no memory for it), set <code class="docutils literal notranslate"><span class="pre">dsc-&gt;img_data</span> <span class="pre">=</span> <span class="pre">NULL</span></code> and use <code class="docutils literal notranslate"><span class="pre">read_line</span></code> to get the pixel data.</p></li>
+<li><p>In <code class="docutils literal notranslate"><span class="pre">decoder_close</span></code> you should free all allocated resources.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">decoder_read</span></code> is optional. Decoding the whole image requires extra memory and some computational overhead.
+However, it can decode one line of the image without decoding the whole image, you can save memory and time.
+To indicate that the <em>line read</em> function should be used, set <code class="docutils literal notranslate"><span class="pre">dsc-&gt;img_data</span> <span class="pre">=</span> <span class="pre">NULL</span></code> in the open function.</p></li>
+</ul>
+</section>
+<section id="manually-use-an-image-decoder">
+<h3>Manually use an image decoder<a class="headerlink" href="#manually-use-an-image-decoder" title="此标题的永久链接"></a></h3>
+<p>LVGL will use registered image decoders automatically if you try and draw a raw image (i.e. using the <code class="docutils literal notranslate"><span class="pre">lv_img</span></code> object) but you can use them manually too. Create an <code class="docutils literal notranslate"><span class="pre">lv_img_decoder_dsc_t</span></code> variable to describe the decoding session and call <code class="docutils literal notranslate"><span class="pre">lv_img_decoder_open()</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">color</span></code> parameter is used only with <code class="docutils literal notranslate"><span class="pre">LV_IMG_CF_ALPHA_1/2/4/8BIT</span></code> images to tell color of the image.
+<code class="docutils literal notranslate"><span class="pre">frame_id</span></code> can be used if the image to open is an animation.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+<span class="n">lv_res_t</span><span class="w"> </span><span class="n">res</span><span class="p">;</span>
+<span class="n">lv_img_decoder_dsc_t</span><span class="w"> </span><span class="n">dsc</span><span class="p">;</span>
+<span class="n">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_img_decoder_open</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dsc</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">my_img_dsc</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="p">,</span><span class="w"> </span><span class="n">frame_id</span><span class="p">);</span>
+
+<span class="k">if</span><span class="p">(</span><span class="n">res</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">LV_RES_OK</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="cm">/*Do something with `dsc-&gt;img_data`*/</span>
+<span class="w">  </span><span class="n">lv_img_decoder_close</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dsc</span><span class="p">);</span>
+<span class="p">}</span>
+
+</pre></div>
+</div>
+</section>
+</section>
+<section id="image-caching">
+<h2>Image caching<a class="headerlink" href="#image-caching" title="此标题的永久链接"></a></h2>
+<p>Sometimes it takes a lot of time to open an image.
+Continuously decoding a PNG image or loading images from a slow external memory would be inefficient and detrimental to the user experience.</p>
+<p>Therefore, LVGL caches a given number of images. Caching means some images will be left open, hence LVGL can quickly access them from <code class="docutils literal notranslate"><span class="pre">dsc-&gt;img_data</span></code> instead of needing to decode them again.</p>
+<p>Of course, caching images is resource intensive as it uses more RAM to store the decoded image. LVGL tries to optimize the process as much as possible (see below), but you will still need to evaluate if this would be beneficial for your platform or not. Image caching may not be worth it if you have a deeply embedded target which decodes small images from a relatively fast storage medium.</p>
+<section id="cache-size">
+<h3>Cache size<a class="headerlink" href="#cache-size" title="此标题的永久链接"></a></h3>
+<p>The number of cache entries can be defined with <code class="docutils literal notranslate"><span class="pre">LV_IMG_CACHE_DEF_SIZE</span></code> in <em>lv_conf.h</em>. The default value is 1 so only the most recently used image will be left open.</p>
+<p>The size of the cache can be changed at run-time with <code class="docutils literal notranslate"><span class="pre">lv_img_cache_set_size(entry_num)</span></code>.</p>
+</section>
+<section id="value-of-images">
+<h3>Value of images<a class="headerlink" href="#value-of-images" title="此标题的永久链接"></a></h3>
+<p>When you use more images than cache entries, LVGL can't cache all of the images. Instead, the library will close one of the cached images to free space.</p>
+<p>To decide which image to close, LVGL uses a measurement it previously made of how long it took to open the image. Cache entries that hold slower-to-open images are considered more valuable and are kept in the cache as long as possible.</p>
+<p>If you want or need to override LVGL's measurement, you can manually set the <em>time to open</em> value in the decoder open function in <code class="docutils literal notranslate"><span class="pre">dsc-&gt;time_to_open</span> <span class="pre">=</span> <span class="pre">time_ms</span></code> to give a higher or lower value. (Leave it unchanged to let LVGL control it.)</p>
+<p>Every cache entry has a <em>&quot;life&quot;</em> value. Every time an image is opened through the cache, the <em>life</em> value of all entries is decreased to make them older.
+When a cached image is used, its <em>life</em> value is increased by the <em>time to open</em> value to make it more alive.</p>
+<p>If there is no more space in the cache, the entry with the lowest life value will be closed.</p>
+</section>
+<section id="memory-usage">
+<h3>Memory usage<a class="headerlink" href="#memory-usage" title="此标题的永久链接"></a></h3>
+<p>Note that a cached image might continuously consume memory. For example, if three PNG images are cached, they will consume memory while they are open.</p>
+<p>Therefore, it's the user's responsibility to be sure there is enough RAM to cache even the largest images at the same time.</p>
+</section>
+<section id="clean-the-cache">
+<h3>Clean the cache<a class="headerlink" href="#clean-the-cache" title="此标题的永久链接"></a></h3>
+<p>Let's say you have loaded a PNG image into a <code class="docutils literal notranslate"><span class="pre">lv_img_dsc_t</span> <span class="pre">my_png</span></code> variable and use it in an <code class="docutils literal notranslate"><span class="pre">lv_img</span></code> object. If the image is already cached and you then change the underlying PNG file, you need to notify LVGL to cache the image again. Otherwise, there is no easy way of detecting that the underlying file changed and LVGL will still draw the old image from cache.</p>
+<p>To do this, use <code class="docutils literal notranslate"><span class="pre">lv_img_cache_invalidate_src(&amp;my_png)</span></code>. If <code class="docutils literal notranslate"><span class="pre">NULL</span></code> is passed as a parameter, the whole cache will be cleaned.</p>
+</section>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="此标题的永久链接"></a></h2>
+<section id="image-buffer">
+<h3>Image buffer<a class="headerlink" href="#image-buffer" title="此标题的永久链接"></a></h3>
+<div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>
+.. doxygenfile:: lv_img_buf.h
+  :project: lvgl
+
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2021, LVGL Kft.
+      <span class="lastupdated">最后更新于 2025 年 09 月 02 日.
+      </span></p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<style>
+  .wy-side-nav-search > div[role="search"] {
+    color: black;
+  }
+</style>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            let p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => {
+                let versionName = "";  
+                if(version == "master") versionName = "master (latest)";
+                else versionName = "v" + ((version.indexOf(".") != -1) ? version : (version + " (latest minor)"));
+                return `<option value="${version}">${versionName}</option>`;
+            })}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+document.addEventListener('DOMContentLoaded', (event) => {
+    function onIntersection(entries) {
+        entries.forEach(entry => {
+            let currentlyLoaded = entry.target.getAttribute("data-is-loaded") == "true";
+            let shouldBeLoaded = entry.intersectionRatio > 0;
+            if(currentlyLoaded != shouldBeLoaded) {
+                entry.target.setAttribute("data-is-loaded", shouldBeLoaded);
+                if(shouldBeLoaded) {
+                    let iframe = document.createElement("iframe");
+                    iframe.src = entry.target.getAttribute("data-real-src");
+                    entry.target.appendChild(iframe);
+                } else {
+                    let iframe = entry.target.querySelector("iframe");
+                    iframe.parentNode.removeChild(iframe);
+                }
+            }
+        });
+    }
+    const config = {
+        rootMargin: '600px 0px',
+        threshold: 0.01
+    };
+    let observer = new IntersectionObserver(onIntersection, config);
+    document.querySelectorAll(".lv-example").forEach(iframe => {
+        observer.observe(iframe);
+    });
+});
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Timers &mdash; LVGL  文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/fontawesome.min.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="canonical" href="https://docs.lvgl.io/0.0.1/overview/timer.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78811084-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+	gtag('config', 'UA-78811084-3', { 'anonymize_ip': true });
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_lvgl.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Timers</a><ul>
+<li><a class="reference internal" href="#create-a-timer">Create a timer</a></li>
+<li><a class="reference internal" href="#ready-and-reset">Ready and Reset</a></li>
+<li><a class="reference internal" href="#set-parameters">Set parameters</a></li>
+<li><a class="reference internal" href="#repeat-count">Repeat count</a></li>
+<li><a class="reference internal" href="#measure-idle-time">Measure idle time</a></li>
+<li><a class="reference internal" href="#asynchronous-calls">Asynchronous calls</a></li>
+<li><a class="reference internal" href="#api">API</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LVGL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Timers</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/overview/timer.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>.. include:: /header.rst 
+:github_url: |github_link_base|/overview/timer.md
+</pre></div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="timers">
+<h1>Timers<a class="headerlink" href="#timers" title="此标题的永久链接"></a></h1>
+<p>LVGL has a built-in timer system. You can register a function to have it be called periodically. The timers are handled and called in <code class="docutils literal notranslate"><span class="pre">lv_timer_handler()</span></code>, which needs to be called every few milliseconds.
+See <a class="reference internal" href="../porting/task-handler.html"><span class="doc std std-doc">Porting</span></a> for more information.</p>
+<p>Timers are non-preemptive, which means a timer cannot interrupt another timer. Therefore, you can call any LVGL related function in a timer.</p>
+<section id="create-a-timer">
+<h2>Create a timer<a class="headerlink" href="#create-a-timer" title="此标题的永久链接"></a></h2>
+<p>To create a new timer, use <code class="docutils literal notranslate"><span class="pre">lv_timer_create(timer_cb,</span> <span class="pre">period_ms,</span> <span class="pre">user_data)</span></code>. It will create an <code class="docutils literal notranslate"><span class="pre">lv_timer_t</span> <span class="pre">*</span></code> variable, which can be used later to modify the parameters of the timer.
+<code class="docutils literal notranslate"><span class="pre">lv_timer_create_basic()</span></code> can also be used. This allows you to create a new timer without specifying any parameters.</p>
+<p>A timer callback should have a <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">(*lv_timer_cb_t)(lv_timer_t</span> <span class="pre">*);</span></code> prototype.</p>
+<p>For example:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">my_timer</span><span class="p">(</span><span class="n">lv_timer_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">timer</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="cm">/*Use the user_data*/</span>
+<span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">user_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">timer</span><span class="o">-&gt;</span><span class="n">user_data</span><span class="p">;</span>
+<span class="w">  </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;my_timer called with user data: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">user_data</span><span class="p">);</span>
+
+<span class="w">  </span><span class="cm">/*Do something with LVGL*/</span>
+<span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="n">something_happened</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">something_happened</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="n">lv_btn_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">(),</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="p">...</span>
+
+<span class="k">static</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">user_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="n">lv_timer_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">timer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_timer_create</span><span class="p">(</span><span class="n">my_timer</span><span class="p">,</span><span class="w"> </span><span class="mi">500</span><span class="p">,</span><span class="w">  </span><span class="o">&amp;</span><span class="n">user_data</span><span class="p">);</span>
+
+</pre></div>
+</div>
+</section>
+<section id="ready-and-reset">
+<h2>Ready and Reset<a class="headerlink" href="#ready-and-reset" title="此标题的永久链接"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">lv_timer_ready(timer)</span></code> makes a timer run on the next call of <code class="docutils literal notranslate"><span class="pre">lv_timer_handler()</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">lv_timer_reset(timer)</span></code> resets the period of a timer. It will be called again after the defined period of milliseconds has elapsed.</p>
+</section>
+<section id="set-parameters">
+<h2>Set parameters<a class="headerlink" href="#set-parameters" title="此标题的永久链接"></a></h2>
+<p>You can modify some timer parameters later:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_timer_set_cb(timer,</span> <span class="pre">new_cb)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_timer_set_period(timer,</span> <span class="pre">new_period)</span></code></p></li>
+</ul>
+</section>
+<section id="repeat-count">
+<h2>Repeat count<a class="headerlink" href="#repeat-count" title="此标题的永久链接"></a></h2>
+<p>You can make a timer repeat only a given number of times with <code class="docutils literal notranslate"><span class="pre">lv_timer_set_repeat_count(timer,</span> <span class="pre">count)</span></code>. The timer will automatically be deleted after it's called the defined number of times. Set the count to <code class="docutils literal notranslate"><span class="pre">-1</span></code> to repeat indefinitely.</p>
+</section>
+<section id="measure-idle-time">
+<h2>Measure idle time<a class="headerlink" href="#measure-idle-time" title="此标题的永久链接"></a></h2>
+<p>You can get the idle percentage time of <code class="docutils literal notranslate"><span class="pre">lv_timer_handler</span></code> with <code class="docutils literal notranslate"><span class="pre">lv_timer_get_idle()</span></code>. Note that, it doesn't measure the idle time of the overall system, only <code class="docutils literal notranslate"><span class="pre">lv_timer_handler</span></code>.
+It can be misleading if you use an operating system and call <code class="docutils literal notranslate"><span class="pre">lv_timer_handler</span></code> in a timer, as it won't actually measure the time the OS spends in an idle thread.</p>
+</section>
+<section id="asynchronous-calls">
+<h2>Asynchronous calls<a class="headerlink" href="#asynchronous-calls" title="此标题的永久链接"></a></h2>
+<p>In some cases, you can't perform an action immediately. For example, you can't delete an object because something else is still using it, or you don't want to block the execution now.
+For these cases, <code class="docutils literal notranslate"><span class="pre">lv_async_call(my_function,</span> <span class="pre">data_p)</span></code> can be used to call <code class="docutils literal notranslate"><span class="pre">my_function</span></code> on the next invocation of <code class="docutils literal notranslate"><span class="pre">lv_timer_handler</span></code>. <code class="docutils literal notranslate"><span class="pre">data_p</span></code> will be passed to the function when it's called.
+Note that only the data pointer is saved, so you need to ensure that the variable will be &quot;alive&quot; while the function is called. It can be <em>static</em>, global or dynamically allocated data.</p>
+<p>For example:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">my_screen_clean_up</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">scr</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="cm">/*Free some resources related to `scr`*/</span>
+
+<span class="w">  </span><span class="cm">/*Finally delete the screen*/</span>
+<span class="w">  </span><span class="n">lv_obj_del</span><span class="p">(</span><span class="n">scr</span><span class="p">);</span><span class="w">  </span>
+<span class="p">}</span>
+
+<span class="p">...</span>
+
+<span class="cm">/*Do something with the object on the current screen*/</span>
+
+<span class="cm">/*Delete screen on next call of `lv_timer_handler`, not right now.*/</span>
+<span class="n">lv_async_call</span><span class="p">(</span><span class="n">my_screen_clean_up</span><span class="p">,</span><span class="w"> </span><span class="n">lv_scr_act</span><span class="p">());</span>
+
+<span class="cm">/*The screen is still valid so you can do other things with it*/</span>
+
+</pre></div>
+</div>
+<p>If you just want to delete an object and don't need to clean anything up in <code class="docutils literal notranslate"><span class="pre">my_screen_cleanup</span></code> you could just use <code class="docutils literal notranslate"><span class="pre">lv_obj_del_async</span></code> which will delete the object on the next call to <code class="docutils literal notranslate"><span class="pre">lv_timer_handler</span></code>.</p>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="此标题的永久链接"></a></h2>
+<div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>
+.. doxygenfile:: lv_timer.h
+  :project: lvgl
+
+.. doxygenfile:: lv_async.h
+  :project: lvgl
+
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2021, LVGL Kft.
+      <span class="lastupdated">最后更新于 2025 年 09 月 02 日.
+      </span></p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<style>
+  .wy-side-nav-search > div[role="search"] {
+    color: black;
+  }
+</style>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            let p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => {
+                let versionName = "";  
+                if(version == "master") versionName = "master (latest)";
+                else versionName = "v" + ((version.indexOf(".") != -1) ? version : (version + " (latest minor)"));
+                return `<option value="${version}">${versionName}</option>`;
+            })}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+document.addEventListener('DOMContentLoaded', (event) => {
+    function onIntersection(entries) {
+        entries.forEach(entry => {
+            let currentlyLoaded = entry.target.getAttribute("data-is-loaded") == "true";
+            let shouldBeLoaded = entry.intersectionRatio > 0;
+            if(currentlyLoaded != shouldBeLoaded) {
+                entry.target.setAttribute("data-is-loaded", shouldBeLoaded);
+                if(shouldBeLoaded) {
+                    let iframe = document.createElement("iframe");
+                    iframe.src = entry.target.getAttribute("data-real-src");
+                    entry.target.appendChild(iframe);
+                } else {
+                    let iframe = entry.target.querySelector("iframe");
+                    iframe.parentNode.removeChild(iframe);
+                }
+            }
+        });
+    }
+    const config = {
+        rootMargin: '600px 0px',
+        threshold: 0.01
+    };
+    let observer = new IntersectionObserver(onIntersection, config);
+    document.querySelectorAll(".lv-example").forEach(iframe => {
+        observer.observe(iframe);
+    });
+});
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FreeType support &mdash; LVGL  文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/fontawesome.min.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="canonical" href="https://docs.lvgl.io/0.0.1/libs/freetype.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78811084-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+	gtag('config', 'UA-78811084-3', { 'anonymize_ip': true });
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_lvgl.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">FreeType support</a><ul>
+<li><a class="reference internal" href="#install-freetype">Install FreeType</a></li>
+<li><a class="reference internal" href="#add-freetype-to-your-project">Add FreeType to your project</a></li>
+<li><a class="reference internal" href="#usage">Usage</a></li>
+<li><a class="reference internal" href="#example">Example</a></li>
+<li><a class="reference internal" href="#learn-more">Learn more</a></li>
+<li><a class="reference internal" href="#api">API</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LVGL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">FreeType support</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/libs/freetype.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>.. include:: /header.rst 
+:github_url: |github_link_base|/libs/freetype.md
+</pre></div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="freetype-support">
+<h1>FreeType support<a class="headerlink" href="#freetype-support" title="此标题的永久链接"></a></h1>
+<p>Interface to <a class="reference external" href="https://www.freetype.org/">FreeType</a> to generate font bitmaps run time.</p>
+<section id="install-freetype">
+<h2>Install FreeType<a class="headerlink" href="#install-freetype" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>Download Freetype from <a class="reference external" href="https://sourceforge.net/projects/freetype/files/">here</a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">make</span> <span class="pre">install</span></code></p></li>
+</ul>
+</section>
+<section id="add-freetype-to-your-project">
+<h2>Add FreeType to your project<a class="headerlink" href="#add-freetype-to-your-project" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>Add include path: <code class="docutils literal notranslate"><span class="pre">/usr/include/freetype2</span></code> (for GCC: <code class="docutils literal notranslate"><span class="pre">-I/usr/include/freetype2</span> <span class="pre">-L/usr/local/lib</span></code>)</p></li>
+<li><p>Add library: <code class="docutils literal notranslate"><span class="pre">freetype</span></code> (for GCC: <code class="docutils literal notranslate"><span class="pre">-L/usr/local/lib</span> <span class="pre">-lfreetype</span></code>)</p></li>
+</ul>
+</section>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="此标题的永久链接"></a></h2>
+<p>Enable <code class="docutils literal notranslate"><span class="pre">LV_USE_FREETYPE</span></code> in <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code>.</p>
+<p>To cache the glyphs from the opened fonts set  <code class="docutils literal notranslate"><span class="pre">LV_FREETYPE_CACHE_SIZE</span> <span class="pre">&gt;=</span> <span class="pre">0</span></code> and then use the following macros for detailed configuration:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_FREETYPE_CACHE_SIZE</span></code>:maximum memory(bytes) used to cache font bitmap, outline, character maps, etc. 0 means use the system default value, less than 0 means disable cache.Note: that this value does not account for managed FT_Face and FT_Size objects.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_FREETYPE_CACHE_FT_FACES</span></code>:maximum number of opened FT_Face objects managed by this cache instance.0 means use the system default value.Only useful when LV_FREETYPE_CACHE_SIZE &gt;= 0.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_FREETYPE_CACHE_FT_SIZES</span></code>:maximum number of opened FT_Size objects managed by this cache instance. 0 means use the system default value.Only useful when LV_FREETYPE_CACHE_SIZE &gt;= 0.</p></li>
+</ol>
+<p>When you are sure that all the used fonts size will not be greater than 256, you can enable <code class="docutils literal notranslate"><span class="pre">LV_FREETYPE_SBIT_CACHE</span></code>, which is much more memory efficient for small bitmaps.</p>
+<p>You can use <code class="docutils literal notranslate"><span class="pre">lv_ft_font_init()</span></code> to create FreeType fonts. It returns <code class="docutils literal notranslate"><span class="pre">true</span></code> to indicate success, at the same time, the <code class="docutils literal notranslate"><span class="pre">font</span></code> member of <code class="docutils literal notranslate"><span class="pre">lv_ft_info_t</span></code> will be filled with a  pointer to an lvgl font, and you can use it like any lvgl font.</p>
+<p>Font style supports bold and italic, you can use the following macro to set:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">FT_FONT_STYLE_NORMAL</span></code>:default style.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FT_FONT_STYLE_ITALIC</span></code>:Italic style</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FT_FONT_STYLE_BOLD</span></code>:bold style</p></li>
+</ol>
+<p>They can be <a class="reference external" href="http://combined.eg">combined.eg</a>:<code class="docutils literal notranslate"><span class="pre">FT_FONT_STYLE_BOLD</span> <span class="pre">|</span> <span class="pre">FT_FONT_STYLE_ITALIC</span></code>.</p>
+<p>Note that, the FreeType extension doesn't use LVGL's file system.
+You can simply pass the path to the font as usual on your operating system or platform.</p>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="此标题的永久链接"></a></h2>
+<div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>
+.. include:: ../../examples/libs/freetype/index.rst
+
+</pre></div>
+</div>
+</section>
+<section id="learn-more">
+<h2>Learn more<a class="headerlink" href="#learn-more" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>FreeType <a class="reference external" href="https://www.freetype.org/freetype2/docs/tutorial/step1.html">tutorial</a></p></li>
+<li><p>LVGL's <a class="reference external" href="https://docs.lvgl.io/v7/en/html/overview/font.html#add-a-new-font-engine">font interface</a></p></li>
+</ul>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="此标题的永久链接"></a></h2>
+<div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>
+.. doxygenfile:: lv_freetype.h
+  :project: lvgl
+
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2021, LVGL Kft.
+      <span class="lastupdated">最后更新于 2025 年 09 月 02 日.
+      </span></p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<style>
+  .wy-side-nav-search > div[role="search"] {
+    color: black;
+  }
+</style>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            let p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => {
+                let versionName = "";  
+                if(version == "master") versionName = "master (latest)";
+                else versionName = "v" + ((version.indexOf(".") != -1) ? version : (version + " (latest minor)"));
+                return `<option value="${version}">${versionName}</option>`;
+            })}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+document.addEventListener('DOMContentLoaded', (event) => {
+    function onIntersection(entries) {
+        entries.forEach(entry => {
+            let currentlyLoaded = entry.target.getAttribute("data-is-loaded") == "true";
+            let shouldBeLoaded = entry.intersectionRatio > 0;
+            if(currentlyLoaded != shouldBeLoaded) {
+                entry.target.setAttribute("data-is-loaded", shouldBeLoaded);
+                if(shouldBeLoaded) {
+                    let iframe = document.createElement("iframe");
+                    iframe.src = entry.target.getAttribute("data-real-src");
+                    entry.target.appendChild(iframe);
+                } else {
+                    let iframe = entry.target.querySelector("iframe");
+                    iframe.parentNode.removeChild(iframe);
+                }
+            }
+        });
+    }
+    const config = {
+        rootMargin: '600px 0px',
+        threshold: 0.01
+    };
+    let observer = new IntersectionObserver(onIntersection, config);
+    document.querySelectorAll(".lv-example").forEach(iframe => {
+        observer.observe(iframe);
+    });
+});
+</script>
+
+
+</body>
+</html>

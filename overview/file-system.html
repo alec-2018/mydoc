@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>File system &mdash; LVGL  文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/fontawesome.min.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="canonical" href="https://docs.lvgl.io/0.0.1/overview/file-system.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78811084-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+	gtag('config', 'UA-78811084-3', { 'anonymize_ip': true });
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_lvgl.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">File system</a><ul>
+<li><a class="reference internal" href="#ready-to-use-drivers">Ready to use drivers</a></li>
+<li><a class="reference internal" href="#adding-a-driver">Adding a driver</a><ul>
+<li><a class="reference internal" href="#registering-a-driver">Registering a driver</a></li>
+<li><a class="reference internal" href="#implementing-the-callbacks">Implementing the callbacks</a><ul>
+<li><a class="reference internal" href="#open-callback">Open callback</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#other-callbacks">Other callbacks</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#usage-example">Usage example</a></li>
+<li><a class="reference internal" href="#use-drives-for-images">Use drives for images</a></li>
+<li><a class="reference internal" href="#api">API</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LVGL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">File system</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/overview/file-system.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>.. include:: /header.rst 
+:github_url: |github_link_base|/overview/file-system.md
+</pre></div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="file-system">
+<h1>File system<a class="headerlink" href="#file-system" title="此标题的永久链接"></a></h1>
+<p>LVGL has a 'File system' abstraction module that enables you to attach any type of file system.
+A file system is identified by an assigned drive letter.
+For example, if an SD card is associated with the letter <code class="docutils literal notranslate"><span class="pre">'S'</span></code>, a file can be reached using <code class="docutils literal notranslate"><span class="pre">&quot;S:path/to/file.txt&quot;</span></code>.</p>
+<section id="ready-to-use-drivers">
+<h2>Ready to use drivers<a class="headerlink" href="#ready-to-use-drivers" title="此标题的永久链接"></a></h2>
+<p>The <a class="reference external" href="https://github.com/lvgl/lv_fs_if">lv_fs_if</a> repository contains prepared drivers using POSIX, standard C and the <a class="reference external" href="http://elm-chan.org/fsw/ff/00index_e.html">FATFS</a> API.
+See its <a class="reference external" href="https://github.com/lvgl/lv_fs_if#readme">README</a> for the details.</p>
+</section>
+<section id="adding-a-driver">
+<h2>Adding a driver<a class="headerlink" href="#adding-a-driver" title="此标题的永久链接"></a></h2>
+<section id="registering-a-driver">
+<h3>Registering a driver<a class="headerlink" href="#registering-a-driver" title="此标题的永久链接"></a></h3>
+<p>To add a driver, a <code class="docutils literal notranslate"><span class="pre">lv_fs_drv_t</span></code> needs to be initialized like below. The <code class="docutils literal notranslate"><span class="pre">lv_fs_drv_t</span></code> needs to be static, global or dynamically allocated and not a local variable.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="n">lv_fs_drv_t</span><span class="w"> </span><span class="n">drv</span><span class="p">;</span><span class="w">                   </span><span class="cm">/*Needs to be static or global*/</span>
+<span class="n">lv_fs_drv_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">drv</span><span class="p">);</span><span class="w">                     </span><span class="cm">/*Basic initialization*/</span>
+
+<span class="n">drv</span><span class="p">.</span><span class="n">letter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;S&#39;</span><span class="p">;</span><span class="w">                         </span><span class="cm">/*An uppercase letter to identify the drive */</span>
+<span class="n">drv</span><span class="p">.</span><span class="n">ready_cb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">my_ready_cb</span><span class="p">;</span><span class="w">               </span><span class="cm">/*Callback to tell if the drive is ready to use */</span>
+<span class="n">drv</span><span class="p">.</span><span class="n">open_cb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">my_open_cb</span><span class="p">;</span><span class="w">                 </span><span class="cm">/*Callback to open a file */</span>
+<span class="n">drv</span><span class="p">.</span><span class="n">close_cb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">my_close_cb</span><span class="p">;</span><span class="w">               </span><span class="cm">/*Callback to close a file */</span>
+<span class="n">drv</span><span class="p">.</span><span class="n">read_cb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">my_read_cb</span><span class="p">;</span><span class="w">                 </span><span class="cm">/*Callback to read a file */</span>
+<span class="n">drv</span><span class="p">.</span><span class="n">write_cb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">my_write_cb</span><span class="p">;</span><span class="w">               </span><span class="cm">/*Callback to write a file */</span>
+<span class="n">drv</span><span class="p">.</span><span class="n">seek_cb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">my_seek_cb</span><span class="p">;</span><span class="w">                 </span><span class="cm">/*Callback to seek in a file (Move cursor) */</span>
+<span class="n">drv</span><span class="p">.</span><span class="n">tell_cb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">my_tell_cb</span><span class="p">;</span><span class="w">                 </span><span class="cm">/*Callback to tell the cursor position  */</span>
+
+<span class="n">drv</span><span class="p">.</span><span class="n">dir_open_cb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">my_dir_open_cb</span><span class="p">;</span><span class="w">         </span><span class="cm">/*Callback to open directory to read its content */</span>
+<span class="n">drv</span><span class="p">.</span><span class="n">dir_read_cb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">my_dir_read_cb</span><span class="p">;</span><span class="w">         </span><span class="cm">/*Callback to read a directory&#39;s content */</span>
+<span class="n">drv</span><span class="p">.</span><span class="n">dir_close_cb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">my_dir_close_cb</span><span class="p">;</span><span class="w">       </span><span class="cm">/*Callback to close a directory */</span>
+
+<span class="n">drv</span><span class="p">.</span><span class="n">user_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">my_user_data</span><span class="p">;</span><span class="w">             </span><span class="cm">/*Any custom data if required*/</span>
+
+<span class="n">lv_fs_drv_register</span><span class="p">(</span><span class="o">&amp;</span><span class="n">drv</span><span class="p">);</span><span class="w">                 </span><span class="cm">/*Finally register the drive*/</span>
+
+</pre></div>
+</div>
+<p>Any of the callbacks can be <code class="docutils literal notranslate"><span class="pre">NULL</span></code> to indicate that operation is not supported.</p>
+</section>
+<section id="implementing-the-callbacks">
+<h3>Implementing the callbacks<a class="headerlink" href="#implementing-the-callbacks" title="此标题的永久链接"></a></h3>
+<section id="open-callback">
+<h4>Open callback<a class="headerlink" href="#open-callback" title="此标题的永久链接"></a></h4>
+<p>The prototype of <code class="docutils literal notranslate"><span class="pre">open_cb</span></code> looks like this:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">open_cb</span><span class="p">)(</span><span class="n">lv_fs_drv_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">drv</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="n">lv_fs_mode_t</span><span class="w"> </span><span class="n">mode</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">path</span></code> is the path after the drive letter (e.g. &quot;S:path/to/file.txt&quot; -&gt; &quot;path/to/file.txt&quot;). <code class="docutils literal notranslate"><span class="pre">mode</span></code> can be <code class="docutils literal notranslate"><span class="pre">LV_FS_MODE_WR</span></code> or <code class="docutils literal notranslate"><span class="pre">LV_FS_MODE_RD</span></code> to open for writes or reads.</p>
+<p>The return value is a pointer to a <em>file object</em> that describes the opened file or <code class="docutils literal notranslate"><span class="pre">NULL</span></code> if there were any issues (e.g. the file wasn't found).
+The returned file object will be passed to other file system related callbacks. (see below)</p>
+</section>
+</section>
+<section id="other-callbacks">
+<h3>Other callbacks<a class="headerlink" href="#other-callbacks" title="此标题的永久链接"></a></h3>
+<p>The other callbacks are quite similar. For example <code class="docutils literal notranslate"><span class="pre">write_cb</span></code> looks like this:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_fs_res_t</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">write_cb</span><span class="p">)(</span><span class="n">lv_fs_drv_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">drv</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">file_p</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">btw</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">bw</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>For <code class="docutils literal notranslate"><span class="pre">file_p</span></code>, LVGL passes the return value of <code class="docutils literal notranslate"><span class="pre">open_cb</span></code>, <code class="docutils literal notranslate"><span class="pre">buf</span></code> is the data to write, <code class="docutils literal notranslate"><span class="pre">btw</span></code> is the Bytes To Write, <code class="docutils literal notranslate"><span class="pre">bw</span></code> is the actually written bytes.</p>
+<p>For a template of these callbacks see <a class="reference external" href="https://github.com/lvgl/lvgl/blob/master/examples/porting/lv_port_fs_template.c">lv_fs_template.c</a>.</p>
+</section>
+</section>
+<section id="usage-example">
+<h2>Usage example<a class="headerlink" href="#usage-example" title="此标题的永久链接"></a></h2>
+<p>The example below shows how to read from a file:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_fs_file_t</span><span class="w"> </span><span class="n">f</span><span class="p">;</span>
+<span class="n">lv_fs_res_t</span><span class="w"> </span><span class="n">res</span><span class="p">;</span>
+<span class="n">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_fs_open</span><span class="p">(</span><span class="o">&amp;</span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;S:folder/file.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">LV_FS_MODE_RD</span><span class="p">);</span>
+<span class="k">if</span><span class="p">(</span><span class="n">res</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">LV_FS_RES_OK</span><span class="p">)</span><span class="w"> </span><span class="n">my_error_handling</span><span class="p">();</span>
+
+<span class="kt">uint32_t</span><span class="w"> </span><span class="n">read_num</span><span class="p">;</span>
+<span class="kt">uint8_t</span><span class="w"> </span><span class="n">buf</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span>
+<span class="n">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_fs_read</span><span class="p">(</span><span class="o">&amp;</span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">read_num</span><span class="p">);</span>
+<span class="k">if</span><span class="p">(</span><span class="n">res</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">LV_FS_RES_OK</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">read_num</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="n">my_error_handling</span><span class="p">();</span>
+
+<span class="n">lv_fs_close</span><span class="p">(</span><span class="o">&amp;</span><span class="n">f</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><em>The mode in <code class="docutils literal notranslate"><span class="pre">lv_fs_open</span></code> can be <code class="docutils literal notranslate"><span class="pre">LV_FS_MODE_WR</span></code> to open for writes only or <code class="docutils literal notranslate"><span class="pre">LV_FS_MODE_RD</span> <span class="pre">|</span> <span class="pre">LV_FS_MODE_WR</span></code> for both</em></p>
+<p>This example shows how to read a directory's content. It's up to the driver how to mark directories in the result but it can be a good practice to insert a <code class="docutils literal notranslate"><span class="pre">'/'</span></code> in front of each directory name.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_fs_dir_t</span><span class="w"> </span><span class="n">dir</span><span class="p">;</span>
+<span class="n">lv_fs_res_t</span><span class="w"> </span><span class="n">res</span><span class="p">;</span>
+<span class="n">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_fs_dir_open</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dir</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;S:/folder&quot;</span><span class="p">);</span>
+<span class="k">if</span><span class="p">(</span><span class="n">res</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">LV_FS_RES_OK</span><span class="p">)</span><span class="w"> </span><span class="n">my_error_handling</span><span class="p">();</span>
+
+<span class="kt">char</span><span class="w"> </span><span class="n">fn</span><span class="p">[</span><span class="mi">256</span><span class="p">];</span>
+<span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_fs_dir_read</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dir</span><span class="p">,</span><span class="w"> </span><span class="n">fn</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">res</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">LV_FS_RES_OK</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">my_error_handling</span><span class="p">();</span>
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/*fn is empty, if not more files to read*/</span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">strlen</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fn</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">lv_fs_dir_close</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dir</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="use-drives-for-images">
+<h2>Use drives for images<a class="headerlink" href="#use-drives-for-images" title="此标题的永久链接"></a></h2>
+<p><a class="reference internal" href="../widgets/core/img.html"><span class="doc std std-doc">Image</span></a> objects can be opened from files too (besides variables stored in the compiled program).</p>
+<p>To use files in image widgets the following callbacks are required:</p>
+<ul class="simple">
+<li><p>open</p></li>
+<li><p>close</p></li>
+<li><p>read</p></li>
+<li><p>seek</p></li>
+<li><p>tell</p></li>
+</ul>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="此标题的永久链接"></a></h2>
+<div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>
+.. doxygenfile:: lv_fs.h
+  :project: lvgl
+
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2021, LVGL Kft.
+      <span class="lastupdated">最后更新于 2025 年 09 月 02 日.
+      </span></p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<style>
+  .wy-side-nav-search > div[role="search"] {
+    color: black;
+  }
+</style>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            let p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => {
+                let versionName = "";  
+                if(version == "master") versionName = "master (latest)";
+                else versionName = "v" + ((version.indexOf(".") != -1) ? version : (version + " (latest minor)"));
+                return `<option value="${version}">${versionName}</option>`;
+            })}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+document.addEventListener('DOMContentLoaded', (event) => {
+    function onIntersection(entries) {
+        entries.forEach(entry => {
+            let currentlyLoaded = entry.target.getAttribute("data-is-loaded") == "true";
+            let shouldBeLoaded = entry.intersectionRatio > 0;
+            if(currentlyLoaded != shouldBeLoaded) {
+                entry.target.setAttribute("data-is-loaded", shouldBeLoaded);
+                if(shouldBeLoaded) {
+                    let iframe = document.createElement("iframe");
+                    iframe.src = entry.target.getAttribute("data-real-src");
+                    entry.target.appendChild(iframe);
+                } else {
+                    let iframe = entry.target.querySelector("iframe");
+                    iframe.parentNode.removeChild(iframe);
+                }
+            }
+        });
+    }
+    const config = {
+        rootMargin: '600px 0px',
+        threshold: 0.01
+    };
+    let observer = new IntersectionObserver(onIntersection, config);
+    document.querySelectorAll(".lv-example").forEach(iframe => {
+        observer.observe(iframe);
+    });
+});
+</script>
+
+
+</body>
+</html>

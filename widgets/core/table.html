@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Table (lv_table) &mdash; LVGL  文档</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/fontawesome.min.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.png"/>
+    <link rel="canonical" href="https://docs.lvgl.io/0.0.1/widgets/core/table.html" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/translations.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78811084-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+	gtag('config', 'UA-78811084-3', { 'anonymize_ip': true });
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_lvgl.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Table (lv_table)</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#parts-and-styles">Parts and Styles</a></li>
+<li><a class="reference internal" href="#usage">Usage</a><ul>
+<li><a class="reference internal" href="#set-cell-value">Set cell value</a></li>
+<li><a class="reference internal" href="#rows-and-columns">Rows and Columns</a></li>
+<li><a class="reference internal" href="#width-and-height">Width and Height</a></li>
+<li><a class="reference internal" href="#merge-cells">Merge cells</a></li>
+<li><a class="reference internal" href="#scroll">Scroll</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#events">Events</a></li>
+<li><a class="reference internal" href="#keys">Keys</a></li>
+<li><a class="reference internal" href="#example">Example</a><ul>
+<li><a class="reference internal" href="#micropython">MicroPython</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#api">API</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">LVGL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Table (lv_table)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/widgets/core/table.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>.. include:: /header.rst 
+:github_url: |github_link_base|/widgets/core/table.md
+</pre></div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="table-lv-table">
+<h1>Table (lv_table)<a class="headerlink" href="#table-lv-table" title="此标题的永久链接"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="此标题的永久链接"></a></h2>
+<p>Tables, as usual, are built from rows, columns, and cells containing texts.</p>
+<p>The Table object is very lightweight because only the texts are stored. No real objects are created for cells but they are just drawn on the fly.</p>
+<p>The Table is added to the default group (if it is set). Besides the Table is an editable object to allow selecting a cell with encoder navigation too.</p>
+</section>
+<section id="parts-and-styles">
+<h2>Parts and Styles<a class="headerlink" href="#parts-and-styles" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PART_MAIN</span></code> The background of the table uses all the typical background style properties.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PART_ITEMS</span></code> The cells of the table also use all the typical background style properties and the text properties.</p></li>
+</ul>
+</section>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="此标题的永久链接"></a></h2>
+<section id="set-cell-value">
+<h3>Set cell value<a class="headerlink" href="#set-cell-value" title="此标题的永久链接"></a></h3>
+<p>The cells can store only text so numbers need to be converted to text before displaying them in a table.</p>
+<p><code class="docutils literal notranslate"><span class="pre">lv_table_set_cell_value(table,</span> <span class="pre">row,</span> <span class="pre">col,</span> <span class="pre">&quot;Content&quot;)</span></code>. The text is saved by the table so it can be even a local variable.</p>
+<p>Line breaks can be used in the text like <code class="docutils literal notranslate"><span class="pre">&quot;Value\n60.3&quot;</span></code>.</p>
+<p>New rows and columns are automatically added is required</p>
+</section>
+<section id="rows-and-columns">
+<h3>Rows and Columns<a class="headerlink" href="#rows-and-columns" title="此标题的永久链接"></a></h3>
+<p>To explicitly set number of rows and columns use <code class="docutils literal notranslate"><span class="pre">lv_table_set_row_cnt(table,</span> <span class="pre">row_cnt)</span></code> and <code class="docutils literal notranslate"><span class="pre">lv_table_set_col_cnt(table,</span> <span class="pre">col_cnt)</span></code></p>
+</section>
+<section id="width-and-height">
+<h3>Width and Height<a class="headerlink" href="#width-and-height" title="此标题的永久链接"></a></h3>
+<p>The width of the columns can be set with <code class="docutils literal notranslate"><span class="pre">lv_table_set_col_width(table,</span> <span class="pre">col_id,</span> <span class="pre">width)</span></code>. The overall width of the Table object will be set to the sum of columns widths.</p>
+<p>The height is calculated automatically from the cell styles (font, padding etc) and the number of rows.</p>
+</section>
+<section id="merge-cells">
+<h3>Merge cells<a class="headerlink" href="#merge-cells" title="此标题的永久链接"></a></h3>
+<p>Cells can be merged horizontally with <code class="docutils literal notranslate"><span class="pre">lv_table_add_cell_ctrl(table,</span> <span class="pre">row,</span> <span class="pre">col,</span> <span class="pre">LV_TABLE_CELL_CTRL_MERGE_RIGHT)</span></code>. To merge more adjacent cells call this function for each cell.</p>
+</section>
+<section id="scroll">
+<h3>Scroll<a class="headerlink" href="#scroll" title="此标题的永久链接"></a></h3>
+<p>If the label's width or height is set to <code class="docutils literal notranslate"><span class="pre">LV_SIZE_CONTENT</span></code> that size will be used to show the whole table in the respective direction.
+E.g. <code class="docutils literal notranslate"><span class="pre">lv_obj_set_size(table,</span> <span class="pre">LV_SIZE_CONTENT,</span> <span class="pre">LV_SIZE_CONTENT)</span></code> automatically sets the table size to show all the columns and rows.</p>
+<p>If the width or height is set to a smaller number than the &quot;intrinsic&quot; size then the table becomes scrollable.</p>
+</section>
+</section>
+<section id="events">
+<h2>Events<a class="headerlink" href="#events" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_VALUE_CHANGED</span></code> Sent when a new cell is selected with keys.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_DRAW_PART_BEGIN</span></code> and <code class="docutils literal notranslate"><span class="pre">LV_EVENT_DRAW_PART_END</span></code> are sent for the following types:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_TABLE_DRAW_PART_CELL</span></code> The individual cells of the table</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">part</span></code>: <code class="docutils literal notranslate"><span class="pre">LV_PART_ITEMS</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">draw_area</span></code>: area of the indicator</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rect_dsc</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">label_dsc</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">id</span></code>: current row × col count + current column</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>See the events of the <a class="reference internal" href="../obj.html"><span class="doc std std-doc">Base object</span></a> too.</p>
+<p>Learn more about <a class="reference internal" href="../../overview/event.html"><span class="doc std std-doc">Events</span></a>.</p>
+</section>
+<section id="keys">
+<h2>Keys<a class="headerlink" href="#keys" title="此标题的永久链接"></a></h2>
+<p>The following <em>Keys</em> are processed by the Tables:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_KEY_RIGHT/LEFT/UP/DOWN/</span></code> Select a cell.</p></li>
+</ul>
+<p>Note that, as usual, the state of <code class="docutils literal notranslate"><span class="pre">LV_KEY_ENTER</span></code> is translated to <code class="docutils literal notranslate"><span class="pre">LV_EVENT_PRESSED/PRESSING/RELEASED</span></code> etc.</p>
+<p><code class="docutils literal notranslate"><span class="pre">lv_table_get_selected_cell(table,</span> <span class="pre">&amp;row,</span> <span class="pre">&amp;col)</span></code> can be sued the get currentéy selected cell. Row and column eill be set to <code class="docutils literal notranslate"><span class="pre">LV_TABLE_CELL_NONE</span></code> no cell is celected.</p>
+<p>Learn more about <a class="reference internal" href="../../overview/indev.html"><span class="doc std std-doc">Keys</span></a>.</p>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="此标题的永久链接"></a></h2>
+<div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>
+.. include:: ../../../examples/widgets/table/index.rst
+
+</pre></div>
+</div>
+<section id="micropython">
+<h3>MicroPython<a class="headerlink" href="#micropython" title="此标题的永久链接"></a></h3>
+<p>No examples yet.</p>
+</section>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="此标题的永久链接"></a></h2>
+<div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>
+.. doxygenfile:: lv_table.h
+  :project: lvgl
+        
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2021, LVGL Kft.
+      <span class="lastupdated">最后更新于 2025 年 09 月 02 日.
+      </span></p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<style>
+  .wy-side-nav-search > div[role="search"] {
+    color: black;
+  }
+</style>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            let p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => {
+                let versionName = "";  
+                if(version == "master") versionName = "master (latest)";
+                else versionName = "v" + ((version.indexOf(".") != -1) ? version : (version + " (latest minor)"));
+                return `<option value="${version}">${versionName}</option>`;
+            })}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+document.addEventListener('DOMContentLoaded', (event) => {
+    function onIntersection(entries) {
+        entries.forEach(entry => {
+            let currentlyLoaded = entry.target.getAttribute("data-is-loaded") == "true";
+            let shouldBeLoaded = entry.intersectionRatio > 0;
+            if(currentlyLoaded != shouldBeLoaded) {
+                entry.target.setAttribute("data-is-loaded", shouldBeLoaded);
+                if(shouldBeLoaded) {
+                    let iframe = document.createElement("iframe");
+                    iframe.src = entry.target.getAttribute("data-real-src");
+                    entry.target.appendChild(iframe);
+                } else {
+                    let iframe = entry.target.querySelector("iframe");
+                    iframe.parentNode.removeChild(iframe);
+                }
+            }
+        });
+    }
+    const config = {
+        rootMargin: '600px 0px',
+        threshold: 0.01
+    };
+    let observer = new IntersectionObserver(onIntersection, config);
+    document.querySelectorAll(".lv-example").forEach(iframe => {
+        observer.observe(iframe);
+    });
+});
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JPG decoder &mdash; LVGL  文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/fontawesome.min.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="canonical" href="https://docs.lvgl.io/0.0.1/libs/sjpg.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78811084-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+	gtag('config', 'UA-78811084-3', { 'anonymize_ip': true });
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_lvgl.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">JPG decoder</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#usage">Usage</a></li>
+<li><a class="reference internal" href="#converter">Converter</a><ul>
+<li><a class="reference internal" href="#converting-jpg-to-c-array">Converting JPG to C array</a></li>
+<li><a class="reference internal" href="#converting-jpg-to-sjpg">Converting JPG to SJPG</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#example">Example</a></li>
+<li><a class="reference internal" href="#api">API</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LVGL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">JPG decoder</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/libs/sjpg.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>.. include:: /header.rst 
+:github_url: |github_link_base|/libs/sjpg.md
+</pre></div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="jpg-decoder">
+<h1>JPG decoder<a class="headerlink" href="#jpg-decoder" title="此标题的永久链接"></a></h1>
+<p>Allow the use of JPG images in LVGL. Besides that it also allows the use of a custom format, called Split JPG (SJPG), which can be decoded in more optimal way on embedded systems.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>Supports both normal JPG and the custom SJPG formats.</p></li>
+<li><p>Decoding normal JPG consumes RAM with the size fo the whole uncompressed image (recommended only for devices with more RAM)</p></li>
+<li><p>SJPG is a custom format based on &quot;normal&quot; JPG and specially made for LVGL.</p></li>
+<li><p>SJPG is 'split-jpeg' which is a bundle of small jpeg fragments with an sjpg header.</p></li>
+<li><p>SJPG size will be almost comparable to the jpg file or might be a slightly larger.</p></li>
+<li><p>File read from file and c-array are implemented.</p></li>
+<li><p>SJPEG frame fragment cache enables fast fetching of lines if availble in cache.</p></li>
+<li><p>By default the sjpg image cache will be image width * 2 * 16 bytes (can be modified)</p></li>
+<li><p>Currently only 16 bit image format is supported (TODO)</p></li>
+<li><p>Only the required partion of the JPG and SJPG images are decoded, therefore they can't be zoomed or rotated.</p></li>
+</ul>
+</section>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="此标题的永久链接"></a></h2>
+<p>If enabled in <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code> by <code class="docutils literal notranslate"><span class="pre">LV_USE_SJPG</span></code> LVGL will register a new image decoder automatically so JPG and SJPG files can be directly used as image sources. For example:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_img_set_src</span><span class="p">(</span><span class="n">my_img</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;S:path/to/picture.jpg&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Note that, a file system driver needs to registered to open images from files. Read more about it <a class="reference external" href="https://docs.lvgl.io/master/overview/file-system.html">here</a> or just enable one in <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code> with <code class="docutils literal notranslate"><span class="pre">LV_USE_FS_...</span></code></p>
+</section>
+<section id="converter">
+<h2>Converter<a class="headerlink" href="#converter" title="此标题的永久链接"></a></h2>
+<section id="converting-jpg-to-c-array">
+<h3>Converting JPG to C array<a class="headerlink" href="#converting-jpg-to-c-array" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><p>Use lvgl online tool <a class="reference external" href="https://lvgl.io/tools/imageconverter">https://lvgl.io/tools/imageconverter</a></p></li>
+<li><p>Color format = RAW, output format = C Array</p></li>
+</ul>
+</section>
+<section id="converting-jpg-to-sjpg">
+<h3>Converting JPG to SJPG<a class="headerlink" href="#converting-jpg-to-sjpg" title="此标题的永久链接"></a></h3>
+<p>python3 and the PIL library required. (PIL can be installed with <code class="docutils literal notranslate"><span class="pre">pip3</span> <span class="pre">install</span> <span class="pre">pillow</span></code>)</p>
+<p>To create SJPG from JPG:</p>
+<ul class="simple">
+<li><p>Copy the image to convert into <code class="docutils literal notranslate"><span class="pre">lvgl/scripts</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">lvgl/scripts</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">jpg_to_sjpg.py</span> <span class="pre">image_to_convert.jpg</span></code>. It creates both a C files and an SJPG image.</p></li>
+</ul>
+<p>The expected result is:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>Conversion<span class="w"> </span>started...
+
+Input:
+<span class="w">        </span>image_to_convert.jpg
+<span class="w">        </span><span class="nv">RES</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">640</span><span class="w"> </span>x<span class="w"> </span><span class="m">480</span>
+
+Output:
+<span class="w">        </span>Time<span class="w"> </span><span class="nv">taken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>.66<span class="w"> </span>sec
+<span class="w">        </span>bin<span class="w"> </span><span class="nv">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">77</span>.1<span class="w"> </span>KB
+<span class="w">        </span>walpaper.sjpg<span class="w">           </span><span class="o">(</span>bin<span class="w"> </span>file<span class="o">)</span>
+<span class="w">        </span>walpaper.c<span class="w">              </span><span class="o">(</span>c<span class="w"> </span>array<span class="o">)</span>
+
+All<span class="w"> </span>good!
+</pre></div>
+</div>
+</section>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="此标题的永久链接"></a></h2>
+<div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>
+.. include:: ../../examples/libs/sjpg/index.rst
+
+</pre></div>
+</div>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="此标题的永久链接"></a></h2>
+<div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>
+.. doxygenfile:: lv_sjpg.h
+  :project: lvgl
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2021, LVGL Kft.
+      <span class="lastupdated">最后更新于 2025 年 09 月 02 日.
+      </span></p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<style>
+  .wy-side-nav-search > div[role="search"] {
+    color: black;
+  }
+</style>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            let p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => {
+                let versionName = "";  
+                if(version == "master") versionName = "master (latest)";
+                else versionName = "v" + ((version.indexOf(".") != -1) ? version : (version + " (latest minor)"));
+                return `<option value="${version}">${versionName}</option>`;
+            })}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+document.addEventListener('DOMContentLoaded', (event) => {
+    function onIntersection(entries) {
+        entries.forEach(entry => {
+            let currentlyLoaded = entry.target.getAttribute("data-is-loaded") == "true";
+            let shouldBeLoaded = entry.intersectionRatio > 0;
+            if(currentlyLoaded != shouldBeLoaded) {
+                entry.target.setAttribute("data-is-loaded", shouldBeLoaded);
+                if(shouldBeLoaded) {
+                    let iframe = document.createElement("iframe");
+                    iframe.src = entry.target.getAttribute("data-real-src");
+                    entry.target.appendChild(iframe);
+                } else {
+                    let iframe = entry.target.querySelector("iframe");
+                    iframe.parentNode.removeChild(iframe);
+                }
+            }
+        });
+    }
+    const config = {
+        rootMargin: '600px 0px',
+        threshold: 0.01
+    };
+    let observer = new IntersectionObserver(onIntersection, config);
+    document.querySelectorAll(".lv-example").forEach(iframe => {
+        observer.observe(iframe);
+    });
+});
+</script>
+
+
+</body>
+</html>

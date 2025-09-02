@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add custom GPU &mdash; LVGL  文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/fontawesome.min.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="canonical" href="https://docs.lvgl.io/0.0.1/porting/gpu.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78811084-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+	gtag('config', 'UA-78811084-3', { 'anonymize_ip': true });
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_lvgl.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Add custom GPU</a><ul>
+<li><a class="reference internal" href="#draw-context">Draw context</a><ul>
+<li><a class="reference internal" href="#fields">Fields</a></li>
+<li><a class="reference internal" href="#initialization">Initialization</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#software-renderer">Software renderer</a><ul>
+<li><a class="reference internal" href="#blend-callback">Blend callback</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#extend-the-software-renderer">Extend the software renderer</a><ul>
+<li><a class="reference internal" href="#new-blend-callback">New blend callback</a></li>
+<li><a class="reference internal" href="#new-rectangle-drawer">New rectangle drawer</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fully-custom-draw-engine">Fully custom draw engine</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LVGL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Add custom GPU</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/porting/gpu.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>.. include:: /header.rst 
+:github_url: |github_link_base|/porting/gpu.md
+</pre></div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="add-custom-gpu">
+<h1>Add custom GPU<a class="headerlink" href="#add-custom-gpu" title="此标题的永久链接"></a></h1>
+<p>LVGL has a flexible and extendable draw pipeline. You can hook it to do some rendering with a GPU or even completely replace the built-in software renderer.</p>
+<section id="draw-context">
+<h2>Draw context<a class="headerlink" href="#draw-context" title="此标题的永久链接"></a></h2>
+<p>The core structure of drawing is <code class="docutils literal notranslate"><span class="pre">lv_draw_ctx_t</span></code>.
+It contains a pointer to a buffer where drawing should happen and a couple of callbacks to draw rectangles, texts, and other primitives.</p>
+<section id="fields">
+<h3>Fields<a class="headerlink" href="#fields" title="此标题的永久链接"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">lv_draw_ctx_t</span></code> has the following fields:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*</span> <span class="pre">buf</span></code> Pointer to a buffer to draw into</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_area_t</span> <span class="pre">*</span> <span class="pre">buf_area</span></code> The the position and size of <code class="docutils literal notranslate"><span class="pre">buf</span></code> (absolute coordinates)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">lv_area_t</span> <span class="pre">*</span> <span class="pre">clip_area</span></code> The current clip area with absolute coordinates, always the same or smaller than <code class="docutils literal notranslate"><span class="pre">buf_area</span></code>. All drawings should be clipped to this area.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">(*draw_rect)()</span></code> Draw a rectangle with shadow, gradient, border, etc.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">(*draw_arc)()</span></code> Draw and arc</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">(*draw_img_decoded)()</span></code> Draw an (A)RGB image that is already decoded by LVGL.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_res_t</span> <span class="pre">(*draw_img)()</span></code> Draw an image before decoding it (it bypasses LVGL's internal image decoders)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">(*draw_letter)()</span></code> Draw a letter</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">(*draw_line)()</span></code> Draw a line</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">(*draw_polygon)()</span></code> Draw polygon</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">(*draw_bg)()</span></code> Replace the buffer with a rect without decoration like radius or borders.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">(*wait_for_finish)()</span></code> Wait until all background operation are finished. (E.g. GPU operations)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*</span> <span class="pre">user_data</span></code> Custom user data for arbitrary purpose</p></li>
+</ul>
+<p>(For the sake of simplicity the parameters of the callbacks are not shown here.)</p>
+<p>All <code class="docutils literal notranslate"><span class="pre">draw_*</span></code> callbacks receive a pointer to the current <code class="docutils literal notranslate"><span class="pre">draw_ctx</span></code> as their first parameter.  Among the other parameters there is a descriptor too that tells what to draw.
+E.g. for <code class="docutils literal notranslate"><span class="pre">draw_rect</span></code> it's called <a class="reference external" href="https://github.com/lvgl/lvgl/blob/master/src/draw/lv_draw_rect.h">lv_draw_rect_dsc_t</a>,
+for <code class="docutils literal notranslate"><span class="pre">lv_draw_line</span></code> it's called <a class="reference external" href="https://github.com/lvgl/lvgl/blob/master/src/draw/lv_draw_line.h">lv_draw_line_dsc_t</a>.</p>
+</section>
+<section id="initialization">
+<h3>Initialization<a class="headerlink" href="#initialization" title="此标题的永久链接"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">lv_disp_drv_t</span></code> has 4 fields related to the draw context:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_draw_ctx_t</span> <span class="pre">*</span> <span class="pre">draw_ctx</span></code> Pointer to the <code class="docutils literal notranslate"><span class="pre">draw_ctx</span></code> of this display</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">(*draw_ctx_init)(struct</span> <span class="pre">_lv_disp_drv_t</span> <span class="pre">*</span> <span class="pre">disp_drv,</span> <span class="pre">lv_draw_ctx_t</span> <span class="pre">*</span> <span class="pre">draw_ctx)</span></code> Callback to initialize a <code class="docutils literal notranslate"><span class="pre">draw_ctx</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">(*draw_ctx_deinit)(struct</span> <span class="pre">_lv_disp_drv_t</span> <span class="pre">*</span> <span class="pre">disp_drv,</span> <span class="pre">lv_draw_ctx_t</span> <span class="pre">*</span> <span class="pre">draw_ctx)</span></code> Callback to de-initialize a <code class="docutils literal notranslate"><span class="pre">draw_ctx</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">draw_ctx_size</span></code> Size of the draw context structure. E.g. <code class="docutils literal notranslate"><span class="pre">sizeof(lv_draw_sw_ctx_t)</span></code></p></li>
+</ul>
+<p>If you ignore these fields LVGL will set default values for callbacks and size in <code class="docutils literal notranslate"><span class="pre">lv_disp_drv_init()</span></code> based on the configuration in <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code>.
+<code class="docutils literal notranslate"><span class="pre">lv_disp_drv_register()</span></code> will allocate a <code class="docutils literal notranslate"><span class="pre">draw_ctx</span></code> based on <code class="docutils literal notranslate"><span class="pre">draw_ctx_size</span></code> and call <code class="docutils literal notranslate"><span class="pre">draw_ctx_init()</span></code> on it.</p>
+<p>However, you can overwrite the callbacks and the size values before calling <code class="docutils literal notranslate"><span class="pre">lv_disp_drv_register()</span></code>.
+It makes possible to use your own <code class="docutils literal notranslate"><span class="pre">draw_ctx</span></code> with your own callbacks.</p>
+</section>
+</section>
+<section id="software-renderer">
+<h2>Software renderer<a class="headerlink" href="#software-renderer" title="此标题的永久链接"></a></h2>
+<p>LVGL's built in software renderer extends the basic <code class="docutils literal notranslate"><span class="pre">lv_draw_ctx_t</span></code> structure and sets the draw callbacks. It looks like this:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/** Include the basic draw_ctx type*/</span>
+<span class="w">    </span><span class="n">lv_draw_ctx_t</span><span class="w"> </span><span class="n">base_draw</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/** Blend a color or image to an area*/</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">blend</span><span class="p">)(</span><span class="n">lv_draw_ctx_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">draw_ctx</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">lv_draw_sw_blend_dsc_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dsc</span><span class="p">);</span>
+<span class="p">}</span><span class="w"> </span><span class="n">lv_draw_sw_ctx_t</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Set the draw callbacks in <code class="docutils literal notranslate"><span class="pre">draw_ctx_init()</span></code> like:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">draw_sw_ctx</span><span class="o">-&gt;</span><span class="n">base_draw</span><span class="p">.</span><span class="n">draw_rect</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_draw_sw_rect</span><span class="p">;</span>
+<span class="n">draw_sw_ctx</span><span class="o">-&gt;</span><span class="n">base_draw</span><span class="p">.</span><span class="n">draw_letter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_draw_sw_letter</span><span class="p">;</span>
+<span class="p">...</span>
+</pre></div>
+</div>
+<section id="blend-callback">
+<h3>Blend callback<a class="headerlink" href="#blend-callback" title="此标题的永久链接"></a></h3>
+<p>As you saw above the software renderer adds the <code class="docutils literal notranslate"><span class="pre">blend</span></code> callback field. It's a special callback related to how the software renderer works.
+All draw operations end up in the <code class="docutils literal notranslate"><span class="pre">blend</span></code> callback which can either fill an area or copy an image to an area by considering an optional mask.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">lv_draw_sw_blend_dsc_t</span></code> parameter describes what and how to blend. It has the following fields:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">lv_area_t</span> <span class="pre">*</span> <span class="pre">blend_area</span></code> The area with absolute coordinates to draw on <code class="docutils literal notranslate"><span class="pre">draw_ctx-&gt;buf</span></code>. If <code class="docutils literal notranslate"><span class="pre">src_buf</span></code> is set, it's the coordinates of the image to blend.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">lv_color_t</span> <span class="pre">*</span> <span class="pre">src_buf</span></code> Pointer to an image to blend. If set, <code class="docutils literal notranslate"><span class="pre">color</span></code> is ignored. If not set fill <code class="docutils literal notranslate"><span class="pre">blend_area</span></code> with <code class="docutils literal notranslate"><span class="pre">color</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_color_t</span> <span class="pre">color</span></code> Fill color. Used only if <code class="docutils literal notranslate"><span class="pre">src_buf</span> <span class="pre">==</span> <span class="pre">NULL</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_opa_t</span> <span class="pre">*</span> <span class="pre">mask_buf</span></code> NULL if ignored, or an alpha mask to apply on <code class="docutils literal notranslate"><span class="pre">blend_area</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_draw_mask_res_t</span> <span class="pre">mask_res</span></code> The result of the previous mask operation. (<code class="docutils literal notranslate"><span class="pre">LV_DRAW_MASK_RES_...</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">lv_area_t</span> <span class="pre">*</span> <span class="pre">mask_area</span></code> The area of <code class="docutils literal notranslate"><span class="pre">mask_buf</span></code> with absolute coordinates</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_opa_t</span> <span class="pre">opa</span></code>  The overall opacity</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_blend_mode_t</span> <span class="pre">blend_mode</span></code>  E.g. <code class="docutils literal notranslate"><span class="pre">LV_BLEND_MODE_ADDITIVE</span></code></p></li>
+</ul>
+</section>
+</section>
+<section id="extend-the-software-renderer">
+<h2>Extend the software renderer<a class="headerlink" href="#extend-the-software-renderer" title="此标题的永久链接"></a></h2>
+<section id="new-blend-callback">
+<h3>New blend callback<a class="headerlink" href="#new-blend-callback" title="此标题的永久链接"></a></h3>
+<p>Let's take a practical example: you would like to use your MCUs GPU for color fill operations only.</p>
+<p>As all draw callbacks call <code class="docutils literal notranslate"><span class="pre">blend</span></code> callback to fill an area in the end only the <code class="docutils literal notranslate"><span class="pre">blend</span></code> callback needs to be overwritten.</p>
+<p>First extend <code class="docutils literal notranslate"><span class="pre">lv_draw_sw_ctx_t</span></code>:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+<span class="cm">/*We don&#39;t add new fields, so just for clarity add new type*/</span>
+<span class="k">typedef</span><span class="w"> </span><span class="n">lv_draw_sw_ctx_t</span><span class="w"> </span><span class="n">my_draw_ctx_t</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">my_draw_ctx_init</span><span class="p">(</span><span class="n">lv_disp_drv_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">drv</span><span class="p">,</span><span class="w"> </span><span class="n">lv_draw_ctx_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">draw_ctx</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="cm">/*Initialize the parent type first */</span>
+<span class="w">    </span><span class="n">lv_draw_sw_init_ctx</span><span class="p">(</span><span class="n">drv</span><span class="p">,</span><span class="w"> </span><span class="n">draw_ctx</span><span class="p">);</span>
+
+<span class="w">    </span><span class="cm">/*Change some callbacks*/</span>
+<span class="w">    </span><span class="n">my_draw_ctx_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">my_draw_ctx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">my_draw_ctx_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">draw_ctx</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">my_draw_ctx</span><span class="o">-&gt;</span><span class="n">blend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">my_draw_blend</span><span class="p">;</span>
+<span class="w">    </span><span class="n">my_draw_ctx</span><span class="o">-&gt;</span><span class="n">base_draw</span><span class="p">.</span><span class="n">wait_for_finish</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">my_gpu_wait</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>After calling <code class="docutils literal notranslate"><span class="pre">lv_disp_draw_init(&amp;drv)</span></code> you can assign the new <code class="docutils literal notranslate"><span class="pre">draw_ctx_init</span></code> callback and set <code class="docutils literal notranslate"><span class="pre">draw_ctx_size</span></code> to overwrite the defaults:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="n">lv_disp_drv_t</span><span class="w"> </span><span class="n">drv</span><span class="p">;</span>
+<span class="n">lv_disp_draw_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">drv</span><span class="p">);</span>
+<span class="n">drv</span><span class="o">-&gt;</span><span class="n">hor_res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">my_hor_res</span><span class="p">;</span>
+<span class="n">drv</span><span class="o">-&gt;</span><span class="n">ver_res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">my_ver_res</span><span class="p">;</span>
+<span class="n">drv</span><span class="o">-&gt;</span><span class="n">flush_cb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">my_flush_cb</span><span class="p">;</span>
+
+<span class="cm">/*New draw ctx settings*/</span>
+<span class="n">drv</span><span class="o">-&gt;</span><span class="n">draw_ctx_init</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">my_draw_ctx_init</span><span class="p">;</span>
+<span class="n">drv</span><span class="o">-&gt;</span><span class="n">draw_ctx_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">my_draw_ctx_t</span><span class="p">);</span>
+
+<span class="n">lv_disp_drv_register</span><span class="p">(</span><span class="o">&amp;</span><span class="n">drv</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This way when LVGL calls <code class="docutils literal notranslate"><span class="pre">blend</span></code> it will call <code class="docutils literal notranslate"><span class="pre">my_draw_blend</span></code> and we can do custom GPU operations. Here is a complete example:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">my_draw_blend</span><span class="p">(</span><span class="n">lv_draw_ctx_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">draw_ctx</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">lv_draw_sw_blend_dsc_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dsc</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="cm">/*Let&#39;s get the blend area which is the intersection of the area to fill and the clip area.*/</span>
+<span class="w">    </span><span class="n">lv_area_t</span><span class="w"> </span><span class="n">blend_area</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">_lv_area_intersect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">blend_area</span><span class="p">,</span><span class="w"> </span><span class="n">dsc</span><span class="o">-&gt;</span><span class="n">blend_area</span><span class="p">,</span><span class="w"> </span><span class="n">draw_ctx</span><span class="o">-&gt;</span><span class="n">clip_area</span><span class="p">))</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w">  </span><span class="cm">/*Fully clipped, nothing to do*/</span>
+
+<span class="w">    </span><span class="cm">/*Fill only non masked, fully opaque, normal blended and not too small areas*/</span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">dsc</span><span class="o">-&gt;</span><span class="n">src_buf</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">dsc</span><span class="o">-&gt;</span><span class="n">mask</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">dsc</span><span class="o">-&gt;</span><span class="n">opa</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">LV_OPA_MAX</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<span class="w">       </span><span class="n">dsc</span><span class="o">-&gt;</span><span class="n">blend_mode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">LV_BLEND_MODE_NORMAL</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">lv_area_get_size</span><span class="p">(</span><span class="o">&amp;</span><span class="n">blend_area</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">        </span><span class="cm">/*Got the first pixel on the buffer*/</span>
+<span class="w">        </span><span class="n">lv_coord_t</span><span class="w"> </span><span class="n">dest_stride</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_area_get_width</span><span class="p">(</span><span class="n">draw_ctx</span><span class="o">-&gt;</span><span class="n">buf_area</span><span class="p">);</span><span class="w"> </span><span class="cm">/*Width of the destination buffer*/</span>
+<span class="w">        </span><span class="n">lv_color_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dest_buf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">draw_ctx</span><span class="o">-&gt;</span><span class="n">buf</span><span class="p">;</span>
+<span class="w">        </span><span class="n">dest_buf</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">dest_stride</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">blend_area</span><span class="p">.</span><span class="n">y1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">draw_ctx</span><span class="o">-&gt;</span><span class="n">buf_area</span><span class="o">-&gt;</span><span class="n">y1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">blend_area</span><span class="p">.</span><span class="n">x1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">draw_ctx</span><span class="o">-&gt;</span><span class="n">buf_area</span><span class="o">-&gt;</span><span class="n">x1</span><span class="p">);</span>
+
+<span class="w">        </span><span class="cm">/*Make the blend area relative to the buffer*/</span><span class="w">      </span>
+<span class="w">        </span><span class="n">lv_area_move</span><span class="p">(</span><span class="o">&amp;</span><span class="n">blend_area</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="n">draw_ctx</span><span class="o">-&gt;</span><span class="n">buf_area</span><span class="o">-&gt;</span><span class="n">x1</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="n">draw_ctx</span><span class="o">-&gt;</span><span class="n">buf_area</span><span class="o">-&gt;</span><span class="n">y1</span><span class="p">);</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="cm">/*Call your custom gou fill function to fill blend_area, on dest_buf with dsc-&gt;color*/</span><span class="w">  </span>
+<span class="w">        </span><span class="n">my_gpu_fill</span><span class="p">(</span><span class="n">dest_buf</span><span class="p">,</span><span class="w"> </span><span class="n">dest_stride</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">blend_area</span><span class="p">,</span><span class="w"> </span><span class="n">dsc</span><span class="o">-&gt;</span><span class="n">color</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span>
+<span class="w">    </span><span class="cm">/*Fallback: the GPU doesn&#39;t support these settings. Call the SW renderer.*/</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">lv_draw_sw_blend_basic</span><span class="p">(</span><span class="n">draw_ctx</span><span class="p">,</span><span class="w"> </span><span class="n">dsc</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The implementation of wait callback is much simpler:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">my_gpu_wait</span><span class="p">(</span><span class="n">lv_draw_ctx_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">draw_ctx</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="n">my_gpu_is_working</span><span class="p">());</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="cm">/*Call SW renderer&#39;s wait callback too*/</span>
+<span class="w">    </span><span class="n">lv_draw_sw_wait_for_finish</span><span class="p">(</span><span class="n">draw_ctx</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="new-rectangle-drawer">
+<h3>New rectangle drawer<a class="headerlink" href="#new-rectangle-drawer" title="此标题的永久链接"></a></h3>
+<p>If your MCU has a more powerful GPU that can draw e.g. rounded rectangles you can replace the original software drawer too.
+A custom <code class="docutils literal notranslate"><span class="pre">draw_rect</span></code> callback might look like this:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">my_draw_rect</span><span class="p">(</span><span class="n">lv_draw_ctx_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">draw_ctx</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">lv_draw_rect_dsc_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dsc</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">lv_area_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">coords</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="n">lv_draw_mask_is_any</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">false</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">dsc</span><span class="o">-&gt;</span><span class="n">grad</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">dsc</span><span class="o">-&gt;</span><span class="n">bg_img_src</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<span class="w">     </span><span class="n">dsc</span><span class="o">-&gt;</span><span class="n">shadow_width</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">dsc</span><span class="o">-&gt;</span><span class="n">blend_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LV_BLEND_MODE_NORMAL</span><span class="p">)</span><span class="w"> </span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/*Draw the background*/</span>
+<span class="w">    </span><span class="n">my_bg_drawer</span><span class="p">(</span><span class="n">draw_ctx</span><span class="p">,</span><span class="w"> </span><span class="n">coords</span><span class="p">,</span><span class="w"> </span><span class="n">dsc</span><span class="o">-&gt;</span><span class="n">bg_color</span><span class="p">,</span><span class="w"> </span><span class="n">dsc</span><span class="o">-&gt;</span><span class="n">radius</span><span class="p">);</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="cm">/*Draw the border if any*/</span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">dsc</span><span class="o">-&gt;</span><span class="n">border_width</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">my_border_drawer</span><span class="p">(</span><span class="n">draw_ctx</span><span class="p">,</span><span class="w"> </span><span class="n">coords</span><span class="p">,</span><span class="w"> </span><span class="n">dsc</span><span class="o">-&gt;</span><span class="n">border_width</span><span class="p">,</span><span class="w"> </span><span class="n">dsc</span><span class="o">-&gt;</span><span class="n">border_color</span><span class="p">,</span><span class="w"> </span><span class="n">dsc</span><span class="o">-&gt;</span><span class="n">border_opa</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="cm">/*Draw the outline if any*/</span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">dsc</span><span class="o">-&gt;</span><span class="n">outline_width</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">my_outline_drawer</span><span class="p">(</span><span class="n">draw_ctx</span><span class="p">,</span><span class="w"> </span><span class="n">coords</span><span class="p">,</span><span class="w"> </span><span class="n">dsc</span><span class="o">-&gt;</span><span class="n">outline_width</span><span class="p">,</span><span class="w"> </span><span class="n">dsc</span><span class="o">-&gt;</span><span class="n">outline_color</span><span class="p">,</span><span class="w"> </span><span class="n">dsc</span><span class="o">-&gt;</span><span class="n">outline_opa</span><span class="p">,</span><span class="w"> </span><span class="n">dsc</span><span class="o">-&gt;</span><span class="n">outline_pad</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span>
+<span class="w">  </span><span class="cm">/*Fallback*/</span>
+<span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">lv_draw_sw_rect</span><span class="p">(</span><span class="n">draw_ctx</span><span class="p">,</span><span class="w"> </span><span class="n">dsc</span><span class="p">,</span><span class="w"> </span><span class="n">coords</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">my_draw_rect</span></code> can fully bypass the use of <code class="docutils literal notranslate"><span class="pre">blend</span></code> callback if needed.</p>
+</section>
+</section>
+<section id="fully-custom-draw-engine">
+<h2>Fully custom draw engine<a class="headerlink" href="#fully-custom-draw-engine" title="此标题的永久链接"></a></h2>
+<p>For example if your MCU/MPU supports a powerful vector graphics engine you might use only that instead of LVGL's SW renderer.
+In this case, you need to base the renderer on the basic <code class="docutils literal notranslate"><span class="pre">lv_draw_ctx_t</span></code> (instead of <code class="docutils literal notranslate"><span class="pre">lv_draw_sw_ctx_t</span></code>) and extend/initialize it as you wish.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2021, LVGL Kft.
+      <span class="lastupdated">最后更新于 2025 年 09 月 02 日.
+      </span></p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<style>
+  .wy-side-nav-search > div[role="search"] {
+    color: black;
+  }
+</style>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            let p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => {
+                let versionName = "";  
+                if(version == "master") versionName = "master (latest)";
+                else versionName = "v" + ((version.indexOf(".") != -1) ? version : (version + " (latest minor)"));
+                return `<option value="${version}">${versionName}</option>`;
+            })}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+document.addEventListener('DOMContentLoaded', (event) => {
+    function onIntersection(entries) {
+        entries.forEach(entry => {
+            let currentlyLoaded = entry.target.getAttribute("data-is-loaded") == "true";
+            let shouldBeLoaded = entry.intersectionRatio > 0;
+            if(currentlyLoaded != shouldBeLoaded) {
+                entry.target.setAttribute("data-is-loaded", shouldBeLoaded);
+                if(shouldBeLoaded) {
+                    let iframe = document.createElement("iframe");
+                    iframe.src = entry.target.getAttribute("data-real-src");
+                    entry.target.appendChild(iframe);
+                } else {
+                    let iframe = entry.target.querySelector("iframe");
+                    iframe.parentNode.removeChild(iframe);
+                }
+            }
+        });
+    }
+    const config = {
+        rootMargin: '600px 0px',
+        threshold: 0.01
+    };
+    let observer = new IntersectionObserver(onIntersection, config);
+    document.querySelectorAll(".lv-example").forEach(iframe => {
+        observer.observe(iframe);
+    });
+});
+</script>
+
+
+</body>
+</html>

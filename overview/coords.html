@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Positions, sizes, and layouts &mdash; LVGL  文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/fontawesome.min.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="canonical" href="https://docs.lvgl.io/0.0.1/overview/coords.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78811084-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+	gtag('config', 'UA-78811084-3', { 'anonymize_ip': true });
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_lvgl.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Positions, sizes, and layouts</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a><ul>
+<li><a class="reference internal" href="#units">Units</a></li>
+<li><a class="reference internal" href="#boxing-model">Boxing model</a></li>
+<li><a class="reference internal" href="#important-notes">Important notes</a><ul>
+<li><a class="reference internal" href="#postponed-coordinate-calculation">Postponed coordinate calculation</a></li>
+<li><a class="reference internal" href="#removing-styles">Removing styles</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#position">Position</a><ul>
+<li><a class="reference internal" href="#simple-way">Simple way</a></li>
+<li><a class="reference internal" href="#align">Align</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#size">Size</a><ul>
+<li><a class="reference internal" href="#id1">Simple way</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#using-styles">Using styles</a></li>
+<li><a class="reference internal" href="#translation">Translation</a></li>
+<li><a class="reference internal" href="#transformation">Transformation</a><ul>
+<li><a class="reference internal" href="#min-and-max-size">Min and Max size</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#layout">Layout</a><ul>
+<li><a class="reference internal" href="#id2">Overview</a></li>
+<li><a class="reference internal" href="#built-in-layout">Built-in layout</a></li>
+<li><a class="reference internal" href="#flags">Flags</a></li>
+<li><a class="reference internal" href="#adding-new-layouts">Adding new layouts</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LVGL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Positions, sizes, and layouts</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/overview/coords.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>.. include:: /header.rst 
+:github_url: |github_link_base|/overview/coords.md
+</pre></div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="positions-sizes-and-layouts">
+<h1>Positions, sizes, and layouts<a class="headerlink" href="#positions-sizes-and-layouts" title="此标题的永久链接"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="此标题的永久链接"></a></h2>
+<p>Similarly to many other parts of LVGL, the concept of setting the coordinates was inspired by CSS. LVGL has by no means a complete implementation of CSS but a comparable subset is implemented (sometimes with minor adjustments).</p>
+<p>In short this means:</p>
+<ul class="simple">
+<li><p>Explicitly set coordinates are stored in styles (size, position, layouts, etc.)</p></li>
+<li><p>support min-width, max-width, min-height, max-height</p></li>
+<li><p>have pixel, percentage, and &quot;content&quot; units</p></li>
+<li><p>x=0; y=0 coordinate means the top-left corner of the parent plus the left/top padding plus border width</p></li>
+<li><p>width/height means the full size, the &quot;content area&quot; is smaller with padding and border width</p></li>
+<li><p>a subset of flexbox and grid layouts are supported</p></li>
+</ul>
+<section id="units">
+<h3>Units<a class="headerlink" href="#units" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><p>pixel: Simply a position in pixels. An integer always means pixels. E.g. <code class="docutils literal notranslate"><span class="pre">lv_obj_set_x(btn,</span> <span class="pre">10)</span></code></p></li>
+<li><p>percentage: The percentage of the size of the object or its parent (depending on the property). <code class="docutils literal notranslate"><span class="pre">lv_pct(value)</span></code> converts a value to percentage. E.g. <code class="docutils literal notranslate"><span class="pre">lv_obj_set_width(btn,</span> <span class="pre">lv_pct(50))</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_SIZE_CONTENT</span></code>: Special value to set the width/height of an object to involve all the children. It's similar to <code class="docutils literal notranslate"><span class="pre">auto</span></code> in CSS. E.g. <code class="docutils literal notranslate"><span class="pre">lv_obj_set_width(btn,</span> <span class="pre">LV_SIZE_CONTENT)</span></code>.</p></li>
+</ul>
+</section>
+<section id="boxing-model">
+<h3>Boxing model<a class="headerlink" href="#boxing-model" title="此标题的永久链接"></a></h3>
+<p>LVGL follows CSS's <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing">border-box</a> model.
+An object's &quot;box&quot; is built from the following parts:</p>
+<ul class="simple">
+<li><p>bounding box: the width/height of the elements.</p></li>
+<li><p>border width: the width of the border.</p></li>
+<li><p>padding: space between the sides of the object and its children.</p></li>
+<li><p>content: the content area which is the size of the bounding box reduced by the border width and padding.</p></li>
+</ul>
+<p><img alt="The box models of LVGL: The content area is smaller than the bounding box with the padding and border width" src="../_images/boxmodel.png" /></p>
+<p>The border is drawn inside the bounding box. Inside the border LVGL keeps a &quot;padding margin&quot; when placing an object's children.</p>
+<p>The outline is drawn outside the bounding box.</p>
+</section>
+<section id="important-notes">
+<h3>Important notes<a class="headerlink" href="#important-notes" title="此标题的永久链接"></a></h3>
+<p>This section describes special cases in which LVGL's behavior might be unexpected.</p>
+<section id="postponed-coordinate-calculation">
+<h4>Postponed coordinate calculation<a class="headerlink" href="#postponed-coordinate-calculation" title="此标题的永久链接"></a></h4>
+<p>LVGL doesn't recalculate all the coordinate changes immediately. This is done to improve performance.
+Instead, the objects are marked as &quot;dirty&quot; and before redrawing the screen LVGL checks if there are any &quot;dirty&quot; objects. If so it refreshes their position, size and layout.</p>
+<p>In other words, if you need to get the coordinate of an object and the coordinates were just changed, LVGL needs to be forced to recalculate the coordinates.
+To do this call <code class="docutils literal notranslate"><span class="pre">lv_obj_update_layout(obj)</span></code>.</p>
+<p>The size and position might depend on the parent or layout. Therefore <code class="docutils literal notranslate"><span class="pre">lv_obj_update_layout</span></code> recalculates the coordinates of all objects on the screen of <code class="docutils literal notranslate"><span class="pre">obj</span></code>.</p>
+</section>
+<section id="removing-styles">
+<h4>Removing styles<a class="headerlink" href="#removing-styles" title="此标题的永久链接"></a></h4>
+<p>As it's described in the <span class="xref myst">Using styles</span> section, coordinates can also be set via style properties.
+To be more precise, under the hood every style coordinate related property is stored as a style property. If you use <code class="docutils literal notranslate"><span class="pre">lv_obj_set_x(obj,</span> <span class="pre">20)</span></code> LVGL saves <code class="docutils literal notranslate"><span class="pre">x=20</span></code> in the local style of the object.</p>
+<p>This is an internal mechanism and doesn't matter much as you use LVGL. However, there is one case in which you need to be aware of the implementation. If the style(s) of an object are removed by</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_obj_remove_style_all</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_obj_remove_style</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">LV_PART_MAIN</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>the earlier set coordinates will be removed as well.</p>
+<p>For example:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*The size of obj1 will be set back to the default in the end*/</span>
+<span class="n">lv_obj_set_size</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span><span class="w">  </span><span class="cm">/*Now obj1 has 200;100 size*/</span>
+<span class="n">lv_obj_remove_style_all</span><span class="p">(</span><span class="n">obj1</span><span class="p">);</span><span class="w">    </span><span class="cm">/*It removes the set sizes*/</span>
+
+
+<span class="cm">/*obj2 will have 200;100 size in the end */</span>
+<span class="n">lv_obj_remove_style_all</span><span class="p">(</span><span class="n">obj2</span><span class="p">);</span>
+<span class="n">lv_obj_set_size</span><span class="p">(</span><span class="n">obj2</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="position">
+<h2>Position<a class="headerlink" href="#position" title="此标题的永久链接"></a></h2>
+<section id="simple-way">
+<h3>Simple way<a class="headerlink" href="#simple-way" title="此标题的永久链接"></a></h3>
+<p>To simply set the x and y coordinates of an object use:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_obj_set_x</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span><span class="w">        </span><span class="c1">//Separate...</span>
+<span class="n">lv_obj_set_y</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">);</span>
+<span class="n">lv_obj_set_pos</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">);</span><span class="w"> 	</span><span class="c1">//Or in one function</span>
+</pre></div>
+</div>
+<p>By default, the x and y coordinates are measured from the top left corner of the parent's content area.
+For example if the parent has five pixels of padding on every side the above code will place <code class="docutils literal notranslate"><span class="pre">obj</span></code> at (15, 25) because the content area starts after the padding.</p>
+<p>Percentage values are calculated from the parent's content area size.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_obj_set_x</span><span class="p">(</span><span class="n">btn</span><span class="p">,</span><span class="w"> </span><span class="n">lv_pct</span><span class="p">(</span><span class="mi">10</span><span class="p">));</span><span class="w"> </span><span class="c1">//x = 10 % of parent content area width</span>
+</pre></div>
+</div>
+</section>
+<section id="align">
+<h3>Align<a class="headerlink" href="#align" title="此标题的永久链接"></a></h3>
+<p>In some cases it's convenient to change the origin of the positioning from the default top left. If the origin is changed e.g. to bottom-right, the (0,0) position means: align to the bottom-right corner.
+To change the origin use:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_obj_set_align</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="w"> </span><span class="n">align</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>To change the alignment and set new coordinates:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_obj_align</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="w"> </span><span class="n">align</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The following alignment options can be used:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_ALIGN_TOP_LEFT</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_ALIGN_TOP_MID</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_ALIGN_TOP_RIGHT</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_ALIGN_BOTTOM_LEFT</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_ALIGN_BOTTOM_MID</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_ALIGN_BOTTOM_RIGHT</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_ALIGN_LEFT_MID</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_ALIGN_RIGHT_MID</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_ALIGN_CENTER</span></code></p></li>
+</ul>
+<p>It's quite common to align a child to the center of its parent, therefore a dedicated function exists:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_obj_center</span><span class="p">(</span><span class="n">obj</span><span class="p">);</span>
+
+<span class="c1">//Has the same effect</span>
+<span class="n">lv_obj_align</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="w"> </span><span class="n">LV_ALIGN_CENTER</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If the parent's size changes, the set alignment and position of the children is updated automatically.</p>
+<p>The functions introduced above align the object to its parent. However, it's also possible to align an object to an arbitrary reference object.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_obj_align_to</span><span class="p">(</span><span class="n">obj_to_align</span><span class="p">,</span><span class="w"> </span><span class="n">reference_obj</span><span class="p">,</span><span class="w"> </span><span class="n">align</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Besides the alignments options above, the following can be used to align an object outside the reference object:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_ALIGN_OUT_TOP_LEFT</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_ALIGN_OUT_TOP_MID</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_ALIGN_OUT_TOP_RIGHT</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_ALIGN_OUT_BOTTOM_LEFT</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_ALIGN_OUT_BOTTOM_MID</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_ALIGN_OUT_BOTTOM_RIGHT</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_ALIGN_OUT_LEFT_TOP</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_ALIGN_OUT_LEFT_MID</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_ALIGN_OUT_LEFT_BOTTOM</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_ALIGN_OUT_RIGHT_TOP</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_ALIGN_OUT_RIGHT_MID</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_ALIGN_OUT_RIGHT_BOTTOM</span></code></p></li>
+</ul>
+<p>For example to align a label above a button and center the label horizontally:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_obj_align_to</span><span class="p">(</span><span class="n">label</span><span class="p">,</span><span class="w"> </span><span class="n">btn</span><span class="p">,</span><span class="w"> </span><span class="n">LV_ALIGN_OUT_TOP_MID</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">-10</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Note that, unlike with <code class="docutils literal notranslate"><span class="pre">lv_obj_align()</span></code>, <code class="docutils literal notranslate"><span class="pre">lv_obj_align_to()</span></code> can not realign the object if its coordinates or the reference object's coordinates change.</p>
+</section>
+</section>
+<section id="size">
+<h2>Size<a class="headerlink" href="#size" title="此标题的永久链接"></a></h2>
+<section id="id1">
+<h3>Simple way<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h3>
+<p>The width and the height of an object can be set easily as well:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_obj_set_width</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">);</span><span class="w">       </span><span class="c1">//Separate...</span>
+<span class="n">lv_obj_set_height</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span>
+<span class="n">lv_obj_set_size</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span><span class="w"> 	</span><span class="c1">//Or in one function</span>
+</pre></div>
+</div>
+<p>Percentage values are calculated based on the parent's content area size. For example to set the object's height to the screen height:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_obj_set_height</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="w"> </span><span class="n">lv_pct</span><span class="p">(</span><span class="mi">100</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>The size settings support a special value: <code class="docutils literal notranslate"><span class="pre">LV_SIZE_CONTENT</span></code>. It means the object's size in the respective direction will be set to the size of its children.
+Note that only children on the right and bottom sides will be considered and children on the top and left remain cropped. This limitation makes the behavior more predictable.</p>
+<p>Objects with <code class="docutils literal notranslate"><span class="pre">LV_OBJ_FLAG_HIDDEN</span></code> or <code class="docutils literal notranslate"><span class="pre">LV_OBJ_FLAG_FLOATING</span></code> will be ignored by the <code class="docutils literal notranslate"><span class="pre">LV_SIZE_CONTENT</span></code> calculation.</p>
+<p>The above functions set the size of an object's bounding box but the size of the content area can be set as well. This means an object's bounding box will be enlarged with the addition of padding.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_obj_set_content_width</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">);</span><span class="w"> </span><span class="c1">//The actual width: padding left + 50 + padding right</span>
+<span class="n">lv_obj_set_content_height</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">);</span><span class="w"> </span><span class="c1">//The actual width: padding top + 30 + padding bottom</span>
+</pre></div>
+</div>
+<p>The size of the bounding box and the content area can be retrieved with the following functions:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_coord_t</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_obj_get_width</span><span class="p">(</span><span class="n">obj</span><span class="p">);</span>
+<span class="n">lv_coord_t</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_obj_get_height</span><span class="p">(</span><span class="n">obj</span><span class="p">);</span>
+<span class="n">lv_coord_t</span><span class="w"> </span><span class="n">content_w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_obj_get_content_width</span><span class="p">(</span><span class="n">obj</span><span class="p">);</span>
+<span class="n">lv_coord_t</span><span class="w"> </span><span class="n">content_h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_obj_get_content_height</span><span class="p">(</span><span class="n">obj</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="using-styles">
+<h2>Using styles<a class="headerlink" href="#using-styles" title="此标题的永久链接"></a></h2>
+<p>Under the hood the position, size and alignment properties are style properties.
+The above described &quot;simple functions&quot; hide the style related code for the sake of simplicity and set the position, size, and alignment properties in the local styles of the object.</p>
+<p>However, using styles to set the coordinates has some great advantages:</p>
+<ul class="simple">
+<li><p>It makes it easy to set the width/height/etc. for several objects together. E.g. make all the sliders 100x10 pixels sized.</p></li>
+<li><p>It also makes possible to modify the values in one place.</p></li>
+<li><p>The values can be partially overwritten by other styles. For example <code class="docutils literal notranslate"><span class="pre">style_btn</span></code> makes the object <code class="docutils literal notranslate"><span class="pre">100x50</span></code> by default but adding <code class="docutils literal notranslate"><span class="pre">style_full_width</span></code> overwrites only the width of the object.</p></li>
+<li><p>The object can have different position or size depending on state. E.g. 100 px wide in <code class="docutils literal notranslate"><span class="pre">LV_STATE_DEFAULT</span></code> but 120 px in <code class="docutils literal notranslate"><span class="pre">LV_STATE_PRESSED</span></code>.</p></li>
+<li><p>Style transitions can be used to make the coordinate changes smooth.</p></li>
+</ul>
+<p>Here are some examples to set an object's size using a style:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="n">lv_style_t</span><span class="w"> </span><span class="n">style</span><span class="p">;</span>
+<span class="n">lv_style_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">);</span>
+<span class="n">lv_style_set_width</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span>
+
+<span class="n">lv_obj_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">btn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_btn_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">());</span>
+<span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">btn</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span><span class="w"> </span><span class="n">LV_PART_MAIN</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>As you will see below there are some other great features of size and position setting.
+However, to keep the LVGL API lean, only the most common coordinate setting features have a &quot;simple&quot; version and the more complex features can be used via styles.</p>
+</section>
+<section id="translation">
+<h2>Translation<a class="headerlink" href="#translation" title="此标题的永久链接"></a></h2>
+<p>Let's say the there are 3 buttons next to each other. Their position is set as described above.
+Now you want to move a button up a little when it's pressed.</p>
+<p>One way to achieve this is by setting a new Y coordinate for the pressed state:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="n">lv_style_t</span><span class="w"> </span><span class="n">style_normal</span><span class="p">;</span>
+<span class="n">lv_style_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_normal</span><span class="p">);</span>
+<span class="n">lv_style_set_y</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_normal</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span>
+
+<span class="k">static</span><span class="w"> </span><span class="n">lv_style_t</span><span class="w"> </span><span class="n">style_pressed</span><span class="p">;</span>
+<span class="n">lv_style_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_pressed</span><span class="p">);</span>
+<span class="n">lv_style_set_y</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_pressed</span><span class="p">,</span><span class="w"> </span><span class="mi">80</span><span class="p">);</span>
+
+<span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">btn1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">style_normal</span><span class="p">,</span><span class="w"> </span><span class="n">LV_STATE_DEFAULT</span><span class="p">);</span>
+<span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">btn1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">style_pressed</span><span class="p">,</span><span class="w"> </span><span class="n">LV_STATE_PRESSED</span><span class="p">);</span>
+
+<span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">btn2</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">style_normal</span><span class="p">,</span><span class="w"> </span><span class="n">LV_STATE_DEFAULT</span><span class="p">);</span>
+<span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">btn2</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">style_pressed</span><span class="p">,</span><span class="w"> </span><span class="n">LV_STATE_PRESSED</span><span class="p">);</span>
+
+<span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">btn3</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">style_normal</span><span class="p">,</span><span class="w"> </span><span class="n">LV_STATE_DEFAULT</span><span class="p">);</span>
+<span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">btn3</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">style_pressed</span><span class="p">,</span><span class="w"> </span><span class="n">LV_STATE_PRESSED</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This works, but it's not really flexible because the pressed coordinate is hard-coded. If the buttons are not at y=100, <code class="docutils literal notranslate"><span class="pre">style_pressed</span></code> won't work as expected. Translations can be used to solve this:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="n">lv_style_t</span><span class="w"> </span><span class="n">style_normal</span><span class="p">;</span>
+<span class="n">lv_style_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_normal</span><span class="p">);</span>
+<span class="n">lv_style_set_y</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_normal</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span>
+
+<span class="k">static</span><span class="w"> </span><span class="n">lv_style_t</span><span class="w"> </span><span class="n">style_pressed</span><span class="p">;</span>
+<span class="n">lv_style_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_pressed</span><span class="p">);</span>
+<span class="n">lv_style_set_translate_y</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_pressed</span><span class="p">,</span><span class="w"> </span><span class="mi">-20</span><span class="p">);</span>
+
+<span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">btn1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">style_normal</span><span class="p">,</span><span class="w"> </span><span class="n">LV_STATE_DEFAULT</span><span class="p">);</span>
+<span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">btn1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">style_pressed</span><span class="p">,</span><span class="w"> </span><span class="n">LV_STATE_PRESSED</span><span class="p">);</span>
+
+<span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">btn2</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">style_normal</span><span class="p">,</span><span class="w"> </span><span class="n">LV_STATE_DEFAULT</span><span class="p">);</span>
+<span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">btn2</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">style_pressed</span><span class="p">,</span><span class="w"> </span><span class="n">LV_STATE_PRESSED</span><span class="p">);</span>
+
+<span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">btn3</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">style_normal</span><span class="p">,</span><span class="w"> </span><span class="n">LV_STATE_DEFAULT</span><span class="p">);</span>
+<span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">btn3</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">style_pressed</span><span class="p">,</span><span class="w"> </span><span class="n">LV_STATE_PRESSED</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Translation is applied from the current position of the object.</p>
+<p>Percentage values can be used in translations as well. The percentage is relative to the size of the object (and not to the size of the parent). For example <code class="docutils literal notranslate"><span class="pre">lv_pct(50)</span></code> will move the object with half of its width/height.</p>
+<p>The translation is applied after the layouts are calculated. Therefore, even laid out objects' position can be translated.</p>
+<p>The translation actually moves the object. That means it makes the scrollbars and <code class="docutils literal notranslate"><span class="pre">LV_SIZE_CONTENT</span></code> sized objects react to the position change.</p>
+</section>
+<section id="transformation">
+<h2>Transformation<a class="headerlink" href="#transformation" title="此标题的永久链接"></a></h2>
+<p>Similarly to position, an object's size can be changed relative to the current size as well.
+The transformed width and height are added on both sides of the object. This means a 10 px transformed width makes the object 2x10 pixels wider.</p>
+<p>Unlike position translation, the size transformation doesn't make the object &quot;really&quot; larger. In other words scrollbars, layouts, and <code class="docutils literal notranslate"><span class="pre">LV_SIZE_CONTENT</span></code> will not react to the transformed size.
+Hence, size transformation is &quot;only&quot; a visual effect.</p>
+<p>This code enlarges a button when it's pressed:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="n">lv_style_t</span><span class="w"> </span><span class="n">style_pressed</span><span class="p">;</span>
+<span class="n">lv_style_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_pressed</span><span class="p">);</span>
+<span class="n">lv_style_set_transform_width</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_pressed</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+<span class="n">lv_style_set_transform_height</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_pressed</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+
+<span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">btn</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">style_pressed</span><span class="p">,</span><span class="w"> </span><span class="n">LV_STATE_PRESSED</span><span class="p">);</span>
+</pre></div>
+</div>
+<section id="min-and-max-size">
+<h3>Min and Max size<a class="headerlink" href="#min-and-max-size" title="此标题的永久链接"></a></h3>
+<p>Similarly to CSS, LVGL also supports <code class="docutils literal notranslate"><span class="pre">min-width</span></code>, <code class="docutils literal notranslate"><span class="pre">max-width</span></code>, <code class="docutils literal notranslate"><span class="pre">min-height</span></code> and <code class="docutils literal notranslate"><span class="pre">max-height</span></code>. These are limits preventing an object's size from becoming smaller/larger than these values.
+They are especially useful if the size is set by percentage or <code class="docutils literal notranslate"><span class="pre">LV_SIZE_CONTENT</span></code>.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="n">lv_style_t</span><span class="w"> </span><span class="n">style_max_height</span><span class="p">;</span>
+<span class="n">lv_style_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_max_height</span><span class="p">);</span>
+<span class="n">lv_style_set_y</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_max_height</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">);</span>
+
+<span class="n">lv_obj_set_height</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="w"> </span><span class="n">lv_pct</span><span class="p">(</span><span class="mi">100</span><span class="p">));</span>
+<span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">style_max_height</span><span class="p">,</span><span class="w"> </span><span class="n">LV_STATE_DEFAULT</span><span class="p">);</span><span class="w"> </span><span class="c1">//Limit the  height to 200 px</span>
+</pre></div>
+</div>
+<p>Percentage values can be used as well which are relative to the size of the parent's content area.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="n">lv_style_t</span><span class="w"> </span><span class="n">style_max_height</span><span class="p">;</span>
+<span class="n">lv_style_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_max_height</span><span class="p">);</span>
+<span class="n">lv_style_set_y</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_max_height</span><span class="p">,</span><span class="w"> </span><span class="n">lv_pct</span><span class="p">(</span><span class="mi">50</span><span class="p">));</span>
+
+<span class="n">lv_obj_set_height</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="w"> </span><span class="n">lv_pct</span><span class="p">(</span><span class="mi">100</span><span class="p">));</span>
+<span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">style_max_height</span><span class="p">,</span><span class="w"> </span><span class="n">LV_STATE_DEFAULT</span><span class="p">);</span><span class="w"> </span><span class="c1">//Limit the height to half parent height</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="layout">
+<h2>Layout<a class="headerlink" href="#layout" title="此标题的永久链接"></a></h2>
+<section id="id2">
+<h3>Overview<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h3>
+<p>Layouts can update the position and size of an object's children. They can be used to automatically arrange the children into a line or column, or in much more complicated forms.</p>
+<p>The position and size set by the layout overwrites the &quot;normal&quot; x, y, width, and height settings.</p>
+<p>There is only one function that is the same for every layout: <code class="docutils literal notranslate"><span class="pre">lv_obj_set_layout(obj,</span> <span class="pre">&lt;LAYOUT_NAME&gt;)</span></code> sets the layout on an object.
+For further settings of the parent and children see the documentation of the given layout.</p>
+</section>
+<section id="built-in-layout">
+<h3>Built-in layout<a class="headerlink" href="#built-in-layout" title="此标题的永久链接"></a></h3>
+<p>LVGL comes with two very powerful layouts:</p>
+<ul class="simple">
+<li><p>Flexbox</p></li>
+<li><p>Grid</p></li>
+</ul>
+<p>Both are heavily inspired by the CSS layouts with the same name.</p>
+</section>
+<section id="flags">
+<h3>Flags<a class="headerlink" href="#flags" title="此标题的永久链接"></a></h3>
+<p>There are some flags that can be used on objects to affect how they behave with layouts:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_OBJ_FLAG_HIDDEN</span></code> Hidden objects are ignored in layout calculations.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_OBJ_FLAG_IGNORE_LAYOUT</span></code> The object is simply ignored by the layouts. Its coordinates can be set as usual.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_OBJ_FLAG_FLOATING</span></code> Same as <code class="docutils literal notranslate"><span class="pre">LV_OBJ_FLAG_IGNORE_LAYOUT</span></code> but the object with <code class="docutils literal notranslate"><span class="pre">LV_OBJ_FLAG_FLOATING</span></code> will be ignored in <code class="docutils literal notranslate"><span class="pre">LV_SIZE_CONTENT</span></code> calculations.</p></li>
+</ul>
+<p>These flags can be added/removed with <code class="docutils literal notranslate"><span class="pre">lv_obj_add/clear_flag(obj,</span> <span class="pre">FLAG);</span></code></p>
+</section>
+<section id="adding-new-layouts">
+<h3>Adding new layouts<a class="headerlink" href="#adding-new-layouts" title="此标题的永久链接"></a></h3>
+<p>LVGL can be freely extended by a custom layout like this:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">MY_LAYOUT</span><span class="p">;</span>
+
+<span class="p">...</span>
+
+<span class="n">MY_LAYOUT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_layout_register</span><span class="p">(</span><span class="n">my_layout_update</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">user_data</span><span class="p">);</span>
+
+<span class="p">...</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">my_layout_update</span><span class="p">(</span><span class="n">lv_obj_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">obj</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">user_data</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">	</span><span class="cm">/*Will be called automatically if it&#39;s required to reposition/resize the children of &quot;obj&quot; */</span><span class="w">	</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Custom style properties can be added which can be retrieved and used in the update callback. For example:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">MY_PROP</span><span class="p">;</span>
+<span class="p">...</span>
+
+<span class="n">LV_STYLE_MY_PROP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_style_register_prop</span><span class="p">();</span>
+
+<span class="p">...</span>
+<span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">lv_style_set_my_prop</span><span class="p">(</span><span class="n">lv_style_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">style</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">value</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">lv_style_value_t</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="p">.</span><span class="n">num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int32_t</span><span class="p">)</span><span class="n">value</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="w">    </span><span class="n">lv_style_set_prop</span><span class="p">(</span><span class="n">style</span><span class="p">,</span><span class="w"> </span><span class="n">LV_STYLE_MY_PROP</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p">);</span>
+<span class="p">}</span>
+
+</pre></div>
+</div>
+</section>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="此标题的永久链接"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2021, LVGL Kft.
+      <span class="lastupdated">最后更新于 2025 年 09 月 02 日.
+      </span></p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<style>
+  .wy-side-nav-search > div[role="search"] {
+    color: black;
+  }
+</style>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            let p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => {
+                let versionName = "";  
+                if(version == "master") versionName = "master (latest)";
+                else versionName = "v" + ((version.indexOf(".") != -1) ? version : (version + " (latest minor)"));
+                return `<option value="${version}">${versionName}</option>`;
+            })}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+document.addEventListener('DOMContentLoaded', (event) => {
+    function onIntersection(entries) {
+        entries.forEach(entry => {
+            let currentlyLoaded = entry.target.getAttribute("data-is-loaded") == "true";
+            let shouldBeLoaded = entry.intersectionRatio > 0;
+            if(currentlyLoaded != shouldBeLoaded) {
+                entry.target.setAttribute("data-is-loaded", shouldBeLoaded);
+                if(shouldBeLoaded) {
+                    let iframe = document.createElement("iframe");
+                    iframe.src = entry.target.getAttribute("data-real-src");
+                    entry.target.appendChild(iframe);
+                } else {
+                    let iframe = entry.target.querySelector("iframe");
+                    iframe.parentNode.removeChild(iframe);
+                }
+            }
+        });
+    }
+    const config = {
+        rootMargin: '600px 0px',
+        threshold: 0.01
+    };
+    let observer = new IntersectionObserver(onIntersection, config);
+    document.querySelectorAll(".lv-example").forEach(iframe => {
+        observer.observe(iframe);
+    });
+});
+</script>
+
+
+</body>
+</html>

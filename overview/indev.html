@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Input devices &mdash; LVGL  文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/fontawesome.min.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="canonical" href="https://docs.lvgl.io/0.0.1/overview/indev.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78811084-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+	gtag('config', 'UA-78811084-3', { 'anonymize_ip': true });
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_lvgl.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Input devices</a><ul>
+<li><a class="reference internal" href="#pointers">Pointers</a><ul>
+<li><a class="reference internal" href="#cursor">Cursor</a></li>
+<li><a class="reference internal" href="#gestures">Gestures</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#keypad-and-encoder">Keypad and encoder</a><ul>
+<li><a class="reference internal" href="#groups">Groups</a><ul>
+<li><a class="reference internal" href="#keys">Keys</a></li>
+<li><a class="reference internal" href="#edit-and-navigate-mode">Edit and navigate mode</a></li>
+<li><a class="reference internal" href="#default-group">Default group</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#styling">Styling</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#api">API</a><ul>
+<li><a class="reference internal" href="#input-device">Input device</a></li>
+<li><a class="reference internal" href="#id1">Groups</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LVGL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Input devices</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/overview/indev.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>.. include:: /header.rst 
+:github_url: |github_link_base|/overview/indev.md
+</pre></div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="input-devices">
+<h1>Input devices<a class="headerlink" href="#input-devices" title="此标题的永久链接"></a></h1>
+<p>An input device usually means:</p>
+<ul class="simple">
+<li><p>Pointer-like input device like touchpad or mouse</p></li>
+<li><p>Keypads like a normal keyboard or simple numeric keypad</p></li>
+<li><p>Encoders with left/right turn and push options</p></li>
+<li><p>External hardware buttons which are assigned to specific points on the screen</p></li>
+</ul>
+<div class="highlight-important:: notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<section id="pointers">
+<h2>Pointers<a class="headerlink" href="#pointers" title="此标题的永久链接"></a></h2>
+<section id="cursor">
+<h3>Cursor<a class="headerlink" href="#cursor" title="此标题的永久链接"></a></h3>
+<p>Pointer input devices (like a mouse) can have a cursor.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="p">...</span>
+<span class="n">lv_indev_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">mouse_indev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_indev_drv_register</span><span class="p">(</span><span class="o">&amp;</span><span class="n">indev_drv</span><span class="p">);</span>
+
+<span class="n">LV_IMG_DECLARE</span><span class="p">(</span><span class="n">mouse_cursor_icon</span><span class="p">);</span><span class="w">                          </span><span class="cm">/*Declare the image source.*/</span>
+<span class="n">lv_obj_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">cursor_obj</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="n">lv_img_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">());</span><span class="w">       </span><span class="cm">/*Create an image object for the cursor */</span>
+<span class="n">lv_img_set_src</span><span class="p">(</span><span class="n">cursor_obj</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">mouse_cursor_icon</span><span class="p">);</span><span class="w">             </span><span class="cm">/*Set the image source*/</span>
+<span class="n">lv_indev_set_cursor</span><span class="p">(</span><span class="n">mouse_indev</span><span class="p">,</span><span class="w"> </span><span class="n">cursor_obj</span><span class="p">);</span><span class="w">               </span><span class="cm">/*Connect the image  object to the driver*/</span>
+</pre></div>
+</div>
+<p>Note that the cursor object should have <code class="docutils literal notranslate"><span class="pre">lv_obj_clear_flag(cursor_obj,</span> <span class="pre">LV_OBJ_FLAG_CLICKABLE)</span></code>.
+For images, <em>clicking</em> is disabled by default.</p>
+</section>
+<section id="gestures">
+<h3>Gestures<a class="headerlink" href="#gestures" title="此标题的永久链接"></a></h3>
+<p>Pointer input devives can detect basic gestures. By default, most of the widgets send the gestures to its parent, so finally the gestures can be detected on the screen object in a form of an <code class="docutils literal notranslate"><span class="pre">LV_EVENT_GESTURE</span></code> event. For example:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">my_event</span><span class="p">(</span><span class="n">lv_event_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">e</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">lv_obj_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">screen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_event_get_current_target</span><span class="p">(</span><span class="n">e</span><span class="p">);</span>
+<span class="w">  </span><span class="n">lv_dir_t</span><span class="w"> </span><span class="n">dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_indev_get_gesture_dir</span><span class="p">(</span><span class="n">lv_indev_act</span><span class="p">());</span>
+<span class="w">  </span><span class="k">switch</span><span class="p">(</span><span class="n">dir</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">LV_DIR_LEFT</span><span class="p">:</span>
+<span class="w">      </span><span class="p">...</span>
+<span class="w">      </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">LV_DIR_RIGHT</span><span class="p">:</span>
+<span class="w">      </span><span class="p">...</span>
+<span class="w">      </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">LV_DIR_TOP</span><span class="p">:</span>
+<span class="w">      </span><span class="p">...</span>
+<span class="w">      </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">LV_DIR_BOTTOM</span><span class="p">:</span>
+<span class="w">      </span><span class="p">...</span>
+<span class="w">      </span><span class="k">break</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="p">...</span>
+
+<span class="n">lv_obj_add_event_cb</span><span class="p">(</span><span class="n">screen1</span><span class="p">,</span><span class="w"> </span><span class="n">my_event</span><span class="p">,</span><span class="w"> </span><span class="n">LV_EVENT_GESTURE</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>To prevent passing the gesture event to the parent from an obejct use <code class="docutils literal notranslate"><span class="pre">lv_obj_clear_flag(obj,</span> <span class="pre">LV_OBJ_FLAG_GESTURE_BUBBLE)</span></code>.</p>
+</section>
+</section>
+<section id="keypad-and-encoder">
+<h2>Keypad and encoder<a class="headerlink" href="#keypad-and-encoder" title="此标题的永久链接"></a></h2>
+<p>You can fully control the user interface without a touchpad or mouse by using a keypad or encoder(s). It works similar to the <em>TAB</em> key on the PC to select an element in an application or a web page.</p>
+<section id="groups">
+<h3>Groups<a class="headerlink" href="#groups" title="此标题的永久链接"></a></h3>
+<p>Objects you want to control with a keypad or encoder need to be added to a <em>Group</em>.
+In every group there is exactly one focused object which receives the pressed keys or the encoder actions.
+For example, if a <a class="reference internal" href="../widgets/core/textarea.html"><span class="doc std std-doc">Text area</span></a> is focused and you press some letter on a keyboard, the keys will be sent and inserted into the text area.
+Similarly, if a <a class="reference internal" href="../widgets/core/slider.html"><span class="doc std std-doc">Slider</span></a> is focused and you press the left or right arrows, the slider's value will be changed.</p>
+<p>You need to associate an input device with a group. An input device can send key events to only one group but a group can receive data from more than one input device.</p>
+<p>To create a group use <code class="docutils literal notranslate"><span class="pre">lv_group_t</span> <span class="pre">*</span> <span class="pre">g</span> <span class="pre">=</span> <span class="pre">lv_group_create()</span></code> and to add an object to the group use <code class="docutils literal notranslate"><span class="pre">lv_group_add_obj(g,</span> <span class="pre">obj)</span></code>.</p>
+<p>To associate a group with an input device use <code class="docutils literal notranslate"><span class="pre">lv_indev_set_group(indev,</span> <span class="pre">g)</span></code>, where <code class="docutils literal notranslate"><span class="pre">indev</span></code> is the return value of <code class="docutils literal notranslate"><span class="pre">lv_indev_drv_register()</span></code></p>
+<section id="keys">
+<h4>Keys<a class="headerlink" href="#keys" title="此标题的永久链接"></a></h4>
+<p>There are some predefined keys which have special meaning:</p>
+<ul class="simple">
+<li><p><strong>LV_KEY_NEXT</strong> Focus on the next object</p></li>
+<li><p><strong>LV_KEY_PREV</strong> Focus on the previous object</p></li>
+<li><p><strong>LV_KEY_ENTER</strong> Triggers <code class="docutils literal notranslate"><span class="pre">LV_EVENT_PRESSED/CLICKED/LONG_PRESSED</span></code> etc. events</p></li>
+<li><p><strong>LV_KEY_UP</strong> Increase value or move upwards</p></li>
+<li><p><strong>LV_KEY_DOWN</strong> Decrease value or move downwards</p></li>
+<li><p><strong>LV_KEY_RIGHT</strong> Increase value or move to the right</p></li>
+<li><p><strong>LV_KEY_LEFT</strong> Decrease value or move to the left</p></li>
+<li><p><strong>LV_KEY_ESC</strong>  Close or exit (E.g. close a <a class="reference internal" href="../widgets/core/dropdown.html"><span class="doc std std-doc">Drop down list</span></a>)</p></li>
+<li><p><strong>LV_KEY_DEL</strong>  Delete (E.g. a character on the right in a <a class="reference internal" href="../widgets/core/textarea.html"><span class="doc std std-doc">Text area</span></a>)</p></li>
+<li><p><strong>LV_KEY_BACKSPACE</strong> Delete a character on the left (E.g. in a <a class="reference internal" href="../widgets/core/textarea.html"><span class="doc std std-doc">Text area</span></a>)</p></li>
+<li><p><strong>LV_KEY_HOME</strong> Go to the beginning/top (E.g. in a <a class="reference internal" href="../widgets/core/textarea.html"><span class="doc std std-doc">Text area</span></a>)</p></li>
+<li><p><strong>LV_KEY_END</strong> Go to the end (E.g. in a <a class="reference internal" href="../widgets/core/textarea.html"><span class="doc std std-doc">Text area</span></a>)</p></li>
+</ul>
+<p>The most important special keys are <code class="docutils literal notranslate"><span class="pre">LV_KEY_NEXT/PREV</span></code>, <code class="docutils literal notranslate"><span class="pre">LV_KEY_ENTER</span></code> and <code class="docutils literal notranslate"><span class="pre">LV_KEY_UP/DOWN/LEFT/RIGHT</span></code>.
+In your <code class="docutils literal notranslate"><span class="pre">read_cb</span></code> function, you should translate some of your keys to these special keys to support navigation in a group and interact with selected objects.</p>
+<p>Usually, it's enough to use only <code class="docutils literal notranslate"><span class="pre">LV_KEY_LEFT/RIGHT</span></code> because most objects can be fully controlled with them.</p>
+<p>With an encoder you should use only <code class="docutils literal notranslate"><span class="pre">LV_KEY_LEFT</span></code>, <code class="docutils literal notranslate"><span class="pre">LV_KEY_RIGHT</span></code>, and <code class="docutils literal notranslate"><span class="pre">LV_KEY_ENTER</span></code>.</p>
+</section>
+<section id="edit-and-navigate-mode">
+<h4>Edit and navigate mode<a class="headerlink" href="#edit-and-navigate-mode" title="此标题的永久链接"></a></h4>
+<p>Since a keypad has plenty of keys, it's easy to navigate between objects and edit them using the keypad. But encoders have a limited number of &quot;keys&quot; and hence it is difficult to navigate using the default options. <em>Navigate</em> and <em>Edit</em> modes are used to avoid this problem with encoders.</p>
+<p>In <em>Navigate</em> mode, an encoder's <code class="docutils literal notranslate"><span class="pre">LV_KEY_LEFT/RIGHT</span></code> is translated to <code class="docutils literal notranslate"><span class="pre">LV_KEY_NEXT/PREV</span></code>. Therefore, the next or previous object will be selected by turning the encoder.
+Pressing <code class="docutils literal notranslate"><span class="pre">LV_KEY_ENTER</span></code> will change to <em>Edit</em> mode.</p>
+<p>In <em>Edit</em> mode, <code class="docutils literal notranslate"><span class="pre">LV_KEY_NEXT/PREV</span></code> is usually used to modify an object.
+Depending on the object's type, a short or long press of <code class="docutils literal notranslate"><span class="pre">LV_KEY_ENTER</span></code> changes back to <em>Navigate</em> mode.
+Usually, an object which cannot be pressed (like a <a class="reference internal" href="../widgets/core/slider.html"><span class="doc std std-doc">Slider</span></a>) leaves <em>Edit</em> mode upon a short click. But with objects where a short click has meaning (e.g. <a class="reference internal" href="../widgets/core/btn.html"><span class="doc std std-doc">Button</span></a>), a long press is required.</p>
+</section>
+<section id="default-group">
+<h4>Default group<a class="headerlink" href="#default-group" title="此标题的永久链接"></a></h4>
+<p>Interactive widgets - such as buttons, checkboxes, sliders, etc. - can be automatically added to a default group.
+Just create a group with <code class="docutils literal notranslate"><span class="pre">lv_group_t</span> <span class="pre">*</span> <span class="pre">g</span> <span class="pre">=</span> <span class="pre">lv_group_create();</span></code> and set the default group with <code class="docutils literal notranslate"><span class="pre">lv_group_set_default(g);</span></code></p>
+<p>Don't forget to assign one or more input devices to the default group with <code class="docutils literal notranslate"> <span class="pre">lv_indev_set_group(my_indev,</span> <span class="pre">g);</span></code>.</p>
+</section>
+</section>
+<section id="styling">
+<h3>Styling<a class="headerlink" href="#styling" title="此标题的永久链接"></a></h3>
+<p>If an object is focused either by clicking it via touchpad or focused via an encoder or keypad it goes to the <code class="docutils literal notranslate"><span class="pre">LV_STATE_FOCUSED</span></code> state. Hence, focused styles will be applied to it.</p>
+<p>If an object switches to edit mode it enters the <code class="docutils literal notranslate"><span class="pre">LV_STATE_FOCUSED</span> <span class="pre">|</span> <span class="pre">LV_STATE_EDITED</span></code> states so these style properties will be shown.</p>
+<p>For a more detailed description read the <a class="reference external" href="https://docs.lvgl.io/v7/en/html/overview/style.html">Style</a> section.</p>
+</section>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="此标题的永久链接"></a></h2>
+<section id="input-device">
+<h3>Input device<a class="headerlink" href="#input-device" title="此标题的永久链接"></a></h3>
+<div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>
+.. doxygenfile:: lv_indev.h
+  :project: lvgl
+
+</pre></div>
+</div>
+</section>
+<section id="id1">
+<h3>Groups<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h3>
+<div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>
+.. doxygenfile:: lv_group.h
+  :project: lvgl
+
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2021, LVGL Kft.
+      <span class="lastupdated">最后更新于 2025 年 09 月 02 日.
+      </span></p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<style>
+  .wy-side-nav-search > div[role="search"] {
+    color: black;
+  }
+</style>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            let p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => {
+                let versionName = "";  
+                if(version == "master") versionName = "master (latest)";
+                else versionName = "v" + ((version.indexOf(".") != -1) ? version : (version + " (latest minor)"));
+                return `<option value="${version}">${versionName}</option>`;
+            })}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+document.addEventListener('DOMContentLoaded', (event) => {
+    function onIntersection(entries) {
+        entries.forEach(entry => {
+            let currentlyLoaded = entry.target.getAttribute("data-is-loaded") == "true";
+            let shouldBeLoaded = entry.intersectionRatio > 0;
+            if(currentlyLoaded != shouldBeLoaded) {
+                entry.target.setAttribute("data-is-loaded", shouldBeLoaded);
+                if(shouldBeLoaded) {
+                    let iframe = document.createElement("iframe");
+                    iframe.src = entry.target.getAttribute("data-real-src");
+                    entry.target.appendChild(iframe);
+                } else {
+                    let iframe = entry.target.querySelector("iframe");
+                    iframe.parentNode.removeChild(iframe);
+                }
+            }
+        });
+    }
+    const config = {
+        rootMargin: '600px 0px',
+        threshold: 0.01
+    };
+    let observer = new IntersectionObserver(onIntersection, config);
+    document.querySelectorAll(".lv-example").forEach(iframe => {
+        observer.observe(iframe);
+    });
+});
+</script>
+
+
+</body>
+</html>

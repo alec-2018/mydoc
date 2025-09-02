@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Animations &mdash; LVGL  文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/fontawesome.min.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="canonical" href="https://docs.lvgl.io/0.0.1/overview/animation.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78811084-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+	gtag('config', 'UA-78811084-3', { 'anonymize_ip': true });
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_lvgl.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Animations</a><ul>
+<li><a class="reference internal" href="#create-an-animation">Create an animation</a></li>
+<li><a class="reference internal" href="#animation-path">Animation path</a></li>
+<li><a class="reference internal" href="#speed-vs-time">Speed vs time</a></li>
+<li><a class="reference internal" href="#delete-animations">Delete animations</a></li>
+<li><a class="reference internal" href="#timeline">Timeline</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+<li><a class="reference internal" href="#api">API</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LVGL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Animations</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/overview/animation.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>.. include:: /header.rst 
+:github_url: |github_link_base|/overview/animation.md
+</pre></div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="animations">
+<h1>Animations<a class="headerlink" href="#animations" title="此标题的永久链接"></a></h1>
+<p>You can automatically change the value of a variable between a start and an end value using animations.
+Animation will happen by periodically calling an &quot;animator&quot; function with the corresponding value parameter.</p>
+<p>The <em>animator</em> functions have the following prototype:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">func</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">var</span><span class="p">,</span><span class="w"> </span><span class="n">lv_anim_var_t</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This prototype is compatible with the majority of the property <em>set</em> functions in LVGL. For example <code class="docutils literal notranslate"><span class="pre">lv_obj_set_x(obj,</span> <span class="pre">value)</span></code> or <code class="docutils literal notranslate"><span class="pre">lv_obj_set_width(obj,</span> <span class="pre">value)</span></code></p>
+<section id="create-an-animation">
+<h2>Create an animation<a class="headerlink" href="#create-an-animation" title="此标题的永久链接"></a></h2>
+<p>To create an animation an <code class="docutils literal notranslate"><span class="pre">lv_anim_t</span></code> variable has to be initialized and configured with <code class="docutils literal notranslate"><span class="pre">lv_anim_set_...()</span></code> functions.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+<span class="cm">/* INITIALIZE AN ANIMATION</span>
+<span class="cm"> *-----------------------*/</span>
+
+<span class="n">lv_anim_t</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+<span class="n">lv_anim_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">);</span>
+
+<span class="cm">/* MANDATORY SETTINGS</span>
+<span class="cm"> *------------------*/</span>
+
+<span class="cm">/*Set the &quot;animator&quot; function*/</span>
+<span class="n">lv_anim_set_exec_cb</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">lv_anim_exec_xcb_t</span><span class="p">)</span><span class="w"> </span><span class="n">lv_obj_set_x</span><span class="p">);</span><span class="w"> </span>
+
+<span class="cm">/*Set target of the animation*/</span>
+<span class="n">lv_anim_set_var</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">obj</span><span class="p">);</span><span class="w"> </span>
+
+<span class="cm">/*Length of the animation [ms]*/</span>
+<span class="n">lv_anim_set_time</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">duration</span><span class="p">);</span>
+
+<span class="cm">/*Set start and end values. E.g. 0, 150*/</span>
+<span class="n">lv_anim_set_values</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="n">end</span><span class="p">);</span>
+
+<span class="cm">/* OPTIONAL SETTINGS</span>
+<span class="cm"> *------------------*/</span>
+
+<span class="cm">/*Time to wait before starting the animation [ms]*/</span>
+<span class="n">lv_anim_set_delay</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">delay</span><span class="p">);</span>
+
+<span class="cm">/*Set path (curve). Default is linear*/</span>
+<span class="n">lv_anim_set_path</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">lv_anim_path_ease_in</span><span class="p">);</span>
+
+<span class="cm">/*Set a callback to indicate when the animation is ready (idle).*/</span>
+<span class="n">lv_anim_set_ready_cb</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">ready_cb</span><span class="p">);</span>
+
+<span class="cm">/*Set a callback to indicate when the animation is started (after delay).*/</span>
+<span class="n">lv_anim_set_start_cb</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">start_cb</span><span class="p">);</span>
+
+<span class="cm">/*When ready, play the animation backward with this duration. Default is 0 (disabled) [ms]*/</span>
+<span class="n">lv_anim_set_playback_time</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">time</span><span class="p">);</span>
+
+<span class="cm">/*Delay before playback. Default is 0 (disabled) [ms]*/</span>
+<span class="n">lv_anim_set_playback_delay</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">delay</span><span class="p">);</span>
+
+<span class="cm">/*Number of repetitions. Default is 1. LV_ANIM_REPEAT_INFINITE for infinite repetition*/</span>
+<span class="n">lv_anim_set_repeat_count</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">cnt</span><span class="p">);</span>
+
+<span class="cm">/*Delay before repeat. Default is 0 (disabled) [ms]*/</span>
+<span class="n">lv_anim_set_repeat_delay</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">delay</span><span class="p">);</span>
+
+<span class="cm">/*true (default): apply the start value immediately, false: apply start value after delay when the anim. really starts. */</span>
+<span class="n">lv_anim_set_early_apply</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="o">/</span><span class="nb">false</span><span class="p">);</span>
+
+<span class="cm">/* START THE ANIMATION</span>
+<span class="cm"> *------------------*/</span>
+<span class="n">lv_anim_start</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">);</span><span class="w">                             </span><span class="cm">/*Start the animation*/</span>
+</pre></div>
+</div>
+<p>You can apply multiple different animations on the same variable at the same time.
+For example, animate the x and y coordinates with <code class="docutils literal notranslate"><span class="pre">lv_obj_set_x</span></code> and <code class="docutils literal notranslate"><span class="pre">lv_obj_set_y</span></code>. However, only one animation can exist with a given variable and function pair and <code class="docutils literal notranslate"><span class="pre">lv_anim_start()</span></code> will remove any existing animations for such a pair.</p>
+</section>
+<section id="animation-path">
+<h2>Animation path<a class="headerlink" href="#animation-path" title="此标题的永久链接"></a></h2>
+<p>You can control the path of an animation. The most simple case is linear, meaning the current value between <em>start</em> and <em>end</em> is changed with fixed steps.
+A <em>path</em> is a function which calculates the next value to set based on the current state of the animation. Currently, there are the following built-in path functions:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_anim_path_linear</span></code> linear animation</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_anim_path_step</span></code> change in one step at the end</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_anim_path_ease_in</span></code> slow at the beginning</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_anim_path_ease_out</span></code> slow at the end</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_anim_path_ease_in_out</span></code> slow at the beginning and end</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_anim_path_overshoot</span></code> overshoot the end value</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_anim_path_bounce</span></code> bounce back a little from the end value (like hitting a wall)</p></li>
+</ul>
+</section>
+<section id="speed-vs-time">
+<h2>Speed vs time<a class="headerlink" href="#speed-vs-time" title="此标题的永久链接"></a></h2>
+<p>By default, you set the animation time directly. But in some cases, setting the animation speed is more practical.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">lv_anim_speed_to_time(speed,</span> <span class="pre">start,</span> <span class="pre">end)</span></code> function calculates the required time in milliseconds to reach the end value from a start value with the given speed.
+The speed is interpreted in <em>unit/sec</em> dimension. For example,  <code class="docutils literal notranslate"><span class="pre">lv_anim_speed_to_time(20,0,100)</span></code> will yield 5000 milliseconds. For example, in the case of <code class="docutils literal notranslate"><span class="pre">lv_obj_set_x</span></code> <em>unit</em> is pixels so <em>20</em> means <em>20 px/sec</em> speed.</p>
+</section>
+<section id="delete-animations">
+<h2>Delete animations<a class="headerlink" href="#delete-animations" title="此标题的永久链接"></a></h2>
+<p>You can delete an animation with <code class="docutils literal notranslate"><span class="pre">lv_anim_del(var,</span> <span class="pre">func)</span></code> if you provide the animated variable and its animator function.</p>
+</section>
+<section id="timeline">
+<h2>Timeline<a class="headerlink" href="#timeline" title="此标题的永久链接"></a></h2>
+<p>A timeline is a collection of multiple animations which makes it easy to create complex composite animations.</p>
+<p>Firstly, create an animation element but don’t call <code class="docutils literal notranslate"><span class="pre">lv_anim_start()</span></code>.</p>
+<p>Secondly, create an animation timeline object by calling <code class="docutils literal notranslate"><span class="pre">lv_anim_timeline_create()</span></code>.</p>
+<p>Thirdly, add animation elements to the animation timeline by calling <code class="docutils literal notranslate"><span class="pre">lv_anim_timeline_add(at,</span> <span class="pre">start_time,</span> <span class="pre">&amp;a)</span></code>. <code class="docutils literal notranslate"><span class="pre">start_time</span></code> is the start time of the animation on the timeline. Note that <code class="docutils literal notranslate"><span class="pre">start_time</span></code> will override the value of <code class="docutils literal notranslate"><span class="pre">delay</span></code>.</p>
+<p>Finally, call <code class="docutils literal notranslate"><span class="pre">lv_anim_timeline_start(at)</span></code> to start the animation timeline.</p>
+<p>It supports forward and backward playback of the entire animation group, using <code class="docutils literal notranslate"><span class="pre">lv_anim_timeline_set_reverse(at,</span> <span class="pre">reverse)</span></code>.</p>
+<p>Call <code class="docutils literal notranslate"><span class="pre">lv_anim_timeline_stop(at)</span></code> to stop the animation timeline.</p>
+<p>Call <code class="docutils literal notranslate"><span class="pre">lv_anim_timeline_set_progress(at,</span> <span class="pre">progress)</span></code> function to set the state of the object corresponding to the progress of the timeline.</p>
+<p>Call <code class="docutils literal notranslate"><span class="pre">lv_anim_timeline_get_playtime(at)</span></code> function to get the total duration of the entire animation timeline.</p>
+<p>Call <code class="docutils literal notranslate"><span class="pre">lv_anim_timeline_get_reverse(at)</span></code> function to get whether to reverse the animation timeline.</p>
+<p>Call <code class="docutils literal notranslate"><span class="pre">lv_anim_timeline_del(at)</span></code> function to delete the animation timeline.</p>
+<p><img alt="" src="../_images/anim-timeline.png" /></p>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="此标题的永久链接"></a></h2>
+<div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>
+.. include:: ../../examples/anim/index.rst
+
+</pre></div>
+</div>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="此标题的永久链接"></a></h2>
+<div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>
+.. doxygenfile:: lv_anim.h
+  :project: lvgl
+
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2021, LVGL Kft.
+      <span class="lastupdated">最后更新于 2025 年 09 月 02 日.
+      </span></p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<style>
+  .wy-side-nav-search > div[role="search"] {
+    color: black;
+  }
+</style>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            let p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => {
+                let versionName = "";  
+                if(version == "master") versionName = "master (latest)";
+                else versionName = "v" + ((version.indexOf(".") != -1) ? version : (version + " (latest minor)"));
+                return `<option value="${version}">${versionName}</option>`;
+            })}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+document.addEventListener('DOMContentLoaded', (event) => {
+    function onIntersection(entries) {
+        entries.forEach(entry => {
+            let currentlyLoaded = entry.target.getAttribute("data-is-loaded") == "true";
+            let shouldBeLoaded = entry.intersectionRatio > 0;
+            if(currentlyLoaded != shouldBeLoaded) {
+                entry.target.setAttribute("data-is-loaded", shouldBeLoaded);
+                if(shouldBeLoaded) {
+                    let iframe = document.createElement("iframe");
+                    iframe.src = entry.target.getAttribute("data-real-src");
+                    entry.target.appendChild(iframe);
+                } else {
+                    let iframe = entry.target.querySelector("iframe");
+                    iframe.parentNode.removeChild(iframe);
+                }
+            }
+        });
+    }
+    const config = {
+        rootMargin: '600px 0px',
+        threshold: 0.01
+    };
+    let observer = new IntersectionObserver(onIntersection, config);
+    document.querySelectorAll(".lv-example").forEach(iframe => {
+        observer.observe(iframe);
+    });
+});
+</script>
+
+
+</body>
+</html>

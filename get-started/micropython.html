@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Micropython &mdash; LVGL  文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/fontawesome.min.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="canonical" href="https://docs.lvgl.io/0.0.1/get-started/micropython.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78811084-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+	gtag('config', 'UA-78811084-3', { 'anonymize_ip': true });
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_lvgl.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Micropython</a><ul>
+<li><a class="reference internal" href="#what-is-micropython">What is Micropython?</a><ul>
+<li><a class="reference internal" href="#highlights-of-micropython">Highlights of Micropython</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#why-micropython-lvgl">Why Micropython + LVGL?</a><ul>
+<li><a class="reference internal" href="#here-are-some-advantages-of-using-lvgl-in-micropython">Here are some advantages of using LVGL in Micropython:</a></li>
+<li><a class="reference internal" href="#micropython-lvgl-could-be-used-for">Micropython + LVGL could be used for:</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#so-what-does-it-look-like">So what does it look like?</a><ul>
+<li><a class="reference internal" href="#a-simple-example">A simple example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#how-can-i-use-it">How can I use it?</a><ul>
+<li><a class="reference internal" href="#online-simulator">Online Simulator</a></li>
+<li><a class="reference internal" href="#pc-simulator">PC Simulator</a></li>
+<li><a class="reference internal" href="#embedded-platform">Embedded platform</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#where-can-i-find-more-information">Where can I find more information?</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LVGL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Micropython</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/get-started/micropython.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>.. include:: /header.rst 
+:github_url: |github_link_base|/get-started/micropython.md
+</pre></div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="micropython">
+<h1>Micropython<a class="headerlink" href="#micropython" title="此标题的永久链接"></a></h1>
+<section id="what-is-micropython">
+<h2>What is Micropython?<a class="headerlink" href="#what-is-micropython" title="此标题的永久链接"></a></h2>
+<p><a class="reference external" href="http://micropython.org/">Micropython</a> is Python for microcontrollers.<br />
+Using Micropython, you can write Python3 code and run it even on a bare metal architecture with limited resources.</p>
+<section id="highlights-of-micropython">
+<h3>Highlights of Micropython<a class="headerlink" href="#highlights-of-micropython" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><p><strong>Compact</strong> - Fits and runs within just 256k of code space and 16k of RAM. No OS is needed, although you can also run it with an OS, if you want.</p></li>
+<li><p><strong>Compatible</strong> - Strives to be as compatible as possible with normal Python (known as CPython).</p></li>
+<li><p><strong>Versatile</strong> - Supports many architectures (x86, x86-64, ARM, ARM Thumb, Xtensa).</p></li>
+<li><p><strong>Interactive</strong> - No need for the compile-flash-boot cycle. With the REPL (interactive prompt) you can type commands and execute them immediately, run scripts, etc.</p></li>
+<li><p><strong>Popular</strong> - Many platforms are supported. The user base is growing bigger. Notable forks: <a class="reference external" href="https://github.com/micropython/micropython">MicroPython</a>, <a class="reference external" href="https://github.com/adafruit/circuitpython">CircuitPython</a>, <a class="reference external" href="https://github.com/loboris/MicroPython_ESP32_psRAM_LoBo">MicroPython_ESP32_psRAM_LoBo</a></p></li>
+<li><p><strong>Embedded Oriented</strong> - Comes with modules specifically for embedded systems, such as the <a class="reference external" href="https://docs.micropython.org/en/latest/library/machine.html#classes">machine module</a> for accessing low-level hardware (I/O pins, ADC, UART, SPI, I2C, RTC, Timers etc.)</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="why-micropython-lvgl">
+<h2>Why Micropython + LVGL?<a class="headerlink" href="#why-micropython-lvgl" title="此标题的永久链接"></a></h2>
+<p>Currently, Micropython <a class="reference external" href="https://forum.micropython.org/viewtopic.php?f=18&amp;t=5543">does not have a good high-level GUI library</a> by default. LVGL is an <a class="reference external" href="https://blog.lvgl.io/2018-12-13/extend-lvgl-objects">Object Oriented Component Based</a> high-level GUI library, which seems to be a natural candidate to map into a higher level language, such as Python. LVGL is implemented in C and its APIs are in C.</p>
+<section id="here-are-some-advantages-of-using-lvgl-in-micropython">
+<h3>Here are some advantages of using LVGL in Micropython:<a class="headerlink" href="#here-are-some-advantages-of-using-lvgl-in-micropython" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><p>Develop GUI in Python, a very popular high level language. Use paradigms such as Object-Oriented Programming.</p></li>
+<li><p>Usually, GUI development requires multiple iterations to get things right. With C, each iteration consists of <strong><code class="docutils literal notranslate"><span class="pre">Change</span> <span class="pre">code</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">Build</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">Flash</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">Run</span></code></strong>.<br />
+In Micropython it's just <strong><code class="docutils literal notranslate"><span class="pre">Change</span> <span class="pre">code</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">Run</span></code></strong> ! You can even run commands interactively using the <a class="reference external" href="https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">REPL</a> (the interactive prompt)</p></li>
+</ul>
+</section>
+<section id="micropython-lvgl-could-be-used-for">
+<h3>Micropython + LVGL could be used for:<a class="headerlink" href="#micropython-lvgl-could-be-used-for" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><p>Fast prototyping GUI.</p></li>
+<li><p>Shortening the cycle of changing and fine-tuning the GUI.</p></li>
+<li><p>Modelling the GUI in a more abstract way by defining reusable composite objects, taking advantage of Python's language features such as Inheritance, Closures, List Comprehension, Generators, Exception Handling, Arbitrary Precision Integers and others.</p></li>
+<li><p>Make LVGL accessible to a larger audience. No need to know C to create a nice GUI on an embedded system.<br />
+This goes well with <a class="reference external" href="https://learn.adafruit.com/welcome-to-circuitpython/what-is-circuitpython">CircuitPython vision</a>. CircuitPython was designed with education in mind, to make it easier for new or unexperienced users to get started with embedded development.</p></li>
+<li><p>Creating tools to work with LVGL at a higher level (e.g. drag-and-drop designer).</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="so-what-does-it-look-like">
+<h2>So what does it look like?<a class="headerlink" href="#so-what-does-it-look-like" title="此标题的永久链接"></a></h2>
+<blockquote>
+<div><p>TL;DR:
+It's very much like the C API, but Object-Oriented for LVGL components.</p>
+</div></blockquote>
+<p>Let's dive right into an example!</p>
+<section id="a-simple-example">
+<h3>A simple example<a class="headerlink" href="#a-simple-example" title="此标题的永久链接"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">lvgl</span> <span class="k">as</span> <span class="nn">lv</span>
+<span class="n">lv</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<span class="n">scr</span> <span class="o">=</span> <span class="n">lv</span><span class="o">.</span><span class="n">obj</span><span class="p">()</span>
+<span class="n">btn</span> <span class="o">=</span> <span class="n">lv</span><span class="o">.</span><span class="n">btn</span><span class="p">(</span><span class="n">scr</span><span class="p">)</span>
+<span class="n">btn</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="n">lv</span><span class="o">.</span><span class="n">scr_act</span><span class="p">(),</span> <span class="n">lv</span><span class="o">.</span><span class="n">ALIGN</span><span class="o">.</span><span class="n">CENTER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">label</span> <span class="o">=</span> <span class="n">lv</span><span class="o">.</span><span class="n">label</span><span class="p">(</span><span class="n">btn</span><span class="p">)</span>
+<span class="n">label</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="s2">&quot;Button&quot;</span><span class="p">)</span>
+<span class="n">lv</span><span class="o">.</span><span class="n">scr_load</span><span class="p">(</span><span class="n">scr</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="how-can-i-use-it">
+<h2>How can I use it?<a class="headerlink" href="#how-can-i-use-it" title="此标题的永久链接"></a></h2>
+<section id="online-simulator">
+<h3>Online Simulator<a class="headerlink" href="#online-simulator" title="此标题的永久链接"></a></h3>
+<p>If you want to experiment with LVGL + Micropython without downloading anything - you can use our online simulator!<br />
+It's a fully functional LVGL + Micropython that runs entirely in the browser and allows you to edit a python script and run it.</p>
+<p><a class="reference external" href="https://sim.lvgl.io/">Click here to experiment on the online simulator</a></p>
+<p><a class="reference external" href="https://sim.lvgl.io/v7/micropython/ports/javascript/bundle_out/index.html?script=https://gist.githubusercontent.com/amirgon/51299ce9b6448328a855826149482ae6/raw/0f235c6d40462fd2f0e55364b874f14fe3fd613c/lvgl_hello_world.py&amp;script_startup=https://gist.githubusercontent.com/amirgon/7bf15a66ba6d959bbf90d10f3da571be/raw/8684b5fa55318c184b1310663b187aaab5c65be6/init_lv_mp_js.py">Hello World</a></p>
+<p>Note: the online simulator is available for lvgl v6 and v7.</p>
+</section>
+<section id="pc-simulator">
+<h3>PC Simulator<a class="headerlink" href="#pc-simulator" title="此标题的永久链接"></a></h3>
+<p>Micropython is ported to many platforms. One notable port is &quot;unix&quot;, which allows you to build and run Micropython (+LVGL) on a Linux machine. (On a Windows machine you might need Virtual Box or WSL or MinGW or Cygwin etc.)</p>
+<p><a class="reference external" href="https://github.com/lvgl/lv_micropython">Click here to know more information about building and running the unix port</a></p>
+</section>
+<section id="embedded-platform">
+<h3>Embedded platform<a class="headerlink" href="#embedded-platform" title="此标题的永久链接"></a></h3>
+<p>In the end, the goal is to run it all on an embedded platform.<br />
+Both Micropython and LVGL can be used on many embedded architectures, such as stm32, ESP32 etc.<br />
+You would also need display and input drivers. We have some sample drivers (ESP32+ILI9341, as well as some other examples), but chances are you would want to create your own input/display drivers for your specific hardware.
+Drivers can be implemented either in C as a Micropython module, or in pure Micropython!</p>
+</section>
+</section>
+<section id="where-can-i-find-more-information">
+<h2>Where can I find more information?<a class="headerlink" href="#where-can-i-find-more-information" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>In this <a class="reference external" href="https://blog.lvgl.io/2019-02-20/micropython-bindings">Blog Post</a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_micropython</span></code> <a class="reference external" href="https://github.com/lvgl/lv_micropython">README</a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_binding_micropython</span></code> <a class="reference external" href="https://github.com/lvgl/lv_binding_micropython">README</a></p></li>
+<li><p>The <a class="reference external" href="https://forum.lvgl.io/c/micropython">LVGL micropython forum</a> (Feel free to ask anything!)</p></li>
+<li><p>At Micropython: <a class="reference external" href="http://docs.micropython.org/en/latest/">docs</a> and <a class="reference external" href="https://forum.micropython.org/">forum</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2021, LVGL Kft.
+      <span class="lastupdated">最后更新于 2025 年 09 月 02 日.
+      </span></p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<style>
+  .wy-side-nav-search > div[role="search"] {
+    color: black;
+  }
+</style>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            let p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => {
+                let versionName = "";  
+                if(version == "master") versionName = "master (latest)";
+                else versionName = "v" + ((version.indexOf(".") != -1) ? version : (version + " (latest minor)"));
+                return `<option value="${version}">${versionName}</option>`;
+            })}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+document.addEventListener('DOMContentLoaded', (event) => {
+    function onIntersection(entries) {
+        entries.forEach(entry => {
+            let currentlyLoaded = entry.target.getAttribute("data-is-loaded") == "true";
+            let shouldBeLoaded = entry.intersectionRatio > 0;
+            if(currentlyLoaded != shouldBeLoaded) {
+                entry.target.setAttribute("data-is-loaded", shouldBeLoaded);
+                if(shouldBeLoaded) {
+                    let iframe = document.createElement("iframe");
+                    iframe.src = entry.target.getAttribute("data-real-src");
+                    entry.target.appendChild(iframe);
+                } else {
+                    let iframe = entry.target.querySelector("iframe");
+                    iframe.parentNode.removeChild(iframe);
+                }
+            }
+        });
+    }
+    const config = {
+        rootMargin: '600px 0px',
+        threshold: 0.01
+    };
+    let observer = new IntersectionObserver(onIntersection, config);
+    document.querySelectorAll(".lv-example").forEach(iframe => {
+        observer.observe(iframe);
+    });
+});
+</script>
+
+
+</body>
+</html>

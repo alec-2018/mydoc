@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Style properties &mdash; LVGL  文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/fontawesome.min.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="canonical" href="https://docs.lvgl.io/0.0.1/overview/style-props.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78811084-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+	gtag('config', 'UA-78811084-3', { 'anonymize_ip': true });
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_lvgl.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Style properties</a><ul>
+<li><a class="reference internal" href="#size-and-position">Size and position</a><ul>
+<li><a class="reference internal" href="#width">width</a></li>
+<li><a class="reference internal" href="#min-width">min_width</a></li>
+<li><a class="reference internal" href="#max-width">max_width</a></li>
+<li><a class="reference internal" href="#height">height</a></li>
+<li><a class="reference internal" href="#min-height">min_height</a></li>
+<li><a class="reference internal" href="#max-height">max_height</a></li>
+<li><a class="reference internal" href="#x">x</a></li>
+<li><a class="reference internal" href="#y">y</a></li>
+<li><a class="reference internal" href="#align">align</a></li>
+<li><a class="reference internal" href="#transform-width">transform_width</a></li>
+<li><a class="reference internal" href="#transform-height">transform_height</a></li>
+<li><a class="reference internal" href="#translate-x">translate_x</a></li>
+<li><a class="reference internal" href="#translate-y">translate_y</a></li>
+<li><a class="reference internal" href="#transform-zoom">transform_zoom</a></li>
+<li><a class="reference internal" href="#transform-angle">transform_angle</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#padding">Padding</a><ul>
+<li><a class="reference internal" href="#pad-top">pad_top</a></li>
+<li><a class="reference internal" href="#pad-bottom">pad_bottom</a></li>
+<li><a class="reference internal" href="#pad-left">pad_left</a></li>
+<li><a class="reference internal" href="#pad-right">pad_right</a></li>
+<li><a class="reference internal" href="#pad-row">pad_row</a></li>
+<li><a class="reference internal" href="#pad-column">pad_column</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#background">Background</a><ul>
+<li><a class="reference internal" href="#bg-color">bg_color</a></li>
+<li><a class="reference internal" href="#bg-opa">bg_opa</a></li>
+<li><a class="reference internal" href="#bg-grad-color">bg_grad_color</a></li>
+<li><a class="reference internal" href="#bg-grad-dir">bg_grad_dir</a></li>
+<li><a class="reference internal" href="#bg-main-stop">bg_main_stop</a></li>
+<li><a class="reference internal" href="#bg-grad-stop">bg_grad_stop</a></li>
+<li><a class="reference internal" href="#bg-gradient">bg_gradient</a></li>
+<li><a class="reference internal" href="#bg-dither-mode">bg_dither_mode</a></li>
+<li><a class="reference internal" href="#bg-img-src">bg_img_src</a></li>
+<li><a class="reference internal" href="#bg-img-opa">bg_img_opa</a></li>
+<li><a class="reference internal" href="#bg-img-recolor">bg_img_recolor</a></li>
+<li><a class="reference internal" href="#bg-img-recolor-opa">bg_img_recolor_opa</a></li>
+<li><a class="reference internal" href="#bg-img-tiled">bg_img_tiled</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#border">Border</a><ul>
+<li><a class="reference internal" href="#border-color">border_color</a></li>
+<li><a class="reference internal" href="#border-opa">border_opa</a></li>
+<li><a class="reference internal" href="#border-width">border_width</a></li>
+<li><a class="reference internal" href="#border-side">border_side</a></li>
+<li><a class="reference internal" href="#border-post">border_post</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#outline">Outline</a><ul>
+<li><a class="reference internal" href="#outline-width">outline_width</a></li>
+<li><a class="reference internal" href="#outline-color">outline_color</a></li>
+<li><a class="reference internal" href="#outline-opa">outline_opa</a></li>
+<li><a class="reference internal" href="#outline-pad">outline_pad</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#shadow">Shadow</a><ul>
+<li><a class="reference internal" href="#shadow-width">shadow_width</a></li>
+<li><a class="reference internal" href="#shadow-ofs-x">shadow_ofs_x</a></li>
+<li><a class="reference internal" href="#shadow-ofs-y">shadow_ofs_y</a></li>
+<li><a class="reference internal" href="#shadow-spread">shadow_spread</a></li>
+<li><a class="reference internal" href="#shadow-color">shadow_color</a></li>
+<li><a class="reference internal" href="#shadow-opa">shadow_opa</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#image">Image</a><ul>
+<li><a class="reference internal" href="#img-opa">img_opa</a></li>
+<li><a class="reference internal" href="#img-recolor">img_recolor</a></li>
+<li><a class="reference internal" href="#img-recolor-opa">img_recolor_opa</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#line">Line</a><ul>
+<li><a class="reference internal" href="#line-width">line_width</a></li>
+<li><a class="reference internal" href="#line-dash-width">line_dash_width</a></li>
+<li><a class="reference internal" href="#line-dash-gap">line_dash_gap</a></li>
+<li><a class="reference internal" href="#line-rounded">line_rounded</a></li>
+<li><a class="reference internal" href="#line-color">line_color</a></li>
+<li><a class="reference internal" href="#line-opa">line_opa</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#arc">Arc</a><ul>
+<li><a class="reference internal" href="#arc-width">arc_width</a></li>
+<li><a class="reference internal" href="#arc-rounded">arc_rounded</a></li>
+<li><a class="reference internal" href="#arc-color">arc_color</a></li>
+<li><a class="reference internal" href="#arc-opa">arc_opa</a></li>
+<li><a class="reference internal" href="#arc-img-src">arc_img_src</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#text">Text</a><ul>
+<li><a class="reference internal" href="#text-color">text_color</a></li>
+<li><a class="reference internal" href="#text-opa">text_opa</a></li>
+<li><a class="reference internal" href="#text-font">text_font</a></li>
+<li><a class="reference internal" href="#text-letter-space">text_letter_space</a></li>
+<li><a class="reference internal" href="#text-line-space">text_line_space</a></li>
+<li><a class="reference internal" href="#text-decor">text_decor</a></li>
+<li><a class="reference internal" href="#text-align">text_align</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#miscellaneous">Miscellaneous</a><ul>
+<li><a class="reference internal" href="#radius">radius</a></li>
+<li><a class="reference internal" href="#clip-corner">clip_corner</a></li>
+<li><a class="reference internal" href="#opa">opa</a></li>
+<li><a class="reference internal" href="#color-filter-dsc">color_filter_dsc</a></li>
+<li><a class="reference internal" href="#color-filter-opa">color_filter_opa</a></li>
+<li><a class="reference internal" href="#anim-time">anim_time</a></li>
+<li><a class="reference internal" href="#anim-speed">anim_speed</a></li>
+<li><a class="reference internal" href="#transition">transition</a></li>
+<li><a class="reference internal" href="#blend-mode">blend_mode</a></li>
+<li><a class="reference internal" href="#layout">layout</a></li>
+<li><a class="reference internal" href="#base-dir">base_dir</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LVGL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Style properties</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/overview/style-props.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="style-properties">
+<h1>Style properties<a class="headerlink" href="#style-properties" title="此标题的永久链接"></a></h1>
+<section id="size-and-position">
+<h2>Size and position<a class="headerlink" href="#size-and-position" title="此标题的永久链接"></a></h2>
+<p>Properties related to size, position, alignment and layout of the objects.</p>
+<section id="width">
+<h3>width<a class="headerlink" href="#width" title="此标题的永久链接"></a></h3>
+<p>Sets the width of object. Pixel, percentage and <code class="docutils literal notranslate"><span class="pre">LV_SIZE_CONTENT</span></code> values can be used. Percentage values are relative to the width of the parent's content area.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> Widget dependent</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="min-width">
+<h3>min_width<a class="headerlink" href="#min-width" title="此标题的永久链接"></a></h3>
+<p>Sets a minimal width. Pixel and percentage values can be used. Percentage values are relative to the width of the parent's content area.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="max-width">
+<h3>max_width<a class="headerlink" href="#max-width" title="此标题的永久链接"></a></h3>
+<p>Sets a maximal width. Pixel and percentage values can be used. Percentage values are relative to the width of the parent's content area.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> LV_COORD_MAX</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="height">
+<h3>height<a class="headerlink" href="#height" title="此标题的永久链接"></a></h3>
+<p>Sets the height of object. Pixel, percentage and <code class="docutils literal notranslate"><span class="pre">LV_SIZE_CONTENT</span></code> can be used. Percentage values are relative to the height of the parent's content area.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> Widget dependent</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="min-height">
+<h3>min_height<a class="headerlink" href="#min-height" title="此标题的永久链接"></a></h3>
+<p>Sets a minimal height. Pixel and percentage values can be used. Percentage values are relative to the width of the parent's content area.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="max-height">
+<h3>max_height<a class="headerlink" href="#max-height" title="此标题的永久链接"></a></h3>
+<p>Sets a maximal height. Pixel and percentage values can be used. Percentage values are relative to the height of the parent's content area.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> LV_COORD_MAX</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="x">
+<h3>x<a class="headerlink" href="#x" title="此标题的永久链接"></a></h3>
+<p>Set the X coordinate of the object considering the set <code class="docutils literal notranslate"><span class="pre">align</span></code>. Pixel and percentage values can be used. Percentage values are relative to the width of the parent's content area.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="y">
+<h3>y<a class="headerlink" href="#y" title="此标题的永久链接"></a></h3>
+<p>Set the Y coordinate of the object considering the set <code class="docutils literal notranslate"><span class="pre">align</span></code>. Pixel and percentage values can be used. Percentage values are relative to the height of the parent's content area.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="align">
+<h3>align<a class="headerlink" href="#align" title="此标题的永久链接"></a></h3>
+<p>Set the alignment which tells from which point of the parent the X and Y coordinates should be interpreted. The possible values are: <code class="docutils literal notranslate"><span class="pre">LV_ALIGN_DEFAULT</span></code>, <code class="docutils literal notranslate"><span class="pre">LV_ALIGN_TOP_LEFT/MID/RIGHT</span></code>, <code class="docutils literal notranslate"><span class="pre">LV_ALIGN_BOTTOM_LEFT/MID/RIGHT</span></code>, <code class="docutils literal notranslate"><span class="pre">LV_ALIGN_LEFT/RIGHT_MID</span></code>, <code class="docutils literal notranslate"><span class="pre">LV_ALIGN_CENTER</span></code>. <code class="docutils literal notranslate"><span class="pre">LV_ALIGN_DEFAULT</span></code> means <code class="docutils literal notranslate"><span class="pre">LV_ALIGN_TOP_LEFT</span></code> with LTR base direction and <code class="docutils literal notranslate"><span class="pre">LV_ALIGN_TOP_RIGHT</span></code> with RTL base direction.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `LV_ALIGN_DEFAULT`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="transform-width">
+<h3>transform_width<a class="headerlink" href="#transform-width" title="此标题的永久链接"></a></h3>
+<p>Make the object wider on both sides with this value. Pixel and percentage (with <code class="docutils literal notranslate"><span class="pre">lv_pct(x)</span></code>) values can be used. Percentage values are relative to the object's width.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> Yes</li>
+</ul>
+</section>
+<section id="transform-height">
+<h3>transform_height<a class="headerlink" href="#transform-height" title="此标题的永久链接"></a></h3>
+<p>Make the object higher on both sides with this value. Pixel and percentage (with <code class="docutils literal notranslate"><span class="pre">lv_pct(x)</span></code>) values can be used. Percentage values are relative to the object's height.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> Yes</li>
+</ul>
+</section>
+<section id="translate-x">
+<h3>translate_x<a class="headerlink" href="#translate-x" title="此标题的永久链接"></a></h3>
+<p>Move the object with this value in X direction. Applied after layouts, aligns and other positioning. Pixel and percentage (with <code class="docutils literal notranslate"><span class="pre">lv_pct(x)</span></code>) values can be used. Percentage values are relative to the object's width.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="translate-y">
+<h3>translate_y<a class="headerlink" href="#translate-y" title="此标题的永久链接"></a></h3>
+<p>Move the object with this value in Y direction. Applied after layouts, aligns and other positioning. Pixel and percentage (with <code class="docutils literal notranslate"><span class="pre">lv_pct(x)</span></code>) values can be used. Percentage values are relative to the object's height.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="transform-zoom">
+<h3>transform_zoom<a class="headerlink" href="#transform-zoom" title="此标题的永久链接"></a></h3>
+<p>Zoom image-like objects. Multiplied with the zoom set on the object. The value 256 (or <code class="docutils literal notranslate"><span class="pre">LV_IMG_ZOOM_NONE</span></code>) means normal size, 128 half size, 512 double size, and so on</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> Yes</li>
+</ul>
+</section>
+<section id="transform-angle">
+<h3>transform_angle<a class="headerlink" href="#transform-angle" title="此标题的永久链接"></a></h3>
+<p>Rotate image-like objects. Added to the rotation set on the object. The value is interpreted in 0.1 degree unit. E.g. 45 deg. = 450</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> Yes</li>
+</ul>
+</section>
+</section>
+<section id="padding">
+<h2>Padding<a class="headerlink" href="#padding" title="此标题的永久链接"></a></h2>
+<p>Properties to describe spacing betwwen the parent's sides and the children and among the children. Very similar to the padding properties in HTML.</p>
+<section id="pad-top">
+<h3>pad_top<a class="headerlink" href="#pad-top" title="此标题的永久链接"></a></h3>
+<p>Sets the padding on the top. It makes the content area smaller in this direction.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="pad-bottom">
+<h3>pad_bottom<a class="headerlink" href="#pad-bottom" title="此标题的永久链接"></a></h3>
+<p>Sets the padding on the bottom. It makes the content area smaller in this direction.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="pad-left">
+<h3>pad_left<a class="headerlink" href="#pad-left" title="此标题的永久链接"></a></h3>
+<p>Sets the padding on the left. It makes the content area smaller in this direction.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="pad-right">
+<h3>pad_right<a class="headerlink" href="#pad-right" title="此标题的永久链接"></a></h3>
+<p>Sets the padding on the right. It makes the content area smaller in this direction.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="pad-row">
+<h3>pad_row<a class="headerlink" href="#pad-row" title="此标题的永久链接"></a></h3>
+<p>Sets the padding between the rows. Used by the layouts.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="pad-column">
+<h3>pad_column<a class="headerlink" href="#pad-column" title="此标题的永久链接"></a></h3>
+<p>Sets the padding between the columns. Used by the layouts.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+</section>
+<section id="background">
+<h2>Background<a class="headerlink" href="#background" title="此标题的永久链接"></a></h2>
+<p>Properties to describe the background color and image of the objects.</p>
+<section id="bg-color">
+<h3>bg_color<a class="headerlink" href="#bg-color" title="此标题的永久链接"></a></h3>
+<p>Set the background color of the object.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `0xffffff`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="bg-opa">
+<h3>bg_opa<a class="headerlink" href="#bg-opa" title="此标题的永久链接"></a></h3>
+<p>Set the opacity of the background. Value 0, <code class="docutils literal notranslate"><span class="pre">LV_OPA_0</span></code> or <code class="docutils literal notranslate"><span class="pre">LV_OPA_TRANSP</span></code> means fully transparent, 256, <code class="docutils literal notranslate"><span class="pre">LV_OPA_100</span></code> or <code class="docutils literal notranslate"><span class="pre">LV_OPA_COVER</span></code> means fully covering, other values or LV_OPA_10, LV_OPA_20, etc means semi transparency.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `LV_OPA_TRANSP`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="bg-grad-color">
+<h3>bg_grad_color<a class="headerlink" href="#bg-grad-color" title="此标题的永久链接"></a></h3>
+<p>Set the gradient color of the background. Used only if <code class="docutils literal notranslate"><span class="pre">grad_dir</span></code> is not <code class="docutils literal notranslate"><span class="pre">LV_GRAD_DIR_NONE</span></code></p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `0x000000`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="bg-grad-dir">
+<h3>bg_grad_dir<a class="headerlink" href="#bg-grad-dir" title="此标题的永久链接"></a></h3>
+<p>Set the direction of the gradient of the background. The possible values are <code class="docutils literal notranslate"><span class="pre">LV_GRAD_DIR_NONE/HOR/VER</span></code>.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `LV_GRAD_DIR_NONE`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="bg-main-stop">
+<h3>bg_main_stop<a class="headerlink" href="#bg-main-stop" title="此标题的永久链接"></a></h3>
+<p>Set the point from which the background color should start for gradients. 0 means to top/left side, 255 the bottom/right side, 128 the center, and so on</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="bg-grad-stop">
+<h3>bg_grad_stop<a class="headerlink" href="#bg-grad-stop" title="此标题的永久链接"></a></h3>
+<p>Set the point from which the background's gradient color should start. 0 means to top/left side, 255 the bottom/right side, 128 the center, and so on</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 255</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="bg-gradient">
+<h3>bg_gradient<a class="headerlink" href="#bg-gradient" title="此标题的永久链接"></a></h3>
+<p>Set the gradient definition for the body. The pointed instance must exist while the object is alive. NULL to disable</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `NULL`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="bg-dither-mode">
+<h3>bg_dither_mode<a class="headerlink" href="#bg-dither-mode" title="此标题的永久链接"></a></h3>
+<p>Set the dithering mode of the gradient of the background. The possible values are <code class="docutils literal notranslate"><span class="pre">LV_DITHER_NONE/ORDERED/ERR_DIFF</span></code>.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `LV_DITHER_NONE`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="bg-img-src">
+<h3>bg_img_src<a class="headerlink" href="#bg-img-src" title="此标题的永久链接"></a></h3>
+<p>Set a background image. Can be a pointer to <code class="docutils literal notranslate"><span class="pre">lv_img_dsc_t</span></code>, a path to a file or an <code class="docutils literal notranslate"><span class="pre">LV_SYMBOL_...</span></code></p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `NULL`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> Yes</li>
+</ul>
+</section>
+<section id="bg-img-opa">
+<h3>bg_img_opa<a class="headerlink" href="#bg-img-opa" title="此标题的永久链接"></a></h3>
+<p>Set the opacity of the background image. Value 0, <code class="docutils literal notranslate"><span class="pre">LV_OPA_0</span></code> or <code class="docutils literal notranslate"><span class="pre">LV_OPA_TRANSP</span></code> means fully transparent, 256, <code class="docutils literal notranslate"><span class="pre">LV_OPA_100</span></code> or <code class="docutils literal notranslate"><span class="pre">LV_OPA_COVER</span></code> means fully covering, other values or LV_OPA_10, LV_OPA_20, etc means semi transparency.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `LV_OPA_COVER`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="bg-img-recolor">
+<h3>bg_img_recolor<a class="headerlink" href="#bg-img-recolor" title="此标题的永久链接"></a></h3>
+<p>Set a color to mix to the background image.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `0x000000`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="bg-img-recolor-opa">
+<h3>bg_img_recolor_opa<a class="headerlink" href="#bg-img-recolor-opa" title="此标题的永久链接"></a></h3>
+<p>Set the intensity of background image recoloring. Value 0, <code class="docutils literal notranslate"><span class="pre">LV_OPA_0</span></code> or <code class="docutils literal notranslate"><span class="pre">LV_OPA_TRANSP</span></code> means no mixing, 256, <code class="docutils literal notranslate"><span class="pre">LV_OPA_100</span></code> or <code class="docutils literal notranslate"><span class="pre">LV_OPA_COVER</span></code> means full recoloring, other values or LV_OPA_10, LV_OPA_20, etc are interpreted proportionally.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `LV_OPA_TRANSP`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="bg-img-tiled">
+<h3>bg_img_tiled<a class="headerlink" href="#bg-img-tiled" title="此标题的永久链接"></a></h3>
+<p>If enbaled the background image will be tiled. The possible values are <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+</section>
+<section id="border">
+<h2>Border<a class="headerlink" href="#border" title="此标题的永久链接"></a></h2>
+<p>Properties to describe the borders</p>
+<section id="border-color">
+<h3>border_color<a class="headerlink" href="#border-color" title="此标题的永久链接"></a></h3>
+<p>Set the color of the border</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `0x000000`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="border-opa">
+<h3>border_opa<a class="headerlink" href="#border-opa" title="此标题的永久链接"></a></h3>
+<p>Set the opcitiy of the border. Value 0, <code class="docutils literal notranslate"><span class="pre">LV_OPA_0</span></code> or <code class="docutils literal notranslate"><span class="pre">LV_OPA_TRANSP</span></code> means fully transparent, 256, <code class="docutils literal notranslate"><span class="pre">LV_OPA_100</span></code> or <code class="docutils literal notranslate"><span class="pre">LV_OPA_COVER</span></code> means fully covering, other values or LV_OPA_10, LV_OPA_20, etc means semi transparency.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `LV_OPA_COVER`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="border-width">
+<h3>border_width<a class="headerlink" href="#border-width" title="此标题的永久链接"></a></h3>
+<p>Set hte width of the border. Only pixel values can be used.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="border-side">
+<h3>border_side<a class="headerlink" href="#border-side" title="此标题的永久链接"></a></h3>
+<p>Set ony which side(s) the border should be drawn. The possible values are <code class="docutils literal notranslate"><span class="pre">LV_BORDER_SIDE_NONE/TOP/BOTTOM/LEFT/RIGHT/INTERNAL</span></code>. OR-ed calues an be used as well, e.g. <code class="docutils literal notranslate"><span class="pre">LV_BORDER_SIDE_TOP</span> <span class="pre">|</span> <span class="pre">LV_BORDER_SIDE_LEFT</span></code>.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `LV_BORDER_SIDE_NONE`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="border-post">
+<h3>border_post<a class="headerlink" href="#border-post" title="此标题的永久链接"></a></h3>
+<p>Sets whether the the border should be drawn before or after the children ar drawn. <code class="docutils literal notranslate"><span class="pre">true</span></code>: after children, <code class="docutils literal notranslate"><span class="pre">false</span></code>: before children</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+</section>
+<section id="outline">
+<h2>Outline<a class="headerlink" href="#outline" title="此标题的永久链接"></a></h2>
+<p>Properties to describe the outline. It's like a border but drawn outside of the rectangles.</p>
+<section id="outline-width">
+<h3>outline_width<a class="headerlink" href="#outline-width" title="此标题的永久链接"></a></h3>
+<p>Set the width of the outline in pixels.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> Yes</li>
+</ul>
+</section>
+<section id="outline-color">
+<h3>outline_color<a class="headerlink" href="#outline-color" title="此标题的永久链接"></a></h3>
+<p>Set the color of the outline.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `0x000000`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="outline-opa">
+<h3>outline_opa<a class="headerlink" href="#outline-opa" title="此标题的永久链接"></a></h3>
+<p>Set the opacity of the outline. Value 0, <code class="docutils literal notranslate"><span class="pre">LV_OPA_0</span></code> or <code class="docutils literal notranslate"><span class="pre">LV_OPA_TRANSP</span></code> means fully transparent, 256, <code class="docutils literal notranslate"><span class="pre">LV_OPA_100</span></code> or <code class="docutils literal notranslate"><span class="pre">LV_OPA_COVER</span></code> means fully covering, other values or LV_OPA_10, LV_OPA_20, etc means semi transparency.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `LV_OPA_COVER`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> Yes</li>
+</ul>
+</section>
+<section id="outline-pad">
+<h3>outline_pad<a class="headerlink" href="#outline-pad" title="此标题的永久链接"></a></h3>
+<p>Set the padding of the outline, i.e. the gap between object and the outline.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> Yes</li>
+</ul>
+</section>
+</section>
+<section id="shadow">
+<h2>Shadow<a class="headerlink" href="#shadow" title="此标题的永久链接"></a></h2>
+<p>Properties to describe the shadow drawn under the rectangles.</p>
+<section id="shadow-width">
+<h3>shadow_width<a class="headerlink" href="#shadow-width" title="此标题的永久链接"></a></h3>
+<p>Set the width of the shadow in pixels. The value should be &gt;= 0.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> Yes</li>
+</ul>
+</section>
+<section id="shadow-ofs-x">
+<h3>shadow_ofs_x<a class="headerlink" href="#shadow-ofs-x" title="此标题的永久链接"></a></h3>
+<p>Set an offset on the shadow in pixels in X direction.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> Yes</li>
+</ul>
+</section>
+<section id="shadow-ofs-y">
+<h3>shadow_ofs_y<a class="headerlink" href="#shadow-ofs-y" title="此标题的永久链接"></a></h3>
+<p>Set an offset on the shadow in pixels in Y direction.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> Yes</li>
+</ul>
+</section>
+<section id="shadow-spread">
+<h3>shadow_spread<a class="headerlink" href="#shadow-spread" title="此标题的永久链接"></a></h3>
+<p>Make the shadow calcuation to use a larger or smaller rectangle as base. The value can be in pixel to make the area larger/smaller</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> Yes</li>
+</ul>
+</section>
+<section id="shadow-color">
+<h3>shadow_color<a class="headerlink" href="#shadow-color" title="此标题的永久链接"></a></h3>
+<p>Set the color of the shadow</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `0x000000`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="shadow-opa">
+<h3>shadow_opa<a class="headerlink" href="#shadow-opa" title="此标题的永久链接"></a></h3>
+<p>Set the opacity of the shadow. Value 0, <code class="docutils literal notranslate"><span class="pre">LV_OPA_0</span></code> or <code class="docutils literal notranslate"><span class="pre">LV_OPA_TRANSP</span></code> means fully transparent, 256, <code class="docutils literal notranslate"><span class="pre">LV_OPA_100</span></code> or <code class="docutils literal notranslate"><span class="pre">LV_OPA_COVER</span></code> means fully covering, other values or LV_OPA_10, LV_OPA_20, etc means semi transparency.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `LV_OPA_COVER`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> Yes</li>
+</ul>
+</section>
+</section>
+<section id="image">
+<h2>Image<a class="headerlink" href="#image" title="此标题的永久链接"></a></h2>
+<p>Properties to describe the images</p>
+<section id="img-opa">
+<h3>img_opa<a class="headerlink" href="#img-opa" title="此标题的永久链接"></a></h3>
+<p>Set the opacity of an image. Value 0, <code class="docutils literal notranslate"><span class="pre">LV_OPA_0</span></code> or <code class="docutils literal notranslate"><span class="pre">LV_OPA_TRANSP</span></code> means fully transparent, 256, <code class="docutils literal notranslate"><span class="pre">LV_OPA_100</span></code> or <code class="docutils literal notranslate"><span class="pre">LV_OPA_COVER</span></code> means fully covering, other values or LV_OPA_10, LV_OPA_20, etc means semi transparency.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `LV_OPA_COVER`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="img-recolor">
+<h3>img_recolor<a class="headerlink" href="#img-recolor" title="此标题的永久链接"></a></h3>
+<p>Set color to mixt to the image.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `0x000000`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="img-recolor-opa">
+<h3>img_recolor_opa<a class="headerlink" href="#img-recolor-opa" title="此标题的永久链接"></a></h3>
+<p>Set the intensity of the color mixing. Value 0, <code class="docutils literal notranslate"><span class="pre">LV_OPA_0</span></code> or <code class="docutils literal notranslate"><span class="pre">LV_OPA_TRANSP</span></code> means fully transparent, 256, <code class="docutils literal notranslate"><span class="pre">LV_OPA_100</span></code> or <code class="docutils literal notranslate"><span class="pre">LV_OPA_COVER</span></code> means fully covering, other values or LV_OPA_10, LV_OPA_20, etc means semi transparency.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+</section>
+<section id="line">
+<h2>Line<a class="headerlink" href="#line" title="此标题的永久链接"></a></h2>
+<p>Properties to describe line-like objects</p>
+<section id="line-width">
+<h3>line_width<a class="headerlink" href="#line-width" title="此标题的永久链接"></a></h3>
+<p>Set the width of the lines in pixel.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> Yes</li>
+</ul>
+</section>
+<section id="line-dash-width">
+<h3>line_dash_width<a class="headerlink" href="#line-dash-width" title="此标题的永久链接"></a></h3>
+<p>Set the width of dashes in pixel. Note that dash works only on horizontal and vertical lines</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="line-dash-gap">
+<h3>line_dash_gap<a class="headerlink" href="#line-dash-gap" title="此标题的永久链接"></a></h3>
+<p>Set the gap between dashes in pixel. Note that dash works only on horizontal and vertical lines</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="line-rounded">
+<h3>line_rounded<a class="headerlink" href="#line-rounded" title="此标题的永久链接"></a></h3>
+<p>Make the end points of the lines rounded. <code class="docutils literal notranslate"><span class="pre">true</span></code>: rounded, <code class="docutils literal notranslate"><span class="pre">false</span></code>: perpendicular line ending</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="line-color">
+<h3>line_color<a class="headerlink" href="#line-color" title="此标题的永久链接"></a></h3>
+<p>Set the color fo the lines.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `0x000000`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="line-opa">
+<h3>line_opa<a class="headerlink" href="#line-opa" title="此标题的永久链接"></a></h3>
+<p>Set the opacity of the lines.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `LV_OPA_COVER`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+</section>
+<section id="arc">
+<h2>Arc<a class="headerlink" href="#arc" title="此标题的永久链接"></a></h2>
+<p>TODO</p>
+<section id="arc-width">
+<h3>arc_width<a class="headerlink" href="#arc-width" title="此标题的永久链接"></a></h3>
+<p>Set the width (ticjkness) of the arcs in pixel.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> Yes</li>
+</ul>
+</section>
+<section id="arc-rounded">
+<h3>arc_rounded<a class="headerlink" href="#arc-rounded" title="此标题的永久链接"></a></h3>
+<p>Make the end points of the arcs rounded. <code class="docutils literal notranslate"><span class="pre">true</span></code>: rounded, <code class="docutils literal notranslate"><span class="pre">false</span></code>: perpendicular line ending</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="arc-color">
+<h3>arc_color<a class="headerlink" href="#arc-color" title="此标题的永久链接"></a></h3>
+<p>Set the color of the arc.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `0x000000`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="arc-opa">
+<h3>arc_opa<a class="headerlink" href="#arc-opa" title="此标题的永久链接"></a></h3>
+<p>Set the opacity of the arcs.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `LV_OPA_COVER`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="arc-img-src">
+<h3>arc_img_src<a class="headerlink" href="#arc-img-src" title="此标题的永久链接"></a></h3>
+<p>Set an image from which the arc will be masked out. It's useful to display complex effects on the arcs. Can be a pointer to <code class="docutils literal notranslate"><span class="pre">lv_img_dsc_t</span></code> or a path to a file</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `NULL`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+</section>
+<section id="text">
+<h2>Text<a class="headerlink" href="#text" title="此标题的永久链接"></a></h2>
+<p>Properties to describe the propeties of text. All these properties are inherited.</p>
+<section id="text-color">
+<h3>text_color<a class="headerlink" href="#text-color" title="此标题的永久链接"></a></h3>
+<p>Sets the color of the text.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `0x000000`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="text-opa">
+<h3>text_opa<a class="headerlink" href="#text-opa" title="此标题的永久链接"></a></h3>
+<p>Set the opacity of the text. Value 0, <code class="docutils literal notranslate"><span class="pre">LV_OPA_0</span></code> or <code class="docutils literal notranslate"><span class="pre">LV_OPA_TRANSP</span></code> means fully transparent, 256, <code class="docutils literal notranslate"><span class="pre">LV_OPA_100</span></code> or <code class="docutils literal notranslate"><span class="pre">LV_OPA_COVER</span></code> means fully covering, other values or LV_OPA_10, LV_OPA_20, etc means semi transparency.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `LV_OPA_COVER`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="text-font">
+<h3>text_font<a class="headerlink" href="#text-font" title="此标题的永久链接"></a></h3>
+<p>Set the font of the text (a pointer <code class="docutils literal notranslate"><span class="pre">lv_font_t</span> <span class="pre">*</span></code>).</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `LV_FONT_DEFAULT`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="text-letter-space">
+<h3>text_letter_space<a class="headerlink" href="#text-letter-space" title="此标题的永久链接"></a></h3>
+<p>Set the letter space in pixels</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="text-line-space">
+<h3>text_line_space<a class="headerlink" href="#text-line-space" title="此标题的永久链接"></a></h3>
+<p>Set the line space in pixels.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="text-decor">
+<h3>text_decor<a class="headerlink" href="#text-decor" title="此标题的永久链接"></a></h3>
+<p>Set decoration for the text. The possible values are <code class="docutils literal notranslate"><span class="pre">LV_TEXT_DECOR_NONE/UNDERLINE/STRIKETHROUGH</span></code>. OR-ed values can be used as well.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `LV_TEXT_DECOR_NONE`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="text-align">
+<h3>text_align<a class="headerlink" href="#text-align" title="此标题的永久链接"></a></h3>
+<p>Set how to align the lines of the text. Note that it doesn't align the object itself, only the lines inside the object. The possible values are <code class="docutils literal notranslate"><span class="pre">LV_TEXT_ALIGN_LEFT/CENTER/RIGHT/AUTO</span></code>. <code class="docutils literal notranslate"><span class="pre">LV_TEXT_ALIGN_AUTO</span></code> detect the text base direction and uses left or right alignment accordingly</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `LV_TEXT_ALIGN_AUTO`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+</section>
+<section id="miscellaneous">
+<h2>Miscellaneous<a class="headerlink" href="#miscellaneous" title="此标题的永久链接"></a></h2>
+<p>Mixed proprites for various purposes.</p>
+<section id="radius">
+<h3>radius<a class="headerlink" href="#radius" title="此标题的永久链接"></a></h3>
+<p>Set the radius on every corner. The value is interpreted in pixel (&gt;= 0) or <code class="docutils literal notranslate"><span class="pre">LV_RADIUS_CIRCLE</span></code> for max. radius</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="clip-corner">
+<h3>clip_corner<a class="headerlink" href="#clip-corner" title="此标题的永久链接"></a></h3>
+<p>Enable to clip the overflowed content on the rounded corner. Can be <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="opa">
+<h3>opa<a class="headerlink" href="#opa" title="此标题的永久链接"></a></h3>
+<p>Scale down all opacity values of the object by this factor. Value 0, <code class="docutils literal notranslate"><span class="pre">LV_OPA_0</span></code> or <code class="docutils literal notranslate"><span class="pre">LV_OPA_TRANSP</span></code> means fully transparent, 256, <code class="docutils literal notranslate"><span class="pre">LV_OPA_100</span></code> or <code class="docutils literal notranslate"><span class="pre">LV_OPA_COVER</span></code> means fully covering, other values or LV_OPA_10, LV_OPA_20, etc means semi transparency.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `LV_OPA_COVER`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="color-filter-dsc">
+<h3>color_filter_dsc<a class="headerlink" href="#color-filter-dsc" title="此标题的永久链接"></a></h3>
+<p>Mix a color to all colors of the object.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `NULL`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="color-filter-opa">
+<h3>color_filter_opa<a class="headerlink" href="#color-filter-opa" title="此标题的永久链接"></a></h3>
+<p>The intensity of mixing of color filter.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `LV_OPA_TRANSP`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="anim-time">
+<h3>anim_time<a class="headerlink" href="#anim-time" title="此标题的永久链接"></a></h3>
+<p>The animation time in milliseconds. It's meaning is widget specific. E.g. blink time of the cursor on the text area or scroll time of a roller. See the widgets' documentation to learn more.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="anim-speed">
+<h3>anim_speed<a class="headerlink" href="#anim-speed" title="此标题的永久链接"></a></h3>
+<p>The animation speed in pixel/sec. It's meaning is widget specific. E.g. scroll speed of label. See the widgets' documentation to learn more.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="transition">
+<h3>transition<a class="headerlink" href="#transition" title="此标题的永久链接"></a></h3>
+<p>An initialized <code class="docutils literal notranslate"><span class="pre">lv_style_transition_dsc_t</span></code> to describe a transition.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `NULL`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="blend-mode">
+<h3>blend_mode<a class="headerlink" href="#blend-mode" title="此标题的永久链接"></a></h3>
+<p>Describes how to blend the colors to the background. The possibel values are <code class="docutils literal notranslate"><span class="pre">LV_BLEND_MODE_NORMAL/ADDITIVE/SUBTRACTIVE/MULTIPLY</span></code></p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `LV_BLEND_MODE_NORMAL`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="layout">
+<h3>layout<a class="headerlink" href="#layout" title="此标题的永久链接"></a></h3>
+<p>Set the layout if the object. The children will be repositioned and resized according to the policies set for the layout. For the possible values see the documentation of the layouts.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> 0</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> No</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+<section id="base-dir">
+<h3>base_dir<a class="headerlink" href="#base-dir" title="此标题的永久链接"></a></h3>
+<p>Set the base direction of the obejct. The possible values are <code class="docutils literal notranslate"><span class="pre">LV_BIDI_DIR_LTR/RTL/AUTO</span></code>.</p>
+<ul>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Default</strong> `LV_BASE_DIR_AUTO`</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Inherited</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Layout</strong> Yes</li>
+<li style='display:inline; margin-right: 20px; margin-left: 0px'><strong>Ext. draw</strong> No</li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2021, LVGL Kft.
+      <span class="lastupdated">最后更新于 2025 年 09 月 02 日.
+      </span></p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<style>
+  .wy-side-nav-search > div[role="search"] {
+    color: black;
+  }
+</style>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            let p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => {
+                let versionName = "";  
+                if(version == "master") versionName = "master (latest)";
+                else versionName = "v" + ((version.indexOf(".") != -1) ? version : (version + " (latest minor)"));
+                return `<option value="${version}">${versionName}</option>`;
+            })}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+document.addEventListener('DOMContentLoaded', (event) => {
+    function onIntersection(entries) {
+        entries.forEach(entry => {
+            let currentlyLoaded = entry.target.getAttribute("data-is-loaded") == "true";
+            let shouldBeLoaded = entry.intersectionRatio > 0;
+            if(currentlyLoaded != shouldBeLoaded) {
+                entry.target.setAttribute("data-is-loaded", shouldBeLoaded);
+                if(shouldBeLoaded) {
+                    let iframe = document.createElement("iframe");
+                    iframe.src = entry.target.getAttribute("data-real-src");
+                    entry.target.appendChild(iframe);
+                } else {
+                    let iframe = entry.target.querySelector("iframe");
+                    iframe.parentNode.removeChild(iframe);
+                }
+            }
+        });
+    }
+    const config = {
+        rootMargin: '600px 0px',
+        threshold: 0.01
+    };
+    let observer = new IntersectionObserver(onIntersection, config);
+    document.querySelectorAll(".lv-example").forEach(iframe => {
+        observer.observe(iframe);
+    });
+});
+</script>
+
+
+</body>
+</html>

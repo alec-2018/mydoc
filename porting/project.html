@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Set up a project &mdash; LVGL  文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/fontawesome.min.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="canonical" href="https://docs.lvgl.io/0.0.1/porting/project.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78811084-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+	gtag('config', 'UA-78811084-3', { 'anonymize_ip': true });
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_lvgl.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Set up a project</a><ul>
+<li><a class="reference internal" href="#get-the-library">Get the library</a></li>
+<li><a class="reference internal" href="#add-lvgl-to-your-project">Add lvgl to your project</a><ul>
+<li><a class="reference internal" href="#automatically-add-files">Automatically add files</a></li>
+<li><a class="reference internal" href="#make-and-cmake">Make and CMake</a></li>
+<li><a class="reference internal" href="#other-platforms-and-tools">Other platforms and tools</a></li>
+<li><a class="reference internal" href="#demos-and-examples">Demos and Examples</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configuration-file">Configuration file</a></li>
+<li><a class="reference internal" href="#initialization">Initialization</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LVGL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Set up a project</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/porting/project.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>.. include:: /header.rst 
+:github_url: |github_link_base|/porting/project.md
+</pre></div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="set-up-a-project">
+<h1>Set up a project<a class="headerlink" href="#set-up-a-project" title="此标题的永久链接"></a></h1>
+<section id="get-the-library">
+<h2>Get the library<a class="headerlink" href="#get-the-library" title="此标题的永久链接"></a></h2>
+<p>LVGL is available on GitHub: <a class="reference external" href="https://github.com/lvgl/lvgl">https://github.com/lvgl/lvgl</a>.</p>
+<p>You can clone it or <a class="reference external" href="https://github.com/lvgl/lvgl/archive/refs/heads/master.zip">Download</a> the latest version of the library from GitHub.</p>
+</section>
+<section id="add-lvgl-to-your-project">
+<h2>Add lvgl to your project<a class="headerlink" href="#add-lvgl-to-your-project" title="此标题的永久链接"></a></h2>
+<p>The graphics library itself is the <code class="docutils literal notranslate"><span class="pre">lvgl</span></code> directory. It contains a couple of folders but to use <code class="docutils literal notranslate"><span class="pre">lvgl</span></code> you only need <code class="docutils literal notranslate"><span class="pre">.c</span></code> and <code class="docutils literal notranslate"><span class="pre">.h</span></code> files from the <code class="docutils literal notranslate"><span class="pre">src</span></code> folder.</p>
+<section id="automatically-add-files">
+<h3>Automatically add files<a class="headerlink" href="#automatically-add-files" title="此标题的永久链接"></a></h3>
+<p>If your IDE automatically adds the files from the folders copied to the project folder (as Eclipse or VSCode does), you can simply copy the <code class="docutils literal notranslate"><span class="pre">lvgl</span></code> folder as it is into your project.</p>
+</section>
+<section id="make-and-cmake">
+<h3>Make and CMake<a class="headerlink" href="#make-and-cmake" title="此标题的永久链接"></a></h3>
+<p>LVGL also supports <code class="docutils literal notranslate"><span class="pre">make</span></code> and <code class="docutils literal notranslate"><span class="pre">CMake</span></code> build systems out of the box. To add LVGL to your Makefile based build system add these lines to your main Makefile:</p>
+<div class="highlight-make notranslate"><div class="highlight"><pre><span></span><span class="nv">LVGL_DIR_NAME</span><span class="w"> </span><span class="o">?=</span><span class="w"> </span>lvgl<span class="w">     </span><span class="c1">#The name of the lvgl folder (change this if you have renamed it)</span>
+<span class="nv">LVGL_DIR</span><span class="w"> </span><span class="o">?=</span><span class="w"> </span><span class="si">${</span><span class="nv">shell</span><span class="p"> pwd</span><span class="si">}</span><span class="w">  </span><span class="c1">#The path where the lvgl folder is</span>
+<span class="cp">include $(LVGL_DIR)/$(LVGL_DIR_NAME)/lvgl.mk</span>
+</pre></div>
+</div>
+<p>For integration with CMake take a look this section of the <a class="reference internal" href="../get-started/cmake.html"><span class="doc std std-doc">Documentation</span></a>.</p>
+</section>
+<section id="other-platforms-and-tools">
+<h3>Other platforms and tools<a class="headerlink" href="#other-platforms-and-tools" title="此标题的永久链接"></a></h3>
+<p>The <span class="xref myst">Get started</span> section contains many platform specific descriptions e.g. for ESP32, Arduino, NXP, RT-Thread, NuttX, etc.</p>
+</section>
+<section id="demos-and-examples">
+<h3>Demos and Examples<a class="headerlink" href="#demos-and-examples" title="此标题的永久链接"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">lvgl</span></code> folder also contains an <code class="docutils literal notranslate"><span class="pre">examples</span></code> and a <code class="docutils literal notranslate"><span class="pre">demos</span></code> folder. If you needed to add the source files manually to your project, you can do the same with the source files of these two folders too. <code class="docutils literal notranslate"><span class="pre">make</span></code> and <code class="docutils literal notranslate"><span class="pre">CMake</span></code> handles the examples and demos, so no extra action required in these cases.</p>
+</section>
+</section>
+<section id="configuration-file">
+<h2>Configuration file<a class="headerlink" href="#configuration-file" title="此标题的永久链接"></a></h2>
+<p>There is a configuration header file for LVGL called <strong>lv_conf.h</strong>. You modify this header to set the library's basic behavior, disable unused modules and features, adjust the size of memory buffers in compile-time, etc.</p>
+<p>To get <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code> <strong>copy lvgl/lv_conf_template.h</strong> next to the <code class="docutils literal notranslate"><span class="pre">lvgl</span></code> directory and rename it to <em>lv_conf.h</em>. Open the file and change the <code class="docutils literal notranslate"><span class="pre">#if</span> <span class="pre">0</span></code> at the beginning to <code class="docutils literal notranslate"><span class="pre">#if</span> <span class="pre">1</span></code> to enable its content. So the layout of the files should look like this:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="o">|-</span><span class="n">lvgl</span>
+<span class="o">|-</span><span class="n">lv_conf</span><span class="p">.</span><span class="n">h</span>
+<span class="o">|-</span><span class="n">other</span><span class="w"> </span><span class="n">files</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">folders</span>
+</pre></div>
+</div>
+<p>Comments in the config file explain the meaning of the options. Be sure to set at least <code class="docutils literal notranslate"><span class="pre">LV_COLOR_DEPTH</span></code> according to your display's color depth. Note that, the examples and demos explicitly need to be enabled in <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code>.</p>
+<p>Alternatively, <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code> can be copied to another place but then you should add the <code class="docutils literal notranslate"><span class="pre">LV_CONF_INCLUDE_SIMPLE</span></code> define to your compiler options (e.g. <code class="docutils literal notranslate"><span class="pre">-DLV_CONF_INCLUDE_SIMPLE</span></code> for GCC compiler) and set the include path manually (e.g. <code class="docutils literal notranslate"><span class="pre">-I../include/gui</span></code>).
+In this case LVGL will attempt to include <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code> simply with <code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&quot;lv_conf.h&quot;</span></code>.</p>
+<p>You can even use a different name for <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code>. The custom path can be set via the <code class="docutils literal notranslate"><span class="pre">LV_CONF_PATH</span></code> define.
+For example <code class="docutils literal notranslate"><span class="pre">-DLV_CONF_PATH=&quot;/home/joe/my_project/my_custom_conf.h&quot;</span></code></p>
+<p>If <code class="docutils literal notranslate"><span class="pre">LV_CONF_SKIP</span></code> is defined, LVGL will not try to include <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code>. Instead you can pass the config defines using build options. For example <code class="docutils literal notranslate"><span class="pre">&quot;-DLV_COLOR_DEPTH=32</span> <span class="pre">-DLV_USE_BTN</span> <span class="pre">1&quot;</span></code>. The unset options will get a default value which is the same as the ones in <code class="docutils literal notranslate"><span class="pre">lv_conf_template.h</span></code>.</p>
+<p>LVGL also can be used via <code class="docutils literal notranslate"><span class="pre">Kconfig</span></code> and <code class="docutils literal notranslate"><span class="pre">menuconfig</span></code>.  You can use <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code> together with Kconfig, but keep in mind that the value from <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code> or build settings (<code class="docutils literal notranslate"><span class="pre">-D...</span></code>) overwrite the values set in Kconfig. To ignore the configs from <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code> simply remove its content, or define <code class="docutils literal notranslate"><span class="pre">LV_CONF_SKIP</span></code>.</p>
+</section>
+<section id="initialization">
+<h2>Initialization<a class="headerlink" href="#initialization" title="此标题的永久链接"></a></h2>
+<p>To use the graphics library you have to initialize it and setup required components. The order of the initialization is:</p>
+<ol class="arabic simple">
+<li><p>Call <code class="docutils literal notranslate"><span class="pre">lv_init()</span></code>.</p></li>
+<li><p>Initialize your drivers.</p></li>
+<li><p>Register the display and input devices drivers in LVGL.  Learn more about <a class="reference internal" href="display.html"><span class="doc std std-doc">Display</span></a> and <a class="reference internal" href="indev.html"><span class="doc std std-doc">Input device</span></a> registration.</p></li>
+<li><p>Call <code class="docutils literal notranslate"><span class="pre">lv_tick_inc(x)</span></code> every <code class="docutils literal notranslate"><span class="pre">x</span></code> milliseconds in an interrupt to report the elapsed time to LVGL. <a class="reference internal" href="tick.html"><span class="doc std std-doc">Learn more</span></a>.</p></li>
+<li><p>Call <code class="docutils literal notranslate"><span class="pre">lv_timer_handler()</span></code> every few milliseconds to handle LVGL related tasks. <a class="reference internal" href="task-handler.html"><span class="doc std std-doc">Learn more</span></a>.</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2021, LVGL Kft.
+      <span class="lastupdated">最后更新于 2025 年 09 月 02 日.
+      </span></p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<style>
+  .wy-side-nav-search > div[role="search"] {
+    color: black;
+  }
+</style>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            let p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => {
+                let versionName = "";  
+                if(version == "master") versionName = "master (latest)";
+                else versionName = "v" + ((version.indexOf(".") != -1) ? version : (version + " (latest minor)"));
+                return `<option value="${version}">${versionName}</option>`;
+            })}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+document.addEventListener('DOMContentLoaded', (event) => {
+    function onIntersection(entries) {
+        entries.forEach(entry => {
+            let currentlyLoaded = entry.target.getAttribute("data-is-loaded") == "true";
+            let shouldBeLoaded = entry.intersectionRatio > 0;
+            if(currentlyLoaded != shouldBeLoaded) {
+                entry.target.setAttribute("data-is-loaded", shouldBeLoaded);
+                if(shouldBeLoaded) {
+                    let iframe = document.createElement("iframe");
+                    iframe.src = entry.target.getAttribute("data-real-src");
+                    entry.target.appendChild(iframe);
+                } else {
+                    let iframe = entry.target.querySelector("iframe");
+                    iframe.parentNode.removeChild(iframe);
+                }
+            }
+        });
+    }
+    const config = {
+        rootMargin: '600px 0px',
+        threshold: 0.01
+    };
+    let observer = new IntersectionObserver(onIntersection, config);
+    document.querySelectorAll(".lv-example").forEach(iframe => {
+        observer.observe(iframe);
+    });
+});
+</script>
+
+
+</body>
+</html>

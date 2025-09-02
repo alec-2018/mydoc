@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Layers &mdash; LVGL  文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/fontawesome.min.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="canonical" href="https://docs.lvgl.io/0.0.1/overview/layer.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78811084-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+	gtag('config', 'UA-78811084-3', { 'anonymize_ip': true });
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_lvgl.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Layers</a><ul>
+<li><a class="reference internal" href="#order-of-creation">Order of creation</a></li>
+<li><a class="reference internal" href="#bring-to-the-foreground">Bring to the foreground</a></li>
+<li><a class="reference internal" href="#top-and-sys-layers">Top and sys layers</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LVGL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Layers</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/overview/layer.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>.. include:: /header.rst 
+:github_url: |github_link_base|/overview/layer.md
+</pre></div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="layers">
+<h1>Layers<a class="headerlink" href="#layers" title="此标题的永久链接"></a></h1>
+<section id="order-of-creation">
+<h2>Order of creation<a class="headerlink" href="#order-of-creation" title="此标题的永久链接"></a></h2>
+<p>By default, LVGL draws new objects on top of old objects.</p>
+<p>For example, assume we add a button to a parent object named button1 and then another button named button2. Then button1 (along with its child object(s)) will be in the background and can be covered by button2 and its children.</p>
+<p><img alt="" src="../_images/layers.png" /></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*Create a screen*/</span>
+<span class="n">lv_obj_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">scr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_obj_create</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<span class="n">lv_scr_load</span><span class="p">(</span><span class="n">scr</span><span class="p">);</span><span class="w">          </span><span class="cm">/*Load the screen*/</span>
+
+<span class="cm">/*Create 2 buttons*/</span>
+<span class="n">lv_obj_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">btn1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_btn_create</span><span class="p">(</span><span class="n">scr</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span><span class="w">         </span><span class="cm">/*Create a button on the screen*/</span>
+<span class="n">lv_btn_set_fit</span><span class="p">(</span><span class="n">btn1</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span><span class="w">                   </span><span class="cm">/*Enable automatically setting the size according to content*/</span>
+<span class="n">lv_obj_set_pos</span><span class="p">(</span><span class="n">btn1</span><span class="p">,</span><span class="w"> </span><span class="mi">60</span><span class="p">,</span><span class="w"> </span><span class="mi">40</span><span class="p">);</span><span class="w">              	   </span><span class="cm">/*Set the position of the button*/</span>
+
+<span class="n">lv_obj_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">btn2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_btn_create</span><span class="p">(</span><span class="n">scr</span><span class="p">,</span><span class="w"> </span><span class="n">btn1</span><span class="p">);</span><span class="w">         </span><span class="cm">/*Copy the first button*/</span>
+<span class="n">lv_obj_set_pos</span><span class="p">(</span><span class="n">btn2</span><span class="p">,</span><span class="w"> </span><span class="mi">180</span><span class="p">,</span><span class="w"> </span><span class="mi">80</span><span class="p">);</span><span class="w">                    </span><span class="cm">/*Set the position of the button*/</span>
+
+<span class="cm">/*Add labels to the buttons*/</span>
+<span class="n">lv_obj_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">label1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_label_create</span><span class="p">(</span><span class="n">btn1</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span><span class="w">	</span><span class="cm">/*Create a label on the first button*/</span>
+<span class="n">lv_label_set_text</span><span class="p">(</span><span class="n">label1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Button 1&quot;</span><span class="p">);</span><span class="w">          	</span><span class="cm">/*Set the text of the label*/</span>
+
+<span class="n">lv_obj_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">label2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_label_create</span><span class="p">(</span><span class="n">btn2</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span><span class="w">  	</span><span class="cm">/*Create a label on the second button*/</span>
+<span class="n">lv_label_set_text</span><span class="p">(</span><span class="n">label2</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Button 2&quot;</span><span class="p">);</span><span class="w">            	</span><span class="cm">/*Set the text of the label*/</span>
+
+<span class="cm">/*Delete the second label*/</span>
+<span class="n">lv_obj_del</span><span class="p">(</span><span class="n">label2</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="bring-to-the-foreground">
+<h2>Bring to the foreground<a class="headerlink" href="#bring-to-the-foreground" title="此标题的永久链接"></a></h2>
+<p>There are four explicit ways to bring an object to the foreground:</p>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">lv_obj_move_foreground(obj)</span></code> to bring an object to the foreground. Similarly, use <code class="docutils literal notranslate"><span class="pre">lv_obj_move_background(obj)</span></code> to move it to the background.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">lv_obj_move_up(obj)</span></code> to move an object one position up in the hierarchy, Similarly, use <code class="docutils literal notranslate"><span class="pre">lv_obj_move_down(obj)</span></code> to move an object one position down in the hierarchy.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">lv_obj_swap(obj1,</span> <span class="pre">obj2)</span></code> to swap the relative layer position of two objects.</p></li>
+<li><p>When <code class="docutils literal notranslate"><span class="pre">lv_obj_set_parent(obj,</span> <span class="pre">new_parent)</span></code> is used, <code class="docutils literal notranslate"><span class="pre">obj</span></code> will be on the foreground of the <code class="docutils literal notranslate"><span class="pre">new_parent</span></code>.</p></li>
+</ul>
+</section>
+<section id="top-and-sys-layers">
+<h2>Top and sys layers<a class="headerlink" href="#top-and-sys-layers" title="此标题的永久链接"></a></h2>
+<p>LVGL uses two special layers named <code class="docutils literal notranslate"><span class="pre">layer_top</span></code> and <code class="docutils literal notranslate"><span class="pre">layer_sys</span></code>.
+Both are visible and common on all screens of a display. <strong>They are not, however, shared among multiple physical displays.</strong> The <code class="docutils literal notranslate"><span class="pre">layer_top</span></code> is always on top of the default screen (<code class="docutils literal notranslate"><span class="pre">lv_scr_act()</span></code>), and <code class="docutils literal notranslate"><span class="pre">layer_sys</span></code> is on top of <code class="docutils literal notranslate"><span class="pre">layer_top</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">layer_top</span></code> can be used by the user to create some content visible everywhere. For example, a menu bar, a pop-up, etc. If the <code class="docutils literal notranslate"><span class="pre">click</span></code> attribute is enabled, then <code class="docutils literal notranslate"><span class="pre">layer_top</span></code> will absorb all user clicks and acts as a modal.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_obj_add_flag</span><span class="p">(</span><span class="n">lv_layer_top</span><span class="p">(),</span><span class="w"> </span><span class="n">LV_OBJ_FLAG_CLICKABLE</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">layer_sys</span></code> is also used for similar purposes in LVGL. For example, it places the mouse cursor above all layers to be sure it's always visible.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2021, LVGL Kft.
+      <span class="lastupdated">最后更新于 2025 年 09 月 02 日.
+      </span></p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<style>
+  .wy-side-nav-search > div[role="search"] {
+    color: black;
+  }
+</style>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            let p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => {
+                let versionName = "";  
+                if(version == "master") versionName = "master (latest)";
+                else versionName = "v" + ((version.indexOf(".") != -1) ? version : (version + " (latest minor)"));
+                return `<option value="${version}">${versionName}</option>`;
+            })}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+document.addEventListener('DOMContentLoaded', (event) => {
+    function onIntersection(entries) {
+        entries.forEach(entry => {
+            let currentlyLoaded = entry.target.getAttribute("data-is-loaded") == "true";
+            let shouldBeLoaded = entry.intersectionRatio > 0;
+            if(currentlyLoaded != shouldBeLoaded) {
+                entry.target.setAttribute("data-is-loaded", shouldBeLoaded);
+                if(shouldBeLoaded) {
+                    let iframe = document.createElement("iframe");
+                    iframe.src = entry.target.getAttribute("data-real-src");
+                    entry.target.appendChild(iframe);
+                } else {
+                    let iframe = entry.target.querySelector("iframe");
+                    iframe.parentNode.removeChild(iframe);
+                }
+            }
+        });
+    }
+    const config = {
+        rootMargin: '600px 0px',
+        threshold: 0.01
+    };
+    let observer = new IntersectionObserver(onIntersection, config);
+    document.querySelectorAll(".lv-example").forEach(iframe => {
+        observer.observe(iframe);
+    });
+});
+</script>
+
+
+</body>
+</html>

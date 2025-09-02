@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flex &mdash; LVGL  文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/fontawesome.min.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="canonical" href="https://docs.lvgl.io/0.0.1/layouts/flex.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78811084-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+	gtag('config', 'UA-78811084-3', { 'anonymize_ip': true });
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_lvgl.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Flex</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#terms">Terms</a></li>
+<li><a class="reference internal" href="#simple-interface">Simple interface</a><ul>
+<li><a class="reference internal" href="#flex-flow">Flex flow</a></li>
+<li><a class="reference internal" href="#flex-align">Flex align</a></li>
+<li><a class="reference internal" href="#flex-grow">Flex grow</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#style-interface">Style interface</a><ul>
+<li><a class="reference internal" href="#internal-padding">Internal padding</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#other-features">Other features</a><ul>
+<li><a class="reference internal" href="#rtl">RTL</a></li>
+<li><a class="reference internal" href="#new-track">New track</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#example">Example</a></li>
+<li><a class="reference internal" href="#api">API</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LVGL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Flex</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/layouts/flex.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>.. include:: /header.rst 
+:github_url: |github_link_base|/layouts/flex.md
+</pre></div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="flex">
+<h1>Flex<a class="headerlink" href="#flex" title="此标题的永久链接"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="此标题的永久链接"></a></h2>
+<p>The Flexbox (or Flex for short) is a subset of <a class="reference external" href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/">CSS Flexbox</a>.</p>
+<p>It can arrange items into rows or columns (tracks), handle wrapping, adjust the spacing between the items and tracks, handle <em>grow</em> to make the item(s) fill the remaining space with respect to min/max width and height.</p>
+<p>To make an object flex container call <code class="docutils literal notranslate"><span class="pre">lv_obj_set_layout(obj,</span> <span class="pre">LV_LAYOUT_FLEX)</span></code>.</p>
+<p>Note that the flex layout feature of LVGL needs to be globally enabled with <code class="docutils literal notranslate"><span class="pre">LV_USE_FLEX</span></code> in <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code>.</p>
+</section>
+<section id="terms">
+<h2>Terms<a class="headerlink" href="#terms" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>tracks: the rows or columns</p></li>
+<li><p>main direction: row or column, the direction in which the items are placed</p></li>
+<li><p>cross direction: perpendicular to the main direction</p></li>
+<li><p>wrap: if there is no more space in the track a new track is started</p></li>
+<li><p>grow: if set on an item it will grow to fill the remaining space on the track.
+The available space will be distributed among items respective to their grow value (larger value means more space)</p></li>
+<li><p>gap: the space between the rows and columns or the items on a track</p></li>
+</ul>
+</section>
+<section id="simple-interface">
+<h2>Simple interface<a class="headerlink" href="#simple-interface" title="此标题的永久链接"></a></h2>
+<p>With the following functions you can set a Flex layout on any parent.</p>
+<section id="flex-flow">
+<h3>Flex flow<a class="headerlink" href="#flex-flow" title="此标题的永久链接"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">lv_obj_set_flex_flow(obj,</span> <span class="pre">flex_flow)</span></code></p>
+<p>The possible values for <code class="docutils literal notranslate"><span class="pre">flex_flow</span></code> are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_FLEX_FLOW_ROW</span></code> Place the children in a row without wrapping</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_FLEX_FLOW_COLUMN</span></code> Place the children in a column without wrapping</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_FLEX_FLOW_ROW_WRAP</span></code> Place the children in a row with wrapping</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_FLEX_FLOW_COLUMN_WRAP</span></code> Place the children in a column with wrapping</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_FLEX_FLOW_ROW_REVERSE</span></code> Place the children in a row without wrapping but in reversed order</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_FLEX_FLOW_COLUMN_REVERSE</span></code> Place the children in a column without wrapping but in reversed order</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_FLEX_FLOW_ROW_WRAP_REVERSE</span></code> Place the children in a row with wrapping but in reversed order</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_FLEX_FLOW_COLUMN_WRAP_REVERSE</span></code> Place the children in a column with wrapping but in reversed order</p></li>
+</ul>
+</section>
+<section id="flex-align">
+<h3>Flex align<a class="headerlink" href="#flex-align" title="此标题的永久链接"></a></h3>
+<p>To manage the placement of the children use <code class="docutils literal notranslate"><span class="pre">lv_obj_set_flex_align(obj,</span>&#160; <span class="pre">main_place,</span> <span class="pre">cross_place,</span> <span class="pre">track_cross_place)</span></code></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">main_place</span></code> determines how to distribute the items in their track on the main axis. E.g. flush the items to the right on <code class="docutils literal notranslate"><span class="pre">LV_FLEX_FLOW_ROW_WRAP</span></code>.  (It's called <code class="docutils literal notranslate"><span class="pre">justify-content</span></code> in CSS)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cross_place</span></code> determines how to distribute the items in their track on the cross axis. E.g. if the items have different height place them to the bottom of the track.  (It's called <code class="docutils literal notranslate"><span class="pre">align-items</span></code> in CSS)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">track_cross_place</span></code> determines how to distribute the tracks (It's called <code class="docutils literal notranslate"><span class="pre">align-content</span></code> in CSS)</p></li>
+</ul>
+<p>The possible values are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_FLEX_ALIGN_START</span></code> means left on a horizontally and top vertically. (default)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_FLEX_ALIGN_END</span></code> means right on a horizontally and bottom vertically</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_FLEX_ALIGN_CENTER</span></code> simply center</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_FLEX_ALIGN_SPACE_EVENLY</span></code> items are distributed so that the spacing between any two items (and the space to the edges) is equal. Does not apply to <code class="docutils literal notranslate"><span class="pre">track_cross_place</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_FLEX_ALIGN_SPACE_AROUND</span></code> items are evenly distributed in the track with equal space around them.
+Note that visually the spaces aren’t equal, since all the items have equal space on both sides.
+The first item will have one unit of space against the container edge, but two units of space between the next item because that next item has its own spacing that applies. Not applies to <code class="docutils literal notranslate"><span class="pre">track_cross_place</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_FLEX_ALIGN_SPACE_BETWEEN</span></code> items are evenly distributed in the track: first item is on the start line, last item on the end line. Not applies to <code class="docutils literal notranslate"><span class="pre">track_cross_place</span></code>.</p></li>
+</ul>
+</section>
+<section id="flex-grow">
+<h3>Flex grow<a class="headerlink" href="#flex-grow" title="此标题的永久链接"></a></h3>
+<p>Flex grow can be used to make one or more children fill the available space on the track. When more children have grow parameters, the available space will be distributed proportionally to the grow values.
+For example, there is 400 px remaining space and 4 objects with grow:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">A</span></code> with grow = 1</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">B</span></code> with grow = 1</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">C</span></code> with grow = 2</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code> will have 100 px size, and <code class="docutils literal notranslate"><span class="pre">C</span></code> will have 200 px size.</p>
+<p>Flex grow can be set on a child with <code class="docutils literal notranslate"><span class="pre">lv_obj_set_flex_grow(child,</span> <span class="pre">value)</span></code>. <code class="docutils literal notranslate"><span class="pre">value</span></code> needs to be &gt; 1 or 0 to disable grow on the child.</p>
+</section>
+</section>
+<section id="style-interface">
+<h2>Style interface<a class="headerlink" href="#style-interface" title="此标题的永久链接"></a></h2>
+<p>All the Flex-related values are style properties under the hood and you can use them similarly to any other style property. The following flex related style properties exist:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">FLEX_FLOW</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FLEX_MAIN_PLACE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FLEX_CROSS_PLACE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FLEX_TRACK_PLACE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FLEX_GROW</span></code></p></li>
+</ul>
+<section id="internal-padding">
+<h3>Internal padding<a class="headerlink" href="#internal-padding" title="此标题的永久链接"></a></h3>
+<p>To modify the minimum space flexbox inserts between objects, the following properties can be set on the flex container style:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pad_row</span></code> Sets the padding between the rows.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pad_column</span></code> Sets the padding between the columns.</p></li>
+</ul>
+<p>These can for example be used if you don't want any padding between your objects: <code class="docutils literal notranslate"><span class="pre">lv_style_set_pad_column(&amp;row_container_style,0)</span></code></p>
+</section>
+</section>
+<section id="other-features">
+<h2>Other features<a class="headerlink" href="#other-features" title="此标题的永久链接"></a></h2>
+<section id="rtl">
+<h3>RTL<a class="headerlink" href="#rtl" title="此标题的永久链接"></a></h3>
+<p>If the base direction of the container is set the <code class="docutils literal notranslate"><span class="pre">LV_BASE_DIR_RTL</span></code> the meaning of <code class="docutils literal notranslate"><span class="pre">LV_FLEX_ALIGN_START</span></code> and <code class="docutils literal notranslate"><span class="pre">LV_FLEX_ALIGN_END</span></code> is swapped on <code class="docutils literal notranslate"><span class="pre">ROW</span></code> layouts. I.e. <code class="docutils literal notranslate"><span class="pre">START</span></code> will mean right.</p>
+<p>The items on <code class="docutils literal notranslate"><span class="pre">ROW</span></code> layouts, and tracks of <code class="docutils literal notranslate"><span class="pre">COLUMN</span></code> layouts will be placed from right to left.</p>
+</section>
+<section id="new-track">
+<h3>New track<a class="headerlink" href="#new-track" title="此标题的永久链接"></a></h3>
+<p>You can force Flex to put an item into a new line with <code class="docutils literal notranslate"><span class="pre">lv_obj_add_flag(child,</span> <span class="pre">LV_OBJ_FLAG_FLEX_IN_NEW_TRACK)</span></code>.</p>
+</section>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="此标题的永久链接"></a></h2>
+<div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>
+.. include:: ../../examples/layouts/flex/index.rst
+
+</pre></div>
+</div>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="此标题的永久链接"></a></h2>
+<div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>
+.. doxygenfile:: lv_flex.h
+  :project: lvgl
+
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2021, LVGL Kft.
+      <span class="lastupdated">最后更新于 2025 年 09 月 02 日.
+      </span></p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<style>
+  .wy-side-nav-search > div[role="search"] {
+    color: black;
+  }
+</style>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            let p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => {
+                let versionName = "";  
+                if(version == "master") versionName = "master (latest)";
+                else versionName = "v" + ((version.indexOf(".") != -1) ? version : (version + " (latest minor)"));
+                return `<option value="${version}">${versionName}</option>`;
+            })}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+document.addEventListener('DOMContentLoaded', (event) => {
+    function onIntersection(entries) {
+        entries.forEach(entry => {
+            let currentlyLoaded = entry.target.getAttribute("data-is-loaded") == "true";
+            let shouldBeLoaded = entry.intersectionRatio > 0;
+            if(currentlyLoaded != shouldBeLoaded) {
+                entry.target.setAttribute("data-is-loaded", shouldBeLoaded);
+                if(shouldBeLoaded) {
+                    let iframe = document.createElement("iframe");
+                    iframe.src = entry.target.getAttribute("data-real-src");
+                    entry.target.appendChild(iframe);
+                } else {
+                    let iframe = entry.target.querySelector("iframe");
+                    iframe.parentNode.removeChild(iframe);
+                }
+            }
+        });
+    }
+    const config = {
+        rootMargin: '600px 0px',
+        threshold: 0.01
+    };
+    let observer = new IntersectionObserver(onIntersection, config);
+    document.querySelectorAll(".lv-example").forEach(iframe => {
+        observer.observe(iframe);
+    });
+});
+</script>
+
+
+</body>
+</html>

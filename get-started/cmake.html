@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CMake &mdash; LVGL  文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/fontawesome.min.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="canonical" href="https://docs.lvgl.io/0.0.1/get-started/cmake.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78811084-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+	gtag('config', 'UA-78811084-3', { 'anonymize_ip': true });
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_lvgl.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">CMake</a><ul>
+<li><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li><a class="reference internal" href="#building-lvgl-with-cmake">Building LVGL with CMake</a><ul>
+<li><a class="reference internal" href="#additional-cmake-options">Additional CMake options</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#building-lvgl-examples-with-cmake">Building LVGL examples with CMake</a></li>
+<li><a class="reference internal" href="#building-lvgl-drivers-and-demos-with-cmake">Building LVGL drivers and demos with CMake</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LVGL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">CMake</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/get-started/cmake.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>.. include:: /header.rst 
+:github_url: |github_link_base|/get-started/cmake.md
+</pre></div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="cmake">
+<h1>CMake<a class="headerlink" href="#cmake" title="此标题的永久链接"></a></h1>
+<p>LVGL supports integrating with <a class="reference external" href="https://cmake.org/">CMake</a>. It comes with preconfigured targets for:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.espressif.com/projects/esp-idf/en/v3.3/get-started-cmake/index.html">Espressif (ESP32)</a></p></li>
+<li><p><a class="reference external" href="https://docs.micropython.org/en/v1.15/develop/cmodules.html">MicroPython</a></p></li>
+<li><p><a class="reference external" href="https://docs.zephyrproject.org/latest/guides/zephyr_cmake_package.html">Zephyr</a></p></li>
+</ul>
+<p>On top of the preconfigured targets you can also use &quot;plain&quot; CMake to integrate LVGL into any custom C/C++ project.</p>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>CMake ( &gt;= 3.12.4 )</p></li>
+<li><p>Compatible build tool e.g.</p>
+<ul>
+<li><p><a class="reference external" href="https://www.gnu.org/software/make/">Make</a></p></li>
+<li><p><a class="reference external" href="https://ninja-build.org/">Ninja</a></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="building-lvgl-with-cmake">
+<h2>Building LVGL with CMake<a class="headerlink" href="#building-lvgl-with-cmake" title="此标题的永久链接"></a></h2>
+<p>There are many ways to include external CMake projects into your own. A modern one also used in this example is the CMake <a class="reference external" href="https://cmake.org/cmake/help/latest/module/FetchContent.html">FetchContent</a> module. This module conveniently allows us to download dependencies directly at configure time from e.g. <a class="reference external" href="https://github.com/">GitHub</a>. Here is an example how we might include LVGL into our own project.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span><span class="w"> </span><span class="s">3.14</span><span class="p">)</span>
+<span class="nb">include</span><span class="p">(</span><span class="s">FetchContent</span><span class="p">)</span>
+
+<span class="nb">project</span><span class="p">(</span><span class="s">MyProject</span><span class="w"> </span><span class="s">LANGUAGES</span><span class="w"> </span><span class="s">C</span><span class="w"> </span><span class="s">CXX</span><span class="p">)</span>
+
+<span class="c"># Build an executable called &quot;MyFirmware&quot;</span>
+<span class="nb">add_executable</span><span class="p">(</span><span class="s">MyFirmware</span><span class="w"> </span><span class="s">src/main.c</span><span class="p">)</span>
+
+<span class="c"># Specify path to own LVGL config header</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">LV_CONF_PATH</span>
+<span class="w">    </span><span class="o">${</span><span class="nv">CMAKE_CURRENT_SOURCE_DIR</span><span class="o">}</span><span class="s">/src/lv_conf.h</span>
+<span class="w">    </span><span class="s">CACHE</span><span class="w"> </span><span class="s">STRING</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"> </span><span class="s">FORCE</span><span class="p">)</span>
+
+<span class="c"># Fetch LVGL from GitHub</span>
+<span class="nb">FetchContent_Declare</span><span class="p">(</span><span class="s">lvgl</span><span class="w"> </span><span class="s">URL</span><span class="w"> </span><span class="s">https://github.com/lvgl/lvgl.git</span><span class="p">)</span>
+<span class="nb">FetchContent_MakeAvailable</span><span class="p">(</span><span class="s">lvgl</span><span class="p">)</span>
+
+<span class="c"># The target &quot;MyFirmware&quot; depends on LVGL</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">MyFirmware</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">lvgl::lvgl</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This configuration declares a dependency between the two targets <strong>MyFirmware</strong> and <strong>lvgl</strong>. Upon building the target <strong>MyFirmware</strong> this dependency will be resolved and <strong>lvgl</strong> will be built and linked with it. Since LVGL requires a config header called <a class="reference external" href="https://github.com/lvgl/lvgl/blob/master/lv_conf_template.h">lv_conf.h</a> to be includable by its sources we also set the option <code class="docutils literal notranslate"><span class="pre">LV_CONF_PATH</span></code> to point to our own copy of it.</p>
+<section id="additional-cmake-options">
+<h3>Additional CMake options<a class="headerlink" href="#additional-cmake-options" title="此标题的永久链接"></a></h3>
+<p>Besides <code class="docutils literal notranslate"><span class="pre">LV_CONF_PATH</span></code> there are two additional CMake options to specify include paths.</p>
+<p><code class="docutils literal notranslate"><span class="pre">LV_LVGL_H_INCLUDE_SIMPLE</span></code> which specifies whether to <code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&quot;lvgl.h&quot;</span></code> absolut or relative</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>ON (default)</th>
+<th>OFF</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"lvgl.h"</td>
+<td>"../../lvgl.h"</td>
+</tr>
+</tbody>
+</table>
+<p><code class="docutils literal notranslate"><span class="pre">LV_CONF_INCLUDE_SIMPLE</span></code> which specifies whether to <code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&quot;lv_conf.h&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;lv_drv_conf.h&quot;</span></code> absolut or relative</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>ON (default)</th>
+<th>OFF</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"lv_conf.h"</td>
+<td>"../../lv_conf.h"</td>
+</tr>
+<tr>
+<td>"lv_drv_conf.h"</td>
+<td>"../../lv_drv_conf.h"</td>
+</tr>
+</tbody>
+</table>
+<p>I do not recommend to disable those options unless your folder layout makes it absolutely necessary.</p>
+</section>
+</section>
+<section id="building-lvgl-examples-with-cmake">
+<h2>Building LVGL examples with CMake<a class="headerlink" href="#building-lvgl-examples-with-cmake" title="此标题的永久链接"></a></h2>
+<p>LVGL <a class="reference external" href="https://docs.lvgl.io/master/examples.html">examples</a> have their own CMake target. If you want to build the examples simply add them to your dependencies.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># The target &quot;MyFirmware&quot; depends on LVGL and examples</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">MyFirmware</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">lvgl::lvgl</span><span class="w"> </span><span class="s">lvgl::examples</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="building-lvgl-drivers-and-demos-with-cmake">
+<h2>Building LVGL drivers and demos with CMake<a class="headerlink" href="#building-lvgl-drivers-and-demos-with-cmake" title="此标题的永久链接"></a></h2>
+<p>Exactly the same goes for the <a class="reference external" href="https://github.com/lvgl/lv_drivers">drivers</a> and the <a class="reference external" href="https://github.com/lvgl/lv_demos">demos</a>.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># Specify path to own LVGL demos config header</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">LV_DEMO_CONF_PATH</span>
+<span class="w">    </span><span class="o">${</span><span class="nv">CMAKE_CURRENT_SOURCE_DIR</span><span class="o">}</span><span class="s">/src/lv_demo_conf.h</span>
+<span class="w">    </span><span class="s">CACHE</span><span class="w"> </span><span class="s">STRING</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"> </span><span class="s">FORCE</span><span class="p">)</span>
+
+<span class="nb">FetchContent_Declare</span><span class="p">(</span><span class="s">lv_drivers</span>
+<span class="w">                     </span><span class="s">GIT_REPOSITORY</span><span class="w"> </span><span class="s">https://github.com/lvgl/lv_drivers</span><span class="p">)</span>
+<span class="nb">FetchContent_MakeAvailable</span><span class="p">(</span><span class="s">lv_drivers</span><span class="p">)</span>
+<span class="nb">FetchContent_Declare</span><span class="p">(</span><span class="s">lv_demos</span>
+<span class="w">                     </span><span class="s">GIT_REPOSITORY</span><span class="w"> </span><span class="s">https://github.com/lvgl/lv_demos.git</span><span class="p">)</span>
+<span class="nb">FetchContent_MakeAvailable</span><span class="p">(</span><span class="s">lv_demos</span><span class="p">)</span>
+
+<span class="c"># The target &quot;MyFirmware&quot; depends on LVGL, drivers and demos</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">MyFirmware</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">lvgl::lvgl</span><span class="w"> </span><span class="s">lvgl::drivers</span><span class="w"> </span><span class="s">lvgl::examples</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Just like the <a class="reference external" href="https://github.com/lvgl/lvgl/blob/master/lv_conf_template.h">lv_conf.h</a> header demos comes with its own config header called <a class="reference external" href="https://github.com/lvgl/lv_demos/blob/master/lv_demo_conf_template.h">lv_demo_conf.h</a>. Analogous to <code class="docutils literal notranslate"><span class="pre">LV_CONF_PATH</span></code> its path can be set by using the option <code class="docutils literal notranslate"><span class="pre">LV_DEMO_CONF_PATH</span></code>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2021, LVGL Kft.
+      <span class="lastupdated">最后更新于 2025 年 09 月 02 日.
+      </span></p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<style>
+  .wy-side-nav-search > div[role="search"] {
+    color: black;
+  }
+</style>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            let p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => {
+                let versionName = "";  
+                if(version == "master") versionName = "master (latest)";
+                else versionName = "v" + ((version.indexOf(".") != -1) ? version : (version + " (latest minor)"));
+                return `<option value="${version}">${versionName}</option>`;
+            })}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+document.addEventListener('DOMContentLoaded', (event) => {
+    function onIntersection(entries) {
+        entries.forEach(entry => {
+            let currentlyLoaded = entry.target.getAttribute("data-is-loaded") == "true";
+            let shouldBeLoaded = entry.intersectionRatio > 0;
+            if(currentlyLoaded != shouldBeLoaded) {
+                entry.target.setAttribute("data-is-loaded", shouldBeLoaded);
+                if(shouldBeLoaded) {
+                    let iframe = document.createElement("iframe");
+                    iframe.src = entry.target.getAttribute("data-real-src");
+                    entry.target.appendChild(iframe);
+                } else {
+                    let iframe = entry.target.querySelector("iframe");
+                    iframe.parentNode.removeChild(iframe);
+                }
+            }
+        });
+    }
+    const config = {
+        rootMargin: '600px 0px',
+        threshold: 0.01
+    };
+    let observer = new IntersectionObserver(onIntersection, config);
+    document.querySelectorAll(".lv-example").forEach(iframe => {
+        observer.observe(iframe);
+    });
+});
+</script>
+
+
+</body>
+</html>

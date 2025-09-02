@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Colors &mdash; LVGL  文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/fontawesome.min.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="canonical" href="https://docs.lvgl.io/0.0.1/overview/color.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78811084-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+	gtag('config', 'UA-78811084-3', { 'anonymize_ip': true });
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_lvgl.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Colors</a><ul>
+<li><a class="reference internal" href="#creating-colors">Creating colors</a><ul>
+<li><a class="reference internal" href="#rgb">RGB</a></li>
+<li><a class="reference internal" href="#hsv">HSV</a></li>
+<li><a class="reference internal" href="#palette">Palette</a></li>
+<li><a class="reference internal" href="#modify-and-mix-colors">Modify and mix colors</a></li>
+<li><a class="reference internal" href="#built-in-colors">Built-in colors</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#opacity">Opacity</a></li>
+<li><a class="reference internal" href="#color-types">Color types</a><ul>
+<li><a class="reference internal" href="#convert-color">Convert color</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#api">API</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LVGL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Colors</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/overview/color.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>.. include:: /header.rst 
+:github_url: |github_link_base|/overview/color.md
+</pre></div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="colors">
+<h1>Colors<a class="headerlink" href="#colors" title="此标题的永久链接"></a></h1>
+<p>The color module handles all color-related functions like changing color depth, creating colors from hex code, converting between color depths, mixing colors, etc.</p>
+<p>The type <code class="docutils literal notranslate"><span class="pre">lv_color_t</span></code> is used to store a color. Its fields are set according to <code class="docutils literal notranslate"><span class="pre">LV_COLOR_DEPTH</span></code> in <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code>. (See below)</p>
+<p>You may set <code class="docutils literal notranslate"><span class="pre">LV_COLOR_16_SWAP</span></code> in <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code> to swap bytes of <em>RGB565</em> colors. You may need this when sending 16-bit colors via a byte-oriented interface like SPI. As 16-bit numbers are stored in little-endian format (lower byte at the lower address), the interface will send the lower byte first. However, displays usually need the higher byte first. A mismatch in the byte order will result in highly distorted colors.</p>
+<section id="creating-colors">
+<h2>Creating colors<a class="headerlink" href="#creating-colors" title="此标题的永久链接"></a></h2>
+<section id="rgb">
+<h3>RGB<a class="headerlink" href="#rgb" title="此标题的永久链接"></a></h3>
+<p>Create colors from Red, Green and Blue channel values:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">//All channels are 0-255</span>
+<span class="n">lv_color_t</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_color_make</span><span class="p">(</span><span class="n">red</span><span class="p">,</span><span class="w"> </span><span class="n">green</span><span class="p">,</span><span class="w"> </span><span class="n">blue</span><span class="p">);</span>
+
+<span class="c1">//From hex code 0x000000..0xFFFFFF interpreted as RED + GREEN + BLUE</span>
+<span class="n">lv_color_t</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_color_hex</span><span class="p">(</span><span class="mh">0x123456</span><span class="p">);</span><span class="w"> </span>
+
+<span class="c1">//From 3 digits. Same as lv_color_hex(0x112233)</span>
+<span class="n">lv_color_t</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_color_hex3</span><span class="p">(</span><span class="mh">0x123</span><span class="p">);</span><span class="w"> </span>
+</pre></div>
+</div>
+</section>
+<section id="hsv">
+<h3>HSV<a class="headerlink" href="#hsv" title="此标题的永久链接"></a></h3>
+<p>Create colors from Hue, Saturation and Value values:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">//h = 0..359, s = 0..100, v = 0..100</span>
+<span class="n">lv_color_t</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_color_hsv_to_rgb</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p">);</span>
+
+<span class="c1">//All channels are 0-255</span>
+<span class="n">lv_color_hsv_t</span><span class="w"> </span><span class="n">c_hsv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_color_rgb_to_hsv</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="w"> </span><span class="n">g</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
+
+
+<span class="c1">//From lv_color_t variable</span>
+<span class="n">lv_color_hsv_t</span><span class="w"> </span><span class="n">c_hsv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_color_to_hsv</span><span class="p">(</span><span class="n">color</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="palette">
+<h3>Palette<a class="headerlink" href="#palette" title="此标题的永久链接"></a></h3>
+<p>LVGL includes <a class="reference external" href="https://vuetifyjs.com/en/styles/colors/#material-colors">Material Design's palette</a> of colors. In this system all named colors have a nominal main color as well as four darker and five lighter variants.</p>
+<p>The names of the colors are as follows:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PALETTE_RED</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PALETTE_PINK</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PALETTE_PURPLE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PALETTE_DEEP_PURPLE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PALETTE_INDIGO</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PALETTE_BLUE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PALETTE_LIGHT_BLUE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PALETTE_CYAN</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PALETTE_TEAL</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PALETTE_GREEN</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PALETTE_LIGHT_GREEN</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PALETTE_LIME</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PALETTE_YELLOW</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PALETTE_AMBER</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PALETTE_ORANGE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PALETTE_DEEP_ORANGE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PALETTE_BROWN</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PALETTE_BLUE_GREY</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PALETTE_GREY</span></code></p></li>
+</ul>
+<p>To get the main color use <code class="docutils literal notranslate"><span class="pre">lv_color_t</span> <span class="pre">c</span> <span class="pre">=</span> <span class="pre">lv_palette_main(LV_PALETTE_...)</span></code>.</p>
+<p>For the lighter variants of a palette color use <code class="docutils literal notranslate"><span class="pre">lv_color_t</span> <span class="pre">c</span> <span class="pre">=</span> <span class="pre">lv_palette_lighten(LV_PALETTE_...,</span> <span class="pre">v)</span></code>. <code class="docutils literal notranslate"><span class="pre">v</span></code> can be 1..5.
+For the darker variants of a palette color use <code class="docutils literal notranslate"><span class="pre">lv_color_t</span> <span class="pre">c</span> <span class="pre">=</span> <span class="pre">lv_palette_darken(LV_PALETTE_...,</span> <span class="pre">v)</span></code>. <code class="docutils literal notranslate"><span class="pre">v</span></code> can be 1..4.</p>
+</section>
+<section id="modify-and-mix-colors">
+<h3>Modify and mix colors<a class="headerlink" href="#modify-and-mix-colors" title="此标题的永久链接"></a></h3>
+<p>The following functions can modify a color:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Lighten a color. 0: no change, 255: white</span>
+<span class="n">lv_color_t</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_color_lighten</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">lvl</span><span class="p">);</span>
+
+<span class="c1">// Darken a color. 0: no change, 255: black</span>
+<span class="n">lv_color_t</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_color_darken</span><span class="p">(</span><span class="n">lv_color_t</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">lv_opa_t</span><span class="w"> </span><span class="n">lvl</span><span class="p">);</span>
+
+<span class="c1">// Lighten or darken a color. 0: black, 128: no change 255: white</span>
+<span class="n">lv_color_t</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_color_change_lightness</span><span class="p">(</span><span class="n">lv_color_t</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">lv_opa_t</span><span class="w"> </span><span class="n">lvl</span><span class="p">);</span>
+
+
+<span class="c1">// Mix two colors with a given ratio 0: full c2, 255: full c1, 128: half c1 and half c2</span>
+<span class="n">lv_color_t</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_color_mix</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span><span class="w"> </span><span class="n">c2</span><span class="p">,</span><span class="w"> </span><span class="n">ratio</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="built-in-colors">
+<h3>Built-in colors<a class="headerlink" href="#built-in-colors" title="此标题的永久链接"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">lv_color_white()</span></code> and <code class="docutils literal notranslate"><span class="pre">lv_color_black()</span></code> return <code class="docutils literal notranslate"><span class="pre">0xFFFFFF</span></code> and <code class="docutils literal notranslate"><span class="pre">0x000000</span></code> respectively.</p>
+</section>
+</section>
+<section id="opacity">
+<h2>Opacity<a class="headerlink" href="#opacity" title="此标题的永久链接"></a></h2>
+<p>To describe opacity the <code class="docutils literal notranslate"><span class="pre">lv_opa_t</span></code> type is created from <code class="docutils literal notranslate"><span class="pre">uint8_t</span></code>. Some special purpose defines are also introduced:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_OPA_TRANSP</span></code> Value: 0, means no opacity making the color completely transparent</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_OPA_10</span></code> Value: 25, means the color covers only a little</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_OPA_20</span> <span class="pre">...</span> <span class="pre">OPA_80</span></code> follow logically</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_OPA_90</span></code> Value: 229, means the color near completely covers</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_OPA_COVER</span></code> Value: 255, means the color completely covers (full opacity)</p></li>
+</ul>
+<p>You can also use the <code class="docutils literal notranslate"><span class="pre">LV_OPA_*</span></code> defines in <code class="docutils literal notranslate"><span class="pre">lv_color_mix()</span></code> as a mixing <em>ratio</em>.</p>
+</section>
+<section id="color-types">
+<h2>Color types<a class="headerlink" href="#color-types" title="此标题的永久链接"></a></h2>
+<p>The following variable types are defined by the color module:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_color1_t</span></code> Monochrome color. Also has R, G, B fields for compatibility but they are always the same value (1 byte)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_color8_t</span></code> A structure to store R (3 bit),G (3 bit),B (2 bit) components for 8-bit colors (1 byte)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_color16_t</span></code> A structure to store R (5 bit),G (6 bit),B (5 bit) components for 16-bit colors (2 byte)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_color32_t</span></code> A structure to store R (8 bit),G (8 bit), B (8 bit) components for 24-bit colors (4 byte)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_color_t</span></code> Equal to <code class="docutils literal notranslate"><span class="pre">lv_color1/8/16/24_t</span></code> depending on the configured color depth setting</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_color_int_t</span></code> <code class="docutils literal notranslate"><span class="pre">uint8_t</span></code>, <code class="docutils literal notranslate"><span class="pre">uint16_t</span></code> or <code class="docutils literal notranslate"><span class="pre">uint32_t</span></code> depending on the color depth setting. Used to build color arrays from plain numbers.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_opa_t</span></code> A simple <code class="docutils literal notranslate"><span class="pre">uint8_t</span></code> type to describe opacity.</p></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">lv_color_t</span></code>, <code class="docutils literal notranslate"><span class="pre">lv_color1_t</span></code>, <code class="docutils literal notranslate"><span class="pre">lv_color8_t</span></code>, <code class="docutils literal notranslate"><span class="pre">lv_color16_t</span></code> and <code class="docutils literal notranslate"><span class="pre">lv_color32_t</span></code> types have four fields:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ch.red</span></code> red channel</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ch.green</span></code> green channel</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ch.blue</span></code> blue channel</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">full*</span></code> red + green + blue as one number</p></li>
+</ul>
+<p>You can set the current color depth in <em>lv_conf.h</em>, by setting the <code class="docutils literal notranslate"><span class="pre">LV_COLOR_DEPTH</span></code> define to 1 (monochrome), 8, 16 or 32.</p>
+<section id="convert-color">
+<h3>Convert color<a class="headerlink" href="#convert-color" title="此标题的永久链接"></a></h3>
+<p>You can convert a color from the current color depth to another. The converter functions return with a number, so you have to use the <code class="docutils literal notranslate"><span class="pre">full</span></code> field to map a converted color back into a structure:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_color_t</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
+<span class="n">c</span><span class="p">.</span><span class="n">red</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mh">0x38</span><span class="p">;</span>
+<span class="n">c</span><span class="p">.</span><span class="n">green</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x70</span><span class="p">;</span>
+<span class="n">c</span><span class="p">.</span><span class="n">blue</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mh">0xCC</span><span class="p">;</span>
+
+<span class="n">lv_color1_t</span><span class="w"> </span><span class="n">c1</span><span class="p">;</span>
+<span class="n">c1</span><span class="p">.</span><span class="n">full</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_color_to1</span><span class="p">(</span><span class="n">c</span><span class="p">);</span><span class="w">	</span><span class="cm">/*Return 1 for light colors, 0 for dark colors*/</span>
+
+<span class="n">lv_color8_t</span><span class="w"> </span><span class="n">c8</span><span class="p">;</span>
+<span class="n">c8</span><span class="p">.</span><span class="n">full</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_color_to8</span><span class="p">(</span><span class="n">c</span><span class="p">);</span><span class="w">	</span><span class="cm">/*Give a 8 bit number with the converted color*/</span>
+
+<span class="n">lv_color16_t</span><span class="w"> </span><span class="n">c16</span><span class="p">;</span>
+<span class="n">c16</span><span class="p">.</span><span class="n">full</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_color_to16</span><span class="p">(</span><span class="n">c</span><span class="p">);</span><span class="w"> </span><span class="cm">/*Give a 16 bit number with the converted color*/</span>
+
+<span class="n">lv_color32_t</span><span class="w"> </span><span class="n">c24</span><span class="p">;</span>
+<span class="n">c32</span><span class="p">.</span><span class="n">full</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_color_to32</span><span class="p">(</span><span class="n">c</span><span class="p">);</span><span class="w">	</span><span class="cm">/*Give a 32 bit number with the converted color*/</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="此标题的永久链接"></a></h2>
+<div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>
+.. doxygenfile:: lv_color.h
+  :project: lvgl
+
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2021, LVGL Kft.
+      <span class="lastupdated">最后更新于 2025 年 09 月 02 日.
+      </span></p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<style>
+  .wy-side-nav-search > div[role="search"] {
+    color: black;
+  }
+</style>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            let p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => {
+                let versionName = "";  
+                if(version == "master") versionName = "master (latest)";
+                else versionName = "v" + ((version.indexOf(".") != -1) ? version : (version + " (latest minor)"));
+                return `<option value="${version}">${versionName}</option>`;
+            })}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+document.addEventListener('DOMContentLoaded', (event) => {
+    function onIntersection(entries) {
+        entries.forEach(entry => {
+            let currentlyLoaded = entry.target.getAttribute("data-is-loaded") == "true";
+            let shouldBeLoaded = entry.intersectionRatio > 0;
+            if(currentlyLoaded != shouldBeLoaded) {
+                entry.target.setAttribute("data-is-loaded", shouldBeLoaded);
+                if(shouldBeLoaded) {
+                    let iframe = document.createElement("iframe");
+                    iframe.src = entry.target.getAttribute("data-real-src");
+                    entry.target.appendChild(iframe);
+                } else {
+                    let iframe = entry.target.querySelector("iframe");
+                    iframe.parentNode.removeChild(iframe);
+                }
+            }
+        });
+    }
+    const config = {
+        rootMargin: '600px 0px',
+        threshold: 0.01
+    };
+    let observer = new IntersectionObserver(onIntersection, config);
+    document.querySelectorAll(".lv-example").forEach(iframe => {
+        observer.observe(iframe);
+    });
+});
+</script>
+
+
+</body>
+</html>

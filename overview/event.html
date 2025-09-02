@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Events &mdash; LVGL  文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/fontawesome.min.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="canonical" href="https://docs.lvgl.io/0.0.1/overview/event.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78811084-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+	gtag('config', 'UA-78811084-3', { 'anonymize_ip': true });
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_lvgl.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Events</a><ul>
+<li><a class="reference internal" href="#add-events-to-the-object">Add events to the object</a></li>
+<li><a class="reference internal" href="#remove-event-s-from-an-object">Remove event(s) from an object</a></li>
+<li><a class="reference internal" href="#event-codes">Event codes</a><ul>
+<li><a class="reference internal" href="#input-device-events">Input device events</a></li>
+<li><a class="reference internal" href="#drawing-events">Drawing events</a></li>
+<li><a class="reference internal" href="#other-events">Other events</a></li>
+<li><a class="reference internal" href="#special-events">Special events</a></li>
+<li><a class="reference internal" href="#custom-events">Custom events</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#sending-events">Sending events</a><ul>
+<li><a class="reference internal" href="#refresh-event">Refresh event</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fields-of-lv-event-t">Fields of lv_event_t</a></li>
+<li><a class="reference internal" href="#event-bubbling">Event bubbling</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LVGL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Events</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/overview/event.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>.. include:: /header.rst 
+:github_url: |github_link_base|/overview/event.md
+</pre></div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="events">
+<h1>Events<a class="headerlink" href="#events" title="此标题的永久链接"></a></h1>
+<p>Events are triggered in LVGL when something happens which might be interesting to the user, e.g. when an object</p>
+<ul class="simple">
+<li><p>is clicked</p></li>
+<li><p>is scrolled</p></li>
+<li><p>has its value changed</p></li>
+<li><p>is redrawn, etc.</p></li>
+</ul>
+<section id="add-events-to-the-object">
+<h2>Add events to the object<a class="headerlink" href="#add-events-to-the-object" title="此标题的永久链接"></a></h2>
+<p>The user can assign callback functions to an object to see its events. In practice, it looks like this:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_obj_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">btn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_btn_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">());</span>
+<span class="n">lv_obj_add_event_cb</span><span class="p">(</span><span class="n">btn</span><span class="p">,</span><span class="w"> </span><span class="n">my_event_cb</span><span class="p">,</span><span class="w"> </span><span class="n">LV_EVENT_CLICKED</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span><span class="w">   </span><span class="cm">/*Assign an event callback*/</span>
+
+<span class="p">...</span>
+
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">my_event_cb</span><span class="p">(</span><span class="n">lv_event_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">event</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Clicked</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In the example <code class="docutils literal notranslate"><span class="pre">LV_EVENT_CLICKED</span></code> means that only the click event will call <code class="docutils literal notranslate"><span class="pre">my_event_cb</span></code>. See the <span class="xref myst">list of event codes</span> for all the options.
+<code class="docutils literal notranslate"><span class="pre">LV_EVENT_ALL</span></code> can be used to receive all events.</p>
+<p>The last parameter of <code class="docutils literal notranslate"><span class="pre">lv_obj_add_event_cb</span></code> is a pointer to any custom data that will be available in the event. It will be described later in more detail.</p>
+<p>More events can be added to an object, like this:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_obj_add_event_cb</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="w"> </span><span class="n">my_event_cb_1</span><span class="p">,</span><span class="w"> </span><span class="n">LV_EVENT_CLICKED</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<span class="n">lv_obj_add_event_cb</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="w"> </span><span class="n">my_event_cb_2</span><span class="p">,</span><span class="w"> </span><span class="n">LV_EVENT_PRESSED</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<span class="n">lv_obj_add_event_cb</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="w"> </span><span class="n">my_event_cb_3</span><span class="p">,</span><span class="w"> </span><span class="n">LV_EVENT_ALL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span><span class="w">		</span><span class="cm">/*No filtering, receive all events*/</span>
+</pre></div>
+</div>
+<p>Even the same event callback can be used on an object with different <code class="docutils literal notranslate"><span class="pre">user_data</span></code>. For example:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_obj_add_event_cb</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="w"> </span><span class="n">increment_on_click</span><span class="p">,</span><span class="w"> </span><span class="n">LV_EVENT_CLICKED</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">num1</span><span class="p">);</span>
+<span class="n">lv_obj_add_event_cb</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="w"> </span><span class="n">increment_on_click</span><span class="p">,</span><span class="w"> </span><span class="n">LV_EVENT_CLICKED</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">num2</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The events will be called in the order as they were added.</p>
+<p>Other objects can use the same <em>event callback</em>.</p>
+</section>
+<section id="remove-event-s-from-an-object">
+<h2>Remove event(s) from an object<a class="headerlink" href="#remove-event-s-from-an-object" title="此标题的永久链接"></a></h2>
+<p>Events can be removed from an object with the <code class="docutils literal notranslate"><span class="pre">lv_obj_remove_event_cb(obj,</span> <span class="pre">event_cb)</span></code> function or <code class="docutils literal notranslate"><span class="pre">lv_obj_remove_event_dsc(obj,</span> <span class="pre">event_dsc)</span></code>. <code class="docutils literal notranslate"><span class="pre">event_dsc</span></code> is a pointer returned by <code class="docutils literal notranslate"><span class="pre">lv_obj_add_event_cb</span></code>.</p>
+</section>
+<section id="event-codes">
+<h2>Event codes<a class="headerlink" href="#event-codes" title="此标题的永久链接"></a></h2>
+<p>The event codes can be grouped into these categories:</p>
+<ul class="simple">
+<li><p>Input device events</p></li>
+<li><p>Drawing events</p></li>
+<li><p>Other events</p></li>
+<li><p>Special events</p></li>
+<li><p>Custom events</p></li>
+</ul>
+<p>All objects (such as Buttons/Labels/Sliders etc.) regardless their type receive the <em>Input device</em>, <em>Drawing</em> and <em>Other</em> events.</p>
+<p>However, the <em>Special events</em> are specific to a particular widget type. See the <a class="reference internal" href="../widgets/index.html"><span class="doc std std-doc">widgets' documentation</span></a> to learn when they are sent,</p>
+<p><em>Custom events</em> are added by the user and are never sent by LVGL.</p>
+<p>The following event codes exist:</p>
+<section id="input-device-events">
+<h3>Input device events<a class="headerlink" href="#input-device-events" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_PRESSED</span></code>      An object has been pressed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_PRESSING</span></code>     An object is being pressed (called continuously while pressing)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_PRESS_LOST</span></code>   An object is still being pressed but slid cursor/finger off of the object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_SHORT_CLICKED</span></code>    An object was pressed for a short period of time, then released. Not called if scrolled.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_LONG_PRESSED</span></code> An object has been pressed for at least the <code class="docutils literal notranslate"><span class="pre">long_press_time</span></code> specified in the input device driver.  Not called if scrolled.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_LONG_PRESSED_REPEAT</span></code>  Called after <code class="docutils literal notranslate"><span class="pre">long_press_time</span></code> in every <code class="docutils literal notranslate"><span class="pre">long_press_repeat_time</span></code> ms.  Not called if scrolled.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_CLICKED</span></code>      Called on release if an object did not scroll (regardless of long press)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_RELEASED</span></code>     Called in every case when an object has been released</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_SCROLL_BEGIN</span></code> Scrolling begins. The event parameter is <code class="docutils literal notranslate"><span class="pre">NULL</span></code> or an <code class="docutils literal notranslate"><span class="pre">lv_anim_t</span> <span class="pre">*</span></code> with a scroll animation descriptor that can be modified if required.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_SCROLL_END</span></code>   Scrolling ends.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_SCROLL</span></code>       An object was scrolled</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_GESTURE</span></code>      A gesture is detected. Get the gesture with <code class="docutils literal notranslate"><span class="pre">lv_indev_get_gesture_dir(lv_indev_get_act());</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_KEY</span></code>          A key is sent to an object. Get the key with <code class="docutils literal notranslate"><span class="pre">lv_indev_get_key(lv_indev_get_act());</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_FOCUSED</span></code>      An object is focused</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_DEFOCUSED</span></code>    An object is unfocused</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_LEAVE</span></code>        An object is unfocused but still selected</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_HIT_TEST</span></code>     Perform advanced hit-testing. Use <code class="docutils literal notranslate"><span class="pre">lv_hit_test_info_t</span> <span class="pre">*</span> <span class="pre">a</span> <span class="pre">=</span> <span class="pre">lv_event_get_hit_test_info(e)</span></code> and check if <code class="docutils literal notranslate"><span class="pre">a-&gt;point</span></code> can click the object or not. If not set <code class="docutils literal notranslate"><span class="pre">a-&gt;res</span> <span class="pre">=</span> <span class="pre">false</span></code></p></li>
+</ul>
+</section>
+<section id="drawing-events">
+<h3>Drawing events<a class="headerlink" href="#drawing-events" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_COVER_CHECK</span></code> Check if an object fully covers an area. The event parameter is <code class="docutils literal notranslate"><span class="pre">lv_cover_check_info_t</span> <span class="pre">*</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_REFR_EXT_DRAW_SIZE</span></code>  Get the required extra draw area around an object (e.g. for a shadow). The event parameter is <code class="docutils literal notranslate"><span class="pre">lv_coord_t</span> <span class="pre">*</span></code> to store the size. Only overwrite it with a larger value.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_DRAW_MAIN_BEGIN</span></code> Starting the main drawing phase.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_DRAW_MAIN</span></code>   Perform the main drawing</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_DRAW_MAIN_END</span></code>   Finishing the main drawing phase</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_DRAW_POST_BEGIN</span></code> Starting the post draw phase (when all children are drawn)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_DRAW_POST</span></code>   Perform the post draw phase (when all children are drawn)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_DRAW_POST_END</span></code>   Finishing the post draw phase (when all children are drawn)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_DRAW_PART_BEGIN</span></code> Starting to draw a part. The event parameter is <code class="docutils literal notranslate"><span class="pre">lv_obj_draw_dsc_t</span> <span class="pre">*</span></code>. Learn more <a class="reference internal" href="drawing.html"><span class="doc std std-doc">here</span></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_DRAW_PART_END</span></code>   Finishing to draw a part. The event parameter is <code class="docutils literal notranslate"><span class="pre">lv_obj_draw_dsc_t</span> <span class="pre">*</span></code>. Learn more <a class="reference internal" href="drawing.html"><span class="doc std std-doc">here</span></a>.</p></li>
+</ul>
+</section>
+<section id="other-events">
+<h3>Other events<a class="headerlink" href="#other-events" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_DELETE</span></code>       Object is being deleted</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_CHILD_CHANGED</span></code>    Child was removed/added</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_CHILD_CREATED</span></code>    Child was created, always bubbles up to all parents</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_CHILD_DELETED</span></code>    Child was deleted, always bubbles up to all parents</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_SIZE_CHANGED</span></code>    Object coordinates/size have changed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_STYLE_CHANGED</span></code>    Object's style has changed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_BASE_DIR_CHANGED</span></code> The base dir has changed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_GET_SELF_SIZE</span></code>    Get the internal size of a widget</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_SCREEN_UNLOAD_START</span></code> A screen unload started, fired immediately when lv_scr_load/lv_scr_load_anim is called</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_SCREEN_LOAD_START</span></code> A screen load started, fired when the screen change delay is expired</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_SCREEN_LOADED</span></code>    A screen was loaded, called when all animations are finished</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_SCREEN_UNLOADED</span></code>  A screen was unloaded, called when all animations are finished</p></li>
+</ul>
+</section>
+<section id="special-events">
+<h3>Special events<a class="headerlink" href="#special-events" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_VALUE_CHANGED</span></code>    The object's value has changed (i.e. slider moved)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_INSERT</span></code>       Text is being inserted into the object. The event data is <code class="docutils literal notranslate"><span class="pre">char</span> <span class="pre">*</span></code> being inserted.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_REFRESH</span></code>      Notify the object to refresh something on it (for the user)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_READY</span></code>        A process has finished</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_CANCEL</span></code>       A process has been canceled</p></li>
+</ul>
+</section>
+<section id="custom-events">
+<h3>Custom events<a class="headerlink" href="#custom-events" title="此标题的永久链接"></a></h3>
+<p>Any custom event codes can be registered by <code class="docutils literal notranslate"><span class="pre">uint32_t</span> <span class="pre">MY_EVENT_1</span> <span class="pre">=</span> <span class="pre">lv_event_register_id();</span></code></p>
+<p>They can be sent to any object with <code class="docutils literal notranslate"><span class="pre">lv_event_send(obj,</span> <span class="pre">MY_EVENT_1,</span> <span class="pre">&amp;some_data)</span></code></p>
+</section>
+</section>
+<section id="sending-events">
+<h2>Sending events<a class="headerlink" href="#sending-events" title="此标题的永久链接"></a></h2>
+<p>To manually send events to an object, use <code class="docutils literal notranslate"><span class="pre">lv_event_send(obj,</span> <span class="pre">&lt;EVENT_CODE&gt;</span> <span class="pre">&amp;some_data)</span></code>.</p>
+<p>For example, this can be used to manually close a message box by simulating a button press (although there are simpler ways to do this):</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*Simulate the press of the first button (indexes start from zero)*/</span>
+<span class="kt">uint32_t</span><span class="w"> </span><span class="n">btn_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="n">lv_event_send</span><span class="p">(</span><span class="n">mbox</span><span class="p">,</span><span class="w"> </span><span class="n">LV_EVENT_VALUE_CHANGED</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">btn_id</span><span class="p">);</span>
+</pre></div>
+</div>
+<section id="refresh-event">
+<h3>Refresh event<a class="headerlink" href="#refresh-event" title="此标题的永久链接"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_REFRESH</span></code> is a special event because it's designed to let the user notify an object to refresh itself. Some examples:</p>
+<ul class="simple">
+<li><p>notify a label to refresh its text according to one or more variables (e.g. current time)</p></li>
+<li><p>refresh a label when the language changes</p></li>
+<li><p>enable a button if some conditions are met (e.g. the correct PIN is entered)</p></li>
+<li><p>add/remove styles to/from an object if a limit is exceeded, etc</p></li>
+</ul>
+</section>
+</section>
+<section id="fields-of-lv-event-t">
+<h2>Fields of lv_event_t<a class="headerlink" href="#fields-of-lv-event-t" title="此标题的永久链接"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">lv_event_t</span></code> is the only parameter passed to the event callback and it contains all data about the event. The following values can be gotten from it:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_event_get_code(e)</span></code> get the event code</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_event_get_current_target(e)</span></code> get the object to which an event was sent. I.e. the object whose event handler is being called.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_event_get_target(e)</span></code> get the object that originally triggered the event (different from <code class="docutils literal notranslate"><span class="pre">lv_event_get_target</span></code> if <span class="xref myst">event bubbling</span> is enabled)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_event_get_user_data(e)</span></code> get the pointer passed as the last parameter of <code class="docutils literal notranslate"><span class="pre">lv_obj_add_event_cb</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_event_get_param(e)</span></code> get the parameter passed as the last parameter of <code class="docutils literal notranslate"><span class="pre">lv_event_send</span></code></p></li>
+</ul>
+</section>
+<section id="event-bubbling">
+<h2>Event bubbling<a class="headerlink" href="#event-bubbling" title="此标题的永久链接"></a></h2>
+<p>If <code class="docutils literal notranslate"><span class="pre">lv_obj_add_flag(obj,</span> <span class="pre">LV_OBJ_FLAG_EVENT_BUBBLE)</span></code> is enabled all events will be sent to an object's parent too. If the parent also has <code class="docutils literal notranslate"><span class="pre">LV_OBJ_FLAG_EVENT_BUBBLE</span></code> enabled the event will be sent to its parent and so on.</p>
+<p>The <em>target</em> parameter of the event is always the current target object, not the original object. To get the original target call <code class="docutils literal notranslate"><span class="pre">lv_event_get_original_target(e)</span></code> in the event handler.</p>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="此标题的永久链接"></a></h2>
+<div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>
+.. include:: ../../examples/event/index.rst
+
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2021, LVGL Kft.
+      <span class="lastupdated">最后更新于 2025 年 09 月 02 日.
+      </span></p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<style>
+  .wy-side-nav-search > div[role="search"] {
+    color: black;
+  }
+</style>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            let p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => {
+                let versionName = "";  
+                if(version == "master") versionName = "master (latest)";
+                else versionName = "v" + ((version.indexOf(".") != -1) ? version : (version + " (latest minor)"));
+                return `<option value="${version}">${versionName}</option>`;
+            })}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+document.addEventListener('DOMContentLoaded', (event) => {
+    function onIntersection(entries) {
+        entries.forEach(entry => {
+            let currentlyLoaded = entry.target.getAttribute("data-is-loaded") == "true";
+            let shouldBeLoaded = entry.intersectionRatio > 0;
+            if(currentlyLoaded != shouldBeLoaded) {
+                entry.target.setAttribute("data-is-loaded", shouldBeLoaded);
+                if(shouldBeLoaded) {
+                    let iframe = document.createElement("iframe");
+                    iframe.src = entry.target.getAttribute("data-real-src");
+                    entry.target.appendChild(iframe);
+                } else {
+                    let iframe = entry.target.querySelector("iframe");
+                    iframe.parentNode.removeChild(iframe);
+                }
+            }
+        });
+    }
+    const config = {
+        rootMargin: '600px 0px',
+        threshold: 0.01
+    };
+    let observer = new IntersectionObserver(onIntersection, config);
+    document.querySelectorAll(".lv-example").forEach(iframe => {
+        observer.observe(iframe);
+    });
+});
+</script>
+
+
+</body>
+</html>

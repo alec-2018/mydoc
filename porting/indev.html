@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Input device interface &mdash; LVGL  文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/fontawesome.min.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="canonical" href="https://docs.lvgl.io/0.0.1/porting/indev.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78811084-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+	gtag('config', 'UA-78811084-3', { 'anonymize_ip': true });
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_lvgl.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Input device interface</a><ul>
+<li><a class="reference internal" href="#types-of-input-devices">Types of input devices</a><ul>
+<li><a class="reference internal" href="#touchpad-mouse-or-any-pointer">Touchpad, mouse or any pointer</a></li>
+<li><a class="reference internal" href="#keypad-or-keyboard">Keypad or keyboard</a></li>
+<li><a class="reference internal" href="#encoder">Encoder</a><ul>
+<li><a class="reference internal" href="#using-buttons-with-encoder-logic">Using buttons with Encoder logic</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#button">Button</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#other-features">Other features</a><ul>
+<li><a class="reference internal" href="#parameters">Parameters</a></li>
+<li><a class="reference internal" href="#feedback">Feedback</a></li>
+<li><a class="reference internal" href="#associating-with-a-display">Associating with a display</a></li>
+<li><a class="reference internal" href="#buffered-reading">Buffered reading</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#further-reading">Further reading</a></li>
+<li><a class="reference internal" href="#api">API</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LVGL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Input device interface</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/porting/indev.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>.. include:: /header.rst 
+:github_url: |github_link_base|/porting/indev.md
+</pre></div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="input-device-interface">
+<h1>Input device interface<a class="headerlink" href="#input-device-interface" title="此标题的永久链接"></a></h1>
+<section id="types-of-input-devices">
+<h2>Types of input devices<a class="headerlink" href="#types-of-input-devices" title="此标题的永久链接"></a></h2>
+<p>To register an input device an <code class="docutils literal notranslate"><span class="pre">lv_indev_drv_t</span></code> variable has to be initialized. <strong>Be sure to register at least one display before you register any input devices.</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_disp_drv_register</span><span class="p">(</span><span class="o">&amp;</span><span class="n">disp_drv</span><span class="p">);</span>
+
+<span class="k">static</span><span class="w"> </span><span class="n">lv_indev_drv_t</span><span class="w"> </span><span class="n">indev_drv</span><span class="p">;</span>
+<span class="n">lv_indev_drv_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">indev_drv</span><span class="p">);</span><span class="w">      </span><span class="cm">/*Basic initialization*/</span>
+<span class="n">indev_drv</span><span class="p">.</span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="p">...</span><span class="w">                 </span><span class="cm">/*See below.*/</span>
+<span class="n">indev_drv</span><span class="p">.</span><span class="n">read_cb</span><span class="w"> </span><span class="o">=</span><span class="p">...</span><span class="w">              </span><span class="cm">/*See below.*/</span>
+<span class="cm">/*Register the driver in LVGL and save the created input device object*/</span>
+<span class="n">lv_indev_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">my_indev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_indev_drv_register</span><span class="p">(</span><span class="o">&amp;</span><span class="n">indev_drv</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">type</span></code> member can be:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_INDEV_TYPE_POINTER</span></code> touchpad or mouse</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_INDEV_TYPE_KEYPAD</span></code> keyboard or keypad</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_INDEV_TYPE_ENCODER</span></code> encoder with left/right turn and push options</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_INDEV_TYPE_BUTTON</span></code> external buttons virtually pressing the screen</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">read_cb</span></code> is a function pointer which will be called periodically to report the current state of an input device.</p>
+<p>Visit <a class="reference internal" href="../overview/indev.html"><span class="doc std std-doc">Input devices</span></a> to learn more about input devices in general.</p>
+<section id="touchpad-mouse-or-any-pointer">
+<h3>Touchpad, mouse or any pointer<a class="headerlink" href="#touchpad-mouse-or-any-pointer" title="此标题的永久链接"></a></h3>
+<p>Input devices that can click points on the screen belong to this category.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">indev_drv</span><span class="p">.</span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LV_INDEV_TYPE_POINTER</span><span class="p">;</span>
+<span class="n">indev_drv</span><span class="p">.</span><span class="n">read_cb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">my_input_read</span><span class="p">;</span>
+
+<span class="p">...</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">my_input_read</span><span class="p">(</span><span class="n">lv_indev_drv_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">drv</span><span class="p">,</span><span class="w"> </span><span class="n">lv_indev_data_t</span><span class="o">*</span><span class="n">data</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="n">touchpad_pressed</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">data</span><span class="o">-&gt;</span><span class="n">point</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">touchpad_x</span><span class="p">;</span>
+<span class="w">    </span><span class="n">data</span><span class="o">-&gt;</span><span class="n">point</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">touchpad_y</span><span class="p">;</span>
+<span class="w">    </span><span class="n">data</span><span class="o">-&gt;</span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LV_INDEV_STATE_PRESSED</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">data</span><span class="o">-&gt;</span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LV_INDEV_STATE_RELEASED</span><span class="p">;</span><span class="w"> </span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To set a mouse cursor use <code class="docutils literal notranslate"><span class="pre">lv_indev_set_cursor(my_indev,</span> <span class="pre">&amp;img_cursor)</span></code>. (<code class="docutils literal notranslate"><span class="pre">my_indev</span></code> is the return value of <code class="docutils literal notranslate"><span class="pre">lv_indev_drv_register</span></code>)</p>
+</section>
+<section id="keypad-or-keyboard">
+<h3>Keypad or keyboard<a class="headerlink" href="#keypad-or-keyboard" title="此标题的永久链接"></a></h3>
+<p>Full keyboards with all the letters or simple keypads with a few navigation buttons belong here.</p>
+<p>To use a keyboard/keypad:</p>
+<ul class="simple">
+<li><p>Register a <code class="docutils literal notranslate"><span class="pre">read_cb</span></code> function with <code class="docutils literal notranslate"><span class="pre">LV_INDEV_TYPE_KEYPAD</span></code> type.</p></li>
+<li><p>An object group has to be created: <code class="docutils literal notranslate"><span class="pre">lv_group_t</span> <span class="pre">*</span> <span class="pre">g</span> <span class="pre">=</span> <span class="pre">lv_group_create()</span></code> and objects have to be added to it with <code class="docutils literal notranslate"><span class="pre">lv_group_add_obj(g,</span> <span class="pre">obj)</span></code></p></li>
+<li><p>The created group has to be assigned to an input device: <code class="docutils literal notranslate"><span class="pre">lv_indev_set_group(my_indev,</span> <span class="pre">g)</span></code> (<code class="docutils literal notranslate"><span class="pre">my_indev</span></code> is the return value of <code class="docutils literal notranslate"><span class="pre">lv_indev_drv_register</span></code>)</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">LV_KEY_...</span></code> to navigate among the objects in the group. See <code class="docutils literal notranslate"><span class="pre">lv_core/lv_group.h</span></code> for the available keys.</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">indev_drv</span><span class="p">.</span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LV_INDEV_TYPE_KEYPAD</span><span class="p">;</span>
+<span class="n">indev_drv</span><span class="p">.</span><span class="n">read_cb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keyboard_read</span><span class="p">;</span>
+
+<span class="p">...</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">keyboard_read</span><span class="p">(</span><span class="n">lv_indev_drv_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">drv</span><span class="p">,</span><span class="w"> </span><span class="n">lv_indev_data_t</span><span class="o">*</span><span class="n">data</span><span class="p">){</span>
+<span class="w">  </span><span class="n">data</span><span class="o">-&gt;</span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">last_key</span><span class="p">();</span><span class="w">            </span><span class="cm">/*Get the last pressed or released key*/</span>
+
+<span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="n">key_pressed</span><span class="p">())</span><span class="w"> </span><span class="n">data</span><span class="o">-&gt;</span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LV_INDEV_STATE_PRESSED</span><span class="p">;</span>
+<span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="n">data</span><span class="o">-&gt;</span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LV_INDEV_STATE_RELEASED</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="encoder">
+<h3>Encoder<a class="headerlink" href="#encoder" title="此标题的永久链接"></a></h3>
+<p>With an encoder you can do the following:</p>
+<ol class="arabic simple">
+<li><p>Press its button</p></li>
+<li><p>Long-press its button</p></li>
+<li><p>Turn left</p></li>
+<li><p>Turn right</p></li>
+</ol>
+<p>In short, the Encoder input devices work like this:</p>
+<ul class="simple">
+<li><p>By turning the encoder you can focus on the next/previous object.</p></li>
+<li><p>When you press the encoder on a simple object (like a button), it will be clicked.</p></li>
+<li><p>If you press the encoder on a complex object (like a list, message box, etc.) the object will go to edit mode whereby you can navigate inside the object by turning the encoder.</p></li>
+<li><p>To leave edit mode, long press the button.</p></li>
+</ul>
+<p>To use an <em>Encoder</em> (similarly to the <em>Keypads</em>) the objects should be added to groups.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">indev_drv</span><span class="p">.</span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LV_INDEV_TYPE_ENCODER</span><span class="p">;</span>
+<span class="n">indev_drv</span><span class="p">.</span><span class="n">read_cb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">encoder_read</span><span class="p">;</span>
+
+<span class="p">...</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">encoder_read</span><span class="p">(</span><span class="n">lv_indev_drv_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">drv</span><span class="p">,</span><span class="w"> </span><span class="n">lv_indev_data_t</span><span class="o">*</span><span class="n">data</span><span class="p">){</span>
+<span class="w">  </span><span class="n">data</span><span class="o">-&gt;</span><span class="n">enc_diff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">enc_get_new_moves</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="n">enc_pressed</span><span class="p">())</span><span class="w"> </span><span class="n">data</span><span class="o">-&gt;</span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LV_INDEV_STATE_PRESSED</span><span class="p">;</span>
+<span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="n">data</span><span class="o">-&gt;</span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LV_INDEV_STATE_RELEASED</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="using-buttons-with-encoder-logic">
+<h4>Using buttons with Encoder logic<a class="headerlink" href="#using-buttons-with-encoder-logic" title="此标题的永久链接"></a></h4>
+<p>In addition to standard encoder behavior, you can also utilize its logic to navigate(focus) and edit widgets using buttons.
+This is especially handy if you have only few buttons available, or you want to use other buttons in addition to encoder wheel.</p>
+<p>You need to have 3 buttons available:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_KEY_ENTER</span></code> will simulate press or pushing of the encoder button</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_KEY_LEFT</span></code> will simulate turning encoder left</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_KEY_RIGHT</span></code> will simulate turning encoder right</p></li>
+<li><p>other keys will be passed to the focused widget</p></li>
+</ul>
+<p>If you hold the keys it will simulate an encoder advance with period specified in <code class="docutils literal notranslate"><span class="pre">indev_drv.long_press_rep_time</span></code>.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">indev_drv</span><span class="p">.</span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LV_INDEV_TYPE_ENCODER</span><span class="p">;</span>
+<span class="n">indev_drv</span><span class="p">.</span><span class="n">read_cb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">encoder_with_keys_read</span><span class="p">;</span>
+
+<span class="p">...</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">encoder_with_keys_read</span><span class="p">(</span><span class="n">lv_indev_drv_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">drv</span><span class="p">,</span><span class="w"> </span><span class="n">lv_indev_data_t</span><span class="o">*</span><span class="n">data</span><span class="p">){</span>
+<span class="w">  </span><span class="n">data</span><span class="o">-&gt;</span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">last_key</span><span class="p">();</span><span class="w">            </span><span class="cm">/*Get the last pressed or released key*/</span>
+<span class="w">                                     </span><span class="cm">/* use LV_KEY_ENTER for encoder press */</span>
+<span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="n">key_pressed</span><span class="p">())</span><span class="w"> </span><span class="n">data</span><span class="o">-&gt;</span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LV_INDEV_STATE_PRESSED</span><span class="p">;</span>
+<span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">data</span><span class="o">-&gt;</span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LV_INDEV_STATE_RELEASED</span><span class="p">;</span>
+<span class="w">      </span><span class="cm">/* Optionally you can also use enc_diff, if you have encoder*/</span>
+<span class="w">      </span><span class="n">data</span><span class="o">-&gt;</span><span class="n">enc_diff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">enc_get_new_moves</span><span class="p">();</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="button">
+<h3>Button<a class="headerlink" href="#button" title="此标题的永久链接"></a></h3>
+<p><em>Buttons</em> mean external &quot;hardware&quot; buttons next to the screen which are assigned to specific coordinates of the screen.
+If a button is pressed it will simulate the pressing on the assigned coordinate. (Similarly to a touchpad)</p>
+<p>To assign buttons to coordinates use <code class="docutils literal notranslate"><span class="pre">lv_indev_set_button_points(my_indev,</span> <span class="pre">points_array)</span></code>.<br />
+<code class="docutils literal notranslate"><span class="pre">points_array</span></code> should look like <code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">lv_point_t</span> <span class="pre">points_array[]</span> <span class="pre">=</span>&#160; <span class="pre">{</span> <span class="pre">{12,30},{60,90},</span> <span class="pre">...}</span></code></p>
+<div class="highlight-important:: notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">indev_drv</span><span class="p">.</span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LV_INDEV_TYPE_BUTTON</span><span class="p">;</span>
+<span class="n">indev_drv</span><span class="p">.</span><span class="n">read_cb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">button_read</span><span class="p">;</span>
+
+<span class="p">...</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">button_read</span><span class="p">(</span><span class="n">lv_indev_drv_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">drv</span><span class="p">,</span><span class="w"> </span><span class="n">lv_indev_data_t</span><span class="o">*</span><span class="n">data</span><span class="p">){</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">last_btn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">   </span><span class="cm">/*Store the last pressed button*/</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">btn_pr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">my_btn_read</span><span class="p">();</span><span class="w">     </span><span class="cm">/*Get the ID (0,1,2...) of the pressed button*/</span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">btn_pr</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">               </span><span class="cm">/*Is there a button press? (E.g. -1 indicated no button was pressed)*/</span>
+<span class="w">       </span><span class="n">last_btn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">btn_pr</span><span class="p">;</span><span class="w">           </span><span class="cm">/*Save the ID of the pressed button*/</span>
+<span class="w">       </span><span class="n">data</span><span class="o">-&gt;</span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LV_INDEV_STATE_PRESSED</span><span class="p">;</span><span class="w">  </span><span class="cm">/*Set the pressed state*/</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">       </span><span class="n">data</span><span class="o">-&gt;</span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LV_INDEV_STATE_RELEASED</span><span class="p">;</span><span class="w"> </span><span class="cm">/*Set the released state*/</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">data</span><span class="o">-&gt;</span><span class="n">btn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">last_btn</span><span class="p">;</span><span class="w">            </span><span class="cm">/*Save the last button*/</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="other-features">
+<h2>Other features<a class="headerlink" href="#other-features" title="此标题的永久链接"></a></h2>
+<section id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="此标题的永久链接"></a></h3>
+<p>The default value of the following parameters can be changed in <code class="docutils literal notranslate"><span class="pre">lv_indev_drv_t</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">scroll_limit</span></code> Number of pixels to slide before actually scrolling the object.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scroll_throw</span></code>  Scroll throw (momentum) slow-down in [%]. Greater value means faster slow-down.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">long_press_time</span></code> Press time to send <code class="docutils literal notranslate"><span class="pre">LV_EVENT_LONG_PRESSED</span></code> (in milliseconds)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">long_press_rep_time</span></code> Interval of sending <code class="docutils literal notranslate"><span class="pre">LV_EVENT_LONG_PRESSED_REPEAT</span></code> (in milliseconds)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">read_timer</span></code> pointer to the <code class="docutils literal notranslate"><span class="pre">lv_timer</span></code> which reads the input device. Its parameters can be changed by <code class="docutils literal notranslate"><span class="pre">lv_timer_...()</span></code> functions. <code class="docutils literal notranslate"><span class="pre">LV_INDEV_DEF_READ_PERIOD</span></code> in <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code> sets the default read period.</p></li>
+</ul>
+</section>
+<section id="feedback">
+<h3>Feedback<a class="headerlink" href="#feedback" title="此标题的永久链接"></a></h3>
+<p>Besides <code class="docutils literal notranslate"><span class="pre">read_cb</span></code> a <code class="docutils literal notranslate"><span class="pre">feedback_cb</span></code> callback can be also specified in <code class="docutils literal notranslate"><span class="pre">lv_indev_drv_t</span></code>.
+<code class="docutils literal notranslate"><span class="pre">feedback_cb</span></code> is called when any type of event is sent by the input devices (independently of its type). This allows generating feedback for the user, e.g. to play a sound on <code class="docutils literal notranslate"><span class="pre">LV_EVENT_CLICKED</span></code>.</p>
+</section>
+<section id="associating-with-a-display">
+<h3>Associating with a display<a class="headerlink" href="#associating-with-a-display" title="此标题的永久链接"></a></h3>
+<p>Every input device is associated with a display. By default, a new input device is added to the last display created or explicitly selected (using <code class="docutils literal notranslate"><span class="pre">lv_disp_set_default()</span></code>).
+The associated display is stored and can be changed in <code class="docutils literal notranslate"><span class="pre">disp</span></code> field of the driver.</p>
+</section>
+<section id="buffered-reading">
+<h3>Buffered reading<a class="headerlink" href="#buffered-reading" title="此标题的永久链接"></a></h3>
+<p>By default, LVGL calls <code class="docutils literal notranslate"><span class="pre">read_cb</span></code> periodically. Because of this intermittent polling there is a chance that some user gestures are missed.</p>
+<p>To solve this you can write an event driven driver for your input device that buffers measured data. In <code class="docutils literal notranslate"><span class="pre">read_cb</span></code> you can report the buffered data instead of directly reading the input device.
+Setting the <code class="docutils literal notranslate"><span class="pre">data-&gt;continue_reading</span></code> flag will tell LVGL there is more data to read and it should call <code class="docutils literal notranslate"><span class="pre">read_cb</span></code> again.</p>
+</section>
+</section>
+<section id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/lvgl/lvgl/blob/master/examples/porting/lv_port_indev_template.c">lv_port_indev_template.c</a> for a template for your own driver.</p></li>
+<li><p><a class="reference internal" href="../overview/display.html"><span class="doc std std-doc">INdev features</span></a> to learn more about higher level input device features.</p></li>
+</ul>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="此标题的永久链接"></a></h2>
+<div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>
+.. doxygenfile:: lv_hal_indev.h
+  :project: lvgl
+
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2021, LVGL Kft.
+      <span class="lastupdated">最后更新于 2025 年 09 月 02 日.
+      </span></p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<style>
+  .wy-side-nav-search > div[role="search"] {
+    color: black;
+  }
+</style>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            let p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => {
+                let versionName = "";  
+                if(version == "master") versionName = "master (latest)";
+                else versionName = "v" + ((version.indexOf(".") != -1) ? version : (version + " (latest minor)"));
+                return `<option value="${version}">${versionName}</option>`;
+            })}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+document.addEventListener('DOMContentLoaded', (event) => {
+    function onIntersection(entries) {
+        entries.forEach(entry => {
+            let currentlyLoaded = entry.target.getAttribute("data-is-loaded") == "true";
+            let shouldBeLoaded = entry.intersectionRatio > 0;
+            if(currentlyLoaded != shouldBeLoaded) {
+                entry.target.setAttribute("data-is-loaded", shouldBeLoaded);
+                if(shouldBeLoaded) {
+                    let iframe = document.createElement("iframe");
+                    iframe.src = entry.target.getAttribute("data-real-src");
+                    entry.target.appendChild(iframe);
+                } else {
+                    let iframe = entry.target.querySelector("iframe");
+                    iframe.parentNode.removeChild(iframe);
+                }
+            }
+        });
+    }
+    const config = {
+        rootMargin: '600px 0px',
+        threshold: 0.01
+    };
+    let observer = new IntersectionObserver(onIntersection, config);
+    document.querySelectorAll(".lv-example").forEach(iframe => {
+        observer.observe(iframe);
+    });
+});
+</script>
+
+
+</body>
+</html>

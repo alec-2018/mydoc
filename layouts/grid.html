@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grid &mdash; LVGL  文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/fontawesome.min.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="canonical" href="https://docs.lvgl.io/0.0.1/layouts/grid.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78811084-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+	gtag('config', 'UA-78811084-3', { 'anonymize_ip': true });
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_lvgl.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Grid</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#terms">Terms</a></li>
+<li><a class="reference internal" href="#simple-interface">Simple interface</a><ul>
+<li><a class="reference internal" href="#grid-descriptors">Grid descriptors</a></li>
+<li><a class="reference internal" href="#grid-items">Grid items</a></li>
+<li><a class="reference internal" href="#grid-align">Grid align</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#style-interface">Style interface</a><ul>
+<li><a class="reference internal" href="#internal-padding">Internal padding</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#other-features">Other features</a><ul>
+<li><a class="reference internal" href="#rtl">RTL</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#example">Example</a></li>
+<li><a class="reference internal" href="#api">API</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LVGL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Grid</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/layouts/grid.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>.. include:: /header.rst 
+:github_url: |github_link_base|/layouts/grid.md
+</pre></div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="grid">
+<h1>Grid<a class="headerlink" href="#grid" title="此标题的永久链接"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="此标题的永久链接"></a></h2>
+<p>The Grid layout is a subset of <a class="reference external" href="https://css-tricks.com/snippets/css/complete-guide-grid/">CSS Flexbox</a>.</p>
+<p>It can arrange items into a 2D &quot;table&quot; that has rows or columns (tracks). The item can span through multiple columns or rows.
+The track's size can be set in pixel, to the largest item (<code class="docutils literal notranslate"><span class="pre">LV_GRID_CONTENT</span></code>) or in &quot;Free unit&quot; (FR) to distribute the free space proportionally.</p>
+<p>To make an object a grid container call <code class="docutils literal notranslate"><span class="pre">lv_obj_set_layout(obj,</span> <span class="pre">LV_LAYOUT_GRID)</span></code>.</p>
+<p>Note that the grid layout feature of LVGL needs to be globally enabled with <code class="docutils literal notranslate"><span class="pre">LV_USE_GRID</span></code> in <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code>.</p>
+</section>
+<section id="terms">
+<h2>Terms<a class="headerlink" href="#terms" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>tracks: the rows or columns</p></li>
+<li><p>free unit (FR): if set on track's size is set in <code class="docutils literal notranslate"><span class="pre">FR</span></code> it will grow to fill the remaining space on the parent.</p></li>
+<li><p>gap: the space between the rows and columns or the items on a track</p></li>
+</ul>
+</section>
+<section id="simple-interface">
+<h2>Simple interface<a class="headerlink" href="#simple-interface" title="此标题的永久链接"></a></h2>
+<p>With the following functions you can easily set a Grid layout on any parent.</p>
+<section id="grid-descriptors">
+<h3>Grid descriptors<a class="headerlink" href="#grid-descriptors" title="此标题的永久链接"></a></h3>
+<p>First you need to describe the size of rows and columns. It can be done by declaring 2 arrays and the track sizes in them. The last element must be <code class="docutils literal notranslate"><span class="pre">LV_GRID_TEMPLATE_LAST</span></code>.</p>
+<p>For example:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="n">lv_coord_t</span><span class="w"> </span><span class="n">column_dsc</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">400</span><span class="p">,</span><span class="w"> </span><span class="n">LV_GRID_TEMPLATE_LAST</span><span class="p">};</span><span class="w">   </span><span class="cm">/*2 columns with 100 and 400 ps width*/</span>
+<span class="k">static</span><span class="w"> </span><span class="n">lv_coord_t</span><span class="w"> </span><span class="n">row_dsc</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="n">LV_GRID_TEMPLATE_LAST</span><span class="p">};</span><span class="w"> </span><span class="cm">/*3 100 px tall rows*/</span>
+</pre></div>
+</div>
+<p>To set the descriptors on a parent use <code class="docutils literal notranslate"><span class="pre">lv_obj_set_grid_dsc_array(obj,</span> <span class="pre">col_dsc,</span> <span class="pre">row_dsc)</span></code>.</p>
+<p>Besides simple settings the size in pixel you can use two special values:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_GRID_CONTENT</span></code> set the width to the largest children on this track</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_GRID_FR(X)</span></code> tell what portion of the remaining space should be used by this track. Larger value means larger space.</p></li>
+</ul>
+</section>
+<section id="grid-items">
+<h3>Grid items<a class="headerlink" href="#grid-items" title="此标题的永久链接"></a></h3>
+<p>By default, the children are not added to the grid. They need to be added manually to a cell.</p>
+<p>To do this call <code class="docutils literal notranslate"><span class="pre">lv_obj_set_grid_cell(child,</span> <span class="pre">column_align,</span> <span class="pre">column_pos,</span> <span class="pre">column_span,</span> <span class="pre">row_align,</span> <span class="pre">row_pos,</span> <span class="pre">row_span)</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">column_align</span></code> and <code class="docutils literal notranslate"><span class="pre">row_align</span></code> determine how to align the children in its cell. The possible values are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_GRID_ALIGN_START</span></code> means left on a horizontally and top vertically. (default)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_GRID_ALIGN_END</span></code> means right on a horizontally and bottom vertically</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_GRID_ALIGN_CENTER</span></code> simply center</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">colum_pos</span></code> and <code class="docutils literal notranslate"><span class="pre">row_pos</span></code> means the zero based index of the cell into the item should be placed.</p>
+<p><code class="docutils literal notranslate"><span class="pre">colum_span</span></code> and <code class="docutils literal notranslate"><span class="pre">row_span</span></code> means how many tracks should the item involve from the start cell. Must be &gt; 1.</p>
+</section>
+<section id="grid-align">
+<h3>Grid align<a class="headerlink" href="#grid-align" title="此标题的永久链接"></a></h3>
+<p>If there are some empty space the track can be aligned several ways:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_GRID_ALIGN_START</span></code> means left on a horizontally and top vertically. (default)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_GRID_ALIGN_END</span></code> means right on a horizontally and bottom vertically</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_GRID_ALIGN_CENTER</span></code> simply center</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_GRID_ALIGN_SPACE_EVENLY</span></code> items are distributed so that the spacing between any two items (and the space to the edges) is equal. Not applies to <code class="docutils literal notranslate"><span class="pre">track_cross_place</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_GRID_ALIGN_SPACE_AROUND</span></code> items are evenly distributed in the track with equal space around them.
+Note that visually the spaces aren’t equal, since all the items have equal space on both sides.
+The first item will have one unit of space against the container edge, but two units of space between the next item because that next item has its own spacing that applies. Not applies to <code class="docutils literal notranslate"><span class="pre">track_cross_place</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_GRID_ALIGN_SPACE_BETWEEN</span></code> items are evenly distributed in the track: first item is on the start line, last item on the end line. Not applies to <code class="docutils literal notranslate"><span class="pre">track_cross_place</span></code>.</p></li>
+</ul>
+<p>To set the track's alignment use <code class="docutils literal notranslate"><span class="pre">lv_obj_set_grid_align(obj,</span> <span class="pre">column_align,</span> <span class="pre">row_align)</span></code>.</p>
+</section>
+</section>
+<section id="style-interface">
+<h2>Style interface<a class="headerlink" href="#style-interface" title="此标题的永久链接"></a></h2>
+<p>All the Grid related values are style properties under the hood and you can use them similarly to any other style properties. The following Grid related style properties exist:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">GRID_COLUMN_DSC_ARRAY</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GRID_ROW_DSC_ARRAY</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GRID_COLUMN_ALIGN</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GRID_ROW_ALIGN</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GRID_CELL_X_ALIGN</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GRID_CELL_COLUMN_POS</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GRID_CELL_COLUMN_SPAN</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GRID_CELL_Y_ALIGN</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GRID_CELL_ROW_POS</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GRID_CELL_ROW_SPAN</span></code></p></li>
+</ul>
+<section id="internal-padding">
+<h3>Internal padding<a class="headerlink" href="#internal-padding" title="此标题的永久链接"></a></h3>
+<p>To modify the minimum space Grid inserts between objects, the following properties can be set on the Grid container style:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pad_row</span></code> Sets the padding between the rows.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pad_column</span></code> Sets the padding between the columns.</p></li>
+</ul>
+</section>
+</section>
+<section id="other-features">
+<h2>Other features<a class="headerlink" href="#other-features" title="此标题的永久链接"></a></h2>
+<section id="rtl">
+<h3>RTL<a class="headerlink" href="#rtl" title="此标题的永久链接"></a></h3>
+<p>If the base direction of the container is set to <code class="docutils literal notranslate"><span class="pre">LV_BASE_DIR_RTL</span></code>, the meaning of <code class="docutils literal notranslate"><span class="pre">LV_GRID_ALIGN_START</span></code> and <code class="docutils literal notranslate"><span class="pre">LV_GRID_ALIGN_END</span></code> is swapped. I.e. <code class="docutils literal notranslate"><span class="pre">START</span></code> will mean right-most.</p>
+<p>The columns will be placed from right to left.</p>
+</section>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="此标题的永久链接"></a></h2>
+<div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>
+.. include:: ../../examples/layouts/grid/index.rst
+
+</pre></div>
+</div>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="此标题的永久链接"></a></h2>
+<div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>
+.. doxygenfile:: lv_grid.h
+  :project: lvgl
+
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2021, LVGL Kft.
+      <span class="lastupdated">最后更新于 2025 年 09 月 02 日.
+      </span></p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<style>
+  .wy-side-nav-search > div[role="search"] {
+    color: black;
+  }
+</style>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            let p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => {
+                let versionName = "";  
+                if(version == "master") versionName = "master (latest)";
+                else versionName = "v" + ((version.indexOf(".") != -1) ? version : (version + " (latest minor)"));
+                return `<option value="${version}">${versionName}</option>`;
+            })}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+document.addEventListener('DOMContentLoaded', (event) => {
+    function onIntersection(entries) {
+        entries.forEach(entry => {
+            let currentlyLoaded = entry.target.getAttribute("data-is-loaded") == "true";
+            let shouldBeLoaded = entry.intersectionRatio > 0;
+            if(currentlyLoaded != shouldBeLoaded) {
+                entry.target.setAttribute("data-is-loaded", shouldBeLoaded);
+                if(shouldBeLoaded) {
+                    let iframe = document.createElement("iframe");
+                    iframe.src = entry.target.getAttribute("data-real-src");
+                    entry.target.appendChild(iframe);
+                } else {
+                    let iframe = entry.target.querySelector("iframe");
+                    iframe.parentNode.removeChild(iframe);
+                }
+            }
+        });
+    }
+    const config = {
+        rootMargin: '600px 0px',
+        threshold: 0.01
+    };
+    let observer = new IntersectionObserver(onIntersection, config);
+    document.querySelectorAll(".lv-example").forEach(iframe => {
+        observer.observe(iframe);
+    });
+});
+</script>
+
+
+</body>
+</html>

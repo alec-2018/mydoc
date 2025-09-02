@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Display interface &mdash; LVGL  文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/fontawesome.min.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="canonical" href="https://docs.lvgl.io/0.0.1/porting/display.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78811084-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+	gtag('config', 'UA-78811084-3', { 'anonymize_ip': true });
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_lvgl.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Display interface</a><ul>
+<li><a class="reference internal" href="#draw-buffer">Draw buffer</a></li>
+<li><a class="reference internal" href="#buffering-modes">Buffering modes</a><ul>
+<li><a class="reference internal" href="#one-buffer">One buffer</a></li>
+<li><a class="reference internal" href="#two-buffers">Two buffers</a></li>
+<li><a class="reference internal" href="#full-refresh">Full refresh</a></li>
+<li><a class="reference internal" href="#direct-mode">Direct mode</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#display-driver">Display driver</a><ul>
+<li><a class="reference internal" href="#mandatory-fields">Mandatory fields</a></li>
+<li><a class="reference internal" href="#optional-fields">Optional fields</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#rotation">Rotation</a></li>
+<li><a class="reference internal" href="#further-reading">Further reading</a></li>
+<li><a class="reference internal" href="#api">API</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LVGL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Display interface</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/porting/display.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>.. include:: /header.rst 
+:github_url: |github_link_base|/porting/display.md
+</pre></div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="display-interface">
+<h1>Display interface<a class="headerlink" href="#display-interface" title="此标题的永久链接"></a></h1>
+<p>To register a display for LVGL, a <code class="docutils literal notranslate"><span class="pre">lv_disp_draw_buf_t</span></code> and a <code class="docutils literal notranslate"><span class="pre">lv_disp_drv_t</span></code> variable have to be initialized.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_disp_draw_buf_t</span></code> contains internal graphic buffer(s) called draw buffer(s).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_disp_drv_t</span></code> contains callback functions to interact with the display and manipulate low level drawing behavior.</p></li>
+</ul>
+<section id="draw-buffer">
+<h2>Draw buffer<a class="headerlink" href="#draw-buffer" title="此标题的永久链接"></a></h2>
+<p>Draw buffer(s) are simple array(s) that LVGL uses to render the screen content.
+Once rendering is ready the content of the draw buffer is sent to the display using the <code class="docutils literal notranslate"><span class="pre">flush_cb</span></code> function set in the display driver (see below).</p>
+<p>A draw buffer can be initialized via a <code class="docutils literal notranslate"><span class="pre">lv_disp_draw_buf_t</span></code> variable like this:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*A static or global variable to store the buffers*/</span>
+<span class="k">static</span><span class="w"> </span><span class="n">lv_disp_draw_buf_t</span><span class="w"> </span><span class="n">disp_buf</span><span class="p">;</span>
+
+<span class="cm">/*Static or global buffer(s). The second buffer is optional*/</span>
+<span class="k">static</span><span class="w"> </span><span class="n">lv_color_t</span><span class="w"> </span><span class="n">buf_1</span><span class="p">[</span><span class="n">MY_DISP_HOR_RES</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">10</span><span class="p">];</span>
+<span class="k">static</span><span class="w"> </span><span class="n">lv_color_t</span><span class="w"> </span><span class="n">buf_2</span><span class="p">[</span><span class="n">MY_DISP_HOR_RES</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">10</span><span class="p">];</span>
+
+<span class="cm">/*Initialize `disp_buf` with the buffer(s). With only one buffer use NULL instead buf_2 */</span>
+<span class="n">lv_disp_draw_buf_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">disp_buf</span><span class="p">,</span><span class="w"> </span><span class="n">buf_1</span><span class="p">,</span><span class="w"> </span><span class="n">buf_2</span><span class="p">,</span><span class="w"> </span><span class="n">MY_DISP_HOR_RES</span><span class="o">*</span><span class="mi">10</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">lv_disp_draw_buf_t</span></code> must be a static, global or dynamically allocated variable. It cannot be a local variable as they are destroyed upon end of scope.</p>
+<p>As you can see above, the draw buffer may be smaller than the screen. In this case, larger areas are redrawn in smaller segments that fit into the draw buffer(s).
+If only a small area changes (e.g. a button is pressed) then only that area will be refreshed.</p>
+<p>A larger buffer results in better performance but above 1/10 screen sized buffer(s) there is no significant performance improvement.
+Therefore it's recommended to choose the size of the draw buffer(s) to be at least 1/10 screen sized.</p>
+</section>
+<section id="buffering-modes">
+<h2>Buffering modes<a class="headerlink" href="#buffering-modes" title="此标题的永久链接"></a></h2>
+<p>There are several settings to adjust the number draw buffers and buffering/refreshing modes.</p>
+<p>You can measure the performance of different configurations using the <a class="reference external" href="https://github.com/lvgl/lv_demos/tree/master/src/lv_demo_benchmark">benchmark example</a>.</p>
+<section id="one-buffer">
+<h3>One buffer<a class="headerlink" href="#one-buffer" title="此标题的永久链接"></a></h3>
+<p>If only one buffer is used LVGL draws the content of the screen into that draw buffer and sends it to the display.
+LVGL then needs to wait until the content of the buffer is sent to the display before drawing something new in it.</p>
+</section>
+<section id="two-buffers">
+<h3>Two buffers<a class="headerlink" href="#two-buffers" title="此标题的永久链接"></a></h3>
+<p>If two buffers  are used LVGL can draw into one buffer while the content of the other buffer is sent to the display in the background.
+DMA or other hardware should be used to transfer data to the display so the MCU can continue drawing.
+This way, the rendering and refreshing of the display become parallel operations.</p>
+</section>
+<section id="full-refresh">
+<h3>Full refresh<a class="headerlink" href="#full-refresh" title="此标题的永久链接"></a></h3>
+<p>In the display driver (<code class="docutils literal notranslate"><span class="pre">lv_disp_drv_t</span></code>) enabling the <code class="docutils literal notranslate"><span class="pre">full_refresh</span></code> bit will force LVGL to always redraw the whole screen. This works in both <em>one buffer</em> and <em>two buffers</em> modes.
+If <code class="docutils literal notranslate"><span class="pre">full_refresh</span></code> is enabled and two screen sized draw buffers are provided, LVGL's display handling works like &quot;traditional&quot; double buffering.
+This means the <code class="docutils literal notranslate"><span class="pre">flush_cb</span></code> callback only has to update the address of the framebuffer (<code class="docutils literal notranslate"><span class="pre">color_p</span></code> parameter).
+This configuration should be used if the MCU has an LCD controller peripheral and not with an external display controller (e.g. ILI9341 or SSD1963) accessed via serial link. The latter will generally be too slow to maintain high frame rates with full screen redraws.</p>
+</section>
+<section id="direct-mode">
+<h3>Direct mode<a class="headerlink" href="#direct-mode" title="此标题的永久链接"></a></h3>
+<p>If the <code class="docutils literal notranslate"><span class="pre">direct_mode</span></code> flag is enabled in the display driver LVGL will draw directly into a <strong>screen sized frame buffer</strong>. That is the draw buffer(s) needs to be screen sized.
+It this case <code class="docutils literal notranslate"><span class="pre">flush_cb</span></code> will be called only once when all dirty areas are redrawn.
+With <code class="docutils literal notranslate"><span class="pre">direct_mode</span></code> the frame buffer always contains the current frame as it should be displayed on the screen.
+If 2 frame buffers are provided as draw buffers LVGL will alter the buffers but always draw only the dirty areas.
+Therefore the the 2 buffers needs to synchronized in <code class="docutils literal notranslate"><span class="pre">flush_cb</span></code> like this:</p>
+<ol class="arabic simple">
+<li><p>Display the frame buffer pointed by <code class="docutils literal notranslate"><span class="pre">color_p</span></code></p></li>
+<li><p>Copy the redrawn areas from <code class="docutils literal notranslate"><span class="pre">color_p</span></code> to the other buffer.</p></li>
+</ol>
+<p>The get the redrawn areas to copy use the following functions
+<code class="docutils literal notranslate"><span class="pre">_lv_refr_get_disp_refreshing()</span></code> returns the display being refreshed
+<code class="docutils literal notranslate"><span class="pre">disp-&gt;inv_areas[LV_INV_BUF_SIZE]</span></code> contains the invalidated areas
+<code class="docutils literal notranslate"><span class="pre">disp-&gt;inv_area_joined[LV_INV_BUF_SIZE]</span></code> if 1 that area was joined into an other one and should be ignored
+<code class="docutils literal notranslate"><span class="pre">disp-&gt;inv_p</span></code> number of valid elements in <code class="docutils literal notranslate"><span class="pre">inv_areas</span></code></p>
+</section>
+</section>
+<section id="display-driver">
+<h2>Display driver<a class="headerlink" href="#display-driver" title="此标题的永久链接"></a></h2>
+<p>Once the buffer initialization is ready a <code class="docutils literal notranslate"><span class="pre">lv_disp_drv_t</span></code> display driver needs to be:</p>
+<ol class="arabic simple">
+<li><p>initialized with <code class="docutils literal notranslate"><span class="pre">lv_disp_drv_init(&amp;disp_drv)</span></code></p></li>
+<li><p>its fields need to be set</p></li>
+<li><p>it needs to be registered in LVGL with <code class="docutils literal notranslate"><span class="pre">lv_disp_drv_register(&amp;disp_drv)</span></code></p></li>
+</ol>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">lv_disp_drv_t</span></code> also needs to be a static, global or dynamically allocated variable.</p>
+<section id="mandatory-fields">
+<h3>Mandatory fields<a class="headerlink" href="#mandatory-fields" title="此标题的永久链接"></a></h3>
+<p>In the most simple case only the following fields of <code class="docutils literal notranslate"><span class="pre">lv_disp_drv_t</span></code> need to be set:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">draw_buf</span></code> pointer to an initialized <code class="docutils literal notranslate"><span class="pre">lv_disp_draw_buf_t</span></code> variable.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hor_res</span></code> horizontal resolution of the display in pixels.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ver_res</span></code> vertical resolution of the display in pixels.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flush_cb</span></code> a callback function to copy a buffer's content to a specific area of the display.
+<code class="docutils literal notranslate"><span class="pre">lv_disp_flush_ready(&amp;disp_drv)</span></code> needs to be called when flushing is ready.
+LVGL might render the screen in multiple chunks and therefore call <code class="docutils literal notranslate"><span class="pre">flush_cb</span></code> multiple times. To see if the current one is the last chunk of rendering use <code class="docutils literal notranslate"><span class="pre">lv_disp_flush_is_last(&amp;disp_drv)</span></code>.</p></li>
+</ul>
+</section>
+<section id="optional-fields">
+<h3>Optional fields<a class="headerlink" href="#optional-fields" title="此标题的永久链接"></a></h3>
+<p>There are some optional display driver data fields:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">physical_hor_res</span></code> horizontal resolution of the full / physical display in pixels. Only set this when <em>not</em> using the full screen (defaults to -1 / same as <code class="docutils literal notranslate"><span class="pre">hor_res</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">physical_ver_res</span></code> vertical resolution of the full / physical display in pixels. Only set this when <em>not</em> using the full screen (defaults to -1 / same as <code class="docutils literal notranslate"><span class="pre">ver_res</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">offset_x</span></code> horizontal offset from the the full / physical display in pixels. Only set this when <em>not</em> using the full screen (defaults to 0).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">offset_y</span></code> vertical offset from the the full / physical display in pixels. Only set this when <em>not</em> using the full screen (defaults to 0).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">color_chroma_key</span></code> A color which will be drawn as transparent on chrome keyed images. Set to <code class="docutils literal notranslate"><span class="pre">LV_COLOR_CHROMA_KEY</span></code> from <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code> by default.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">anti_aliasing</span></code> use anti-aliasing (edge smoothing). Enabled by default if <code class="docutils literal notranslate"><span class="pre">LV_COLOR_DEPTH</span></code> is set to at least 16 in <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rotated</span></code> and <code class="docutils literal notranslate"><span class="pre">sw_rotate</span></code> See the <span class="xref myst">Rotation</span> section below.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">screen_transp</span></code> if <code class="docutils literal notranslate"><span class="pre">1</span></code> the screen itself can have transparency as well. <code class="docutils literal notranslate"><span class="pre">LV_COLOR_SCREEN_TRANSP</span></code> must be enabled in <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code> and <code class="docutils literal notranslate"><span class="pre">LV_COLOR_DEPTH</span></code> must be 32.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user_data</span></code> A custom <code class="docutils literal notranslate"><span class="pre">void</span></code> user data for the driver.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">full_refresh</span></code> always redrawn the whole screen (see above)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">direct_mode</span></code> draw directly into the frame buffer (see above)</p></li>
+</ul>
+<p>Some other optional callbacks to make it easier and more optimal to work with monochrome, grayscale or other non-standard RGB displays:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rounder_cb</span></code> Round the coordinates of areas to redraw. E.g. a 2x2 px can be converted to 2x8.
+It can be used if the display controller can refresh only areas with specific height or width (usually 8 px height with monochrome displays).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">set_px_cb</span></code> a custom function to write the draw buffer. It can be used to store the pixels more compactly in the draw buffer if the display has a special color format. (e.g. 1-bit monochrome, 2-bit grayscale etc.)
+This way the buffers used in <code class="docutils literal notranslate"><span class="pre">lv_disp_draw_buf_t</span></code> can be smaller to hold only the required number of bits for the given area size. Note that rendering with <code class="docutils literal notranslate"><span class="pre">set_px_cb</span></code> is slower than normal rendering.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">monitor_cb</span></code> A callback function that tells how many pixels were refreshed and in how much time. Called when the last chunk is rendered and sent to the display.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">clean_dcache_cb</span></code> A callback for cleaning any caches related to the display.</p></li>
+</ul>
+<p>LVGL has built-in support to several GPUs (see <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code>) but if something else is required these functions can be used to make LVGL use a GPU:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">gpu_fill_cb</span></code> fill an area in the memory with a color.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gpu_wait_cb</span></code> if any GPU function returns while the GPU is still working, LVGL will use this function when required to make sure GPU rendering is ready.</p></li>
+</ul>
+</section>
+<section id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="此标题的永久链接"></a></h3>
+<p>All together it looks like this:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="n">lv_disp_drv_t</span><span class="w"> </span><span class="n">disp_drv</span><span class="p">;</span><span class="w">          </span><span class="cm">/*A variable to hold the drivers. Must be static or global.*/</span>
+<span class="n">lv_disp_drv_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">disp_drv</span><span class="p">);</span><span class="w">            </span><span class="cm">/*Basic initialization*/</span>
+<span class="n">disp_drv</span><span class="p">.</span><span class="n">draw_buf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">disp_buf</span><span class="p">;</span><span class="w">          </span><span class="cm">/*Set an initialized buffer*/</span>
+<span class="n">disp_drv</span><span class="p">.</span><span class="n">flush_cb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">my_flush_cb</span><span class="p">;</span><span class="w">        </span><span class="cm">/*Set a flush callback to draw to the display*/</span>
+<span class="n">disp_drv</span><span class="p">.</span><span class="n">hor_res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">320</span><span class="p">;</span><span class="w">                 </span><span class="cm">/*Set the horizontal resolution in pixels*/</span>
+<span class="n">disp_drv</span><span class="p">.</span><span class="n">ver_res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">240</span><span class="p">;</span><span class="w">                 </span><span class="cm">/*Set the vertical resolution in pixels*/</span>
+
+<span class="n">lv_disp_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">disp</span><span class="p">;</span>
+<span class="n">disp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_disp_drv_register</span><span class="p">(</span><span class="o">&amp;</span><span class="n">disp_drv</span><span class="p">);</span><span class="w"> </span><span class="cm">/*Register the driver and save the created display objects*/</span>
+</pre></div>
+</div>
+<p>Here are some simple examples of the callbacks:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">my_flush_cb</span><span class="p">(</span><span class="n">lv_disp_drv_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">disp_drv</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">lv_area_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">area</span><span class="p">,</span><span class="w"> </span><span class="n">lv_color_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">color_p</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="cm">/*The most simple case (but also the slowest) to put all pixels to the screen one-by-one</span>
+<span class="cm">     *`put_px` is just an example, it needs to implemented by you.*/</span>
+<span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">area</span><span class="o">-&gt;</span><span class="n">y1</span><span class="p">;</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">area</span><span class="o">-&gt;</span><span class="n">y2</span><span class="p">;</span><span class="w"> </span><span class="n">y</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">for</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">area</span><span class="o">-&gt;</span><span class="n">x1</span><span class="p">;</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">area</span><span class="o">-&gt;</span><span class="n">x2</span><span class="p">;</span><span class="w"> </span><span class="n">x</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">put_px</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">color_p</span><span class="p">);</span>
+<span class="w">            </span><span class="n">color_p</span><span class="o">++</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/* IMPORTANT!!!</span>
+<span class="cm">     * Inform the graphics library that you are ready with the flushing*/</span>
+<span class="w">    </span><span class="n">lv_disp_flush_ready</span><span class="p">(</span><span class="n">disp_drv</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">my_gpu_fill_cb</span><span class="p">(</span><span class="n">lv_disp_drv_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">disp_drv</span><span class="p">,</span><span class="w"> </span><span class="n">lv_color_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dest_buf</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">lv_area_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dest_area</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">lv_area_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">fill_area</span><span class="p">,</span><span class="w"> </span><span class="n">lv_color_t</span><span class="w"> </span><span class="n">color</span><span class="p">);</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="cm">/*It&#39;s an example code which should be done by your GPU*/</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">;</span>
+<span class="w">    </span><span class="n">dest_buf</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">dest_width</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">fill_area</span><span class="o">-&gt;</span><span class="n">y1</span><span class="p">;</span><span class="w"> </span><span class="cm">/*Go to the first line*/</span>
+
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fill_area</span><span class="o">-&gt;</span><span class="n">y1</span><span class="p">;</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">fill_area</span><span class="o">-&gt;</span><span class="n">y2</span><span class="p">;</span><span class="w"> </span><span class="n">y</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">for</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fill_area</span><span class="o">-&gt;</span><span class="n">x1</span><span class="p">;</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">fill_area</span><span class="o">-&gt;</span><span class="n">x2</span><span class="p">;</span><span class="w"> </span><span class="n">x</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">dest_buf</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">color</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">dest_buf</span><span class="o">+=</span><span class="n">dest_width</span><span class="p">;</span><span class="w">    </span><span class="cm">/*Go to the next line*/</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="n">my_rounder_cb</span><span class="p">(</span><span class="n">lv_disp_drv_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">disp_drv</span><span class="p">,</span><span class="w"> </span><span class="n">lv_area_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">area</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="cm">/* Update the areas as needed.</span>
+<span class="cm">   * For example it makes the area to start only on 8th rows and have Nx8 pixel height.*/</span>
+<span class="w">   </span><span class="n">area</span><span class="o">-&gt;</span><span class="n">y1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">area</span><span class="o">-&gt;</span><span class="n">y1</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0x07</span><span class="p">;</span>
+<span class="w">   </span><span class="n">area</span><span class="o">-&gt;</span><span class="n">y2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">area</span><span class="o">-&gt;</span><span class="n">y2</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0x07</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">my_set_px_cb</span><span class="p">(</span><span class="n">lv_disp_drv_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">disp_drv</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="n">lv_coord_t</span><span class="w"> </span><span class="n">buf_w</span><span class="p">,</span><span class="w"> </span><span class="n">lv_coord_t</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">lv_coord_t</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">lv_color_t</span><span class="w"> </span><span class="n">color</span><span class="p">,</span><span class="w"> </span><span class="n">lv_opa_t</span><span class="w"> </span><span class="n">opa</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">   </span><span class="cm">/* Write to the buffer as required for the display.</span>
+<span class="cm">    * For example it writes only 1-bit for monochrome displays mapped vertically.*/</span>
+<span class="w">   </span><span class="n">buf</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">buf_w</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">x</span><span class="p">;</span>
+<span class="w">   </span><span class="k">if</span><span class="p">(</span><span class="n">lv_color_brightness</span><span class="p">(</span><span class="n">color</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">128</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">buf</span><span class="p">)</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">8</span><span class="p">));</span>
+<span class="w">   </span><span class="k">else</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">buf</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="o">~</span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">8</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">my_monitor_cb</span><span class="p">(</span><span class="n">lv_disp_drv_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">disp_drv</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">px</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d px refreshed in %d ms</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="n">ms</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">my_clean_dcache_cb</span><span class="p">(</span><span class="n">lv_disp_drv_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">disp_drv</span><span class="p">,</span><span class="w"> </span><span class="n">uint32</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="cm">/* Example for Cortex-M (CMSIS) */</span>
+<span class="w">  </span><span class="n">SCB_CleanInvalidateDCache</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="rotation">
+<h2>Rotation<a class="headerlink" href="#rotation" title="此标题的永久链接"></a></h2>
+<p>LVGL supports rotation of the display in 90 degree increments. You can select whether you'd like software rotation or hardware rotation.</p>
+<p>If you select software rotation (<code class="docutils literal notranslate"><span class="pre">sw_rotate</span></code> flag set to 1), LVGL will perform the rotation for you. Your driver can and should assume that the screen width and height have not changed. Simply flush pixels to the display as normal. Software rotation requires no additional logic in your <code class="docutils literal notranslate"><span class="pre">flush_cb</span></code> callback.</p>
+<p>There is a noticeable amount of overhead to performing rotation in software. Hardware rotation is  available to avoid unwanted slow downs. In this mode, LVGL draws into the buffer as if your screen width and height were swapped. You are responsible for rotating the provided pixels yourself.</p>
+<p>The default rotation of your display when it is initialized can be set using the <code class="docutils literal notranslate"><span class="pre">rotated</span></code> flag. The available options are <code class="docutils literal notranslate"><span class="pre">LV_DISP_ROT_NONE</span></code>, <code class="docutils literal notranslate"><span class="pre">LV_DISP_ROT_90</span></code>, <code class="docutils literal notranslate"><span class="pre">LV_DISP_ROT_180</span></code>, or <code class="docutils literal notranslate"><span class="pre">LV_DISP_ROT_270</span></code>. The rotation values are relative to how you would rotate the physical display in the clockwise direction. Thus, <code class="docutils literal notranslate"><span class="pre">LV_DISP_ROT_90</span></code> means you rotate the hardware 90 degrees clockwise, and the display rotates 90 degrees counterclockwise to compensate.</p>
+<p>(Note for users upgrading from 7.10.0 and older: these new rotation enum values match up with the old 0/1 system for rotating 90 degrees, so legacy code should continue to work as expected. Software rotation is also disabled by default for compatibility.)</p>
+<p>Display rotation can also be changed at runtime using the <code class="docutils literal notranslate"><span class="pre">lv_disp_set_rotation(disp,</span> <span class="pre">rot)</span></code> API.</p>
+<p>Support for software rotation is a new feature, so there may be some glitches/bugs depending on your configuration. If you encounter a problem please open an issue on <a class="reference external" href="https://github.com/lvgl/lvgl/issues">GitHub</a>.</p>
+</section>
+<section id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/lvgl/lvgl/blob/master/examples/porting/lv_port_disp_template.c">lv_port_disp_template.c</a> for a template for your own driver.</p></li>
+<li><p><a class="reference internal" href="../overview/drawing.html"><span class="doc std std-doc">Drawing</span></a> to learn more about how rendering works in LVGL.</p></li>
+<li><p><a class="reference internal" href="../overview/display.html"><span class="doc std std-doc">Display features</span></a> to learn more about higher level display features.</p></li>
+</ul>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="此标题的永久链接"></a></h2>
+<div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>
+.. doxygenfile:: lv_hal_disp.h
+  :project: lvgl
+
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2021, LVGL Kft.
+      <span class="lastupdated">最后更新于 2025 年 09 月 02 日.
+      </span></p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<style>
+  .wy-side-nav-search > div[role="search"] {
+    color: black;
+  }
+</style>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            let p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => {
+                let versionName = "";  
+                if(version == "master") versionName = "master (latest)";
+                else versionName = "v" + ((version.indexOf(".") != -1) ? version : (version + " (latest minor)"));
+                return `<option value="${version}">${versionName}</option>`;
+            })}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+document.addEventListener('DOMContentLoaded', (event) => {
+    function onIntersection(entries) {
+        entries.forEach(entry => {
+            let currentlyLoaded = entry.target.getAttribute("data-is-loaded") == "true";
+            let shouldBeLoaded = entry.intersectionRatio > 0;
+            if(currentlyLoaded != shouldBeLoaded) {
+                entry.target.setAttribute("data-is-loaded", shouldBeLoaded);
+                if(shouldBeLoaded) {
+                    let iframe = document.createElement("iframe");
+                    iframe.src = entry.target.getAttribute("data-real-src");
+                    entry.target.appendChild(iframe);
+                } else {
+                    let iframe = entry.target.querySelector("iframe");
+                    iframe.parentNode.removeChild(iframe);
+                }
+            }
+        });
+    }
+    const config = {
+        rootMargin: '600px 0px',
+        threshold: 0.01
+    };
+    let observer = new IntersectionObserver(onIntersection, config);
+    document.querySelectorAll(".lv-example").forEach(iframe => {
+        observer.observe(iframe);
+    });
+});
+</script>
+
+
+</body>
+</html>

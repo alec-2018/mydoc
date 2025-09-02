@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coding style &mdash; LVGL  文档</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/fontawesome.min.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.png"/>
+    <link rel="canonical" href="https://docs.lvgl.io/0.0.1/CODING_STYLE.html" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/translations.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78811084-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+	gtag('config', 'UA-78811084-3', { 'anonymize_ip': true });
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/logo_lvgl.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Coding style</a><ul>
+<li><a class="reference internal" href="#file-format">File format</a></li>
+<li><a class="reference internal" href="#naming-conventions">Naming conventions</a></li>
+<li><a class="reference internal" href="#coding-guide">Coding guide</a></li>
+<li><a class="reference internal" href="#comments">Comments</a><ul>
+<li><a class="reference internal" href="#formatting">Formatting</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">LVGL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Coding style</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/CODING_STYLE.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="coding-style">
+<h1>Coding style<a class="headerlink" href="#coding-style" title="此标题的永久链接"></a></h1>
+<section id="file-format">
+<h2>File format<a class="headerlink" href="#file-format" title="此标题的永久链接"></a></h2>
+<p>Use <a class="reference external" href="https://github.com/lvgl/lvgl/blob/master/src/misc/lv_templ.c">misc/lv_templ.c</a> and <a class="reference external" href="https://github.com/lvgl/lvgl/blob/master/src/misc/lv_templ.h">misc/lv_templ.h</a></p>
+</section>
+<section id="naming-conventions">
+<h2>Naming conventions<a class="headerlink" href="#naming-conventions" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>Words are separated by '_'</p></li>
+<li><p>In variable and function names use only lower case letters (e.g. <em>height_tmp</em>)</p></li>
+<li><p>In enums and defines use only upper case letters (e.g. <em>e.g. MAX_LINE_NUM</em>)</p></li>
+<li><p>Global names (API):</p>
+<ul>
+<li><p>start with <em>lv</em></p></li>
+<li><p>followed by module name: <em>btn</em>, <em>label</em>, <em>style</em> etc.</p></li>
+<li><p>followed by the action (for functions): <em>set</em>, <em>get</em>, <em>refr</em> etc.</p></li>
+<li><p>closed with the subject: <em>name</em>, <em>size</em>, <em>state</em> etc.</p></li>
+</ul>
+</li>
+<li><p>Typedefs</p>
+<ul>
+<li><p>prefer <code class="docutils literal notranslate"><span class="pre">typedef</span> <span class="pre">struct</span></code> and <code class="docutils literal notranslate"><span class="pre">typedef</span> <span class="pre">enum</span></code> instead of  <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">name</span></code> and <code class="docutils literal notranslate"><span class="pre">enum</span> <span class="pre">name</span></code></p></li>
+<li><p>always end <code class="docutils literal notranslate"><span class="pre">typedef</span> <span class="pre">struct</span></code> and <code class="docutils literal notranslate"><span class="pre">typedef</span> <span class="pre">enum</span></code> type names with <code class="docutils literal notranslate"><span class="pre">_t</span></code></p></li>
+</ul>
+</li>
+<li><p>Abbreviations:</p>
+<ul>
+<li><p>Only words longer or equal than 6 characters can be abbreviated.</p></li>
+<li><p>Abbreviate only if it makes the word at least half as long</p></li>
+<li><p>Use only very straightforward and well-known abbreviations (e.g. pos: position, def: default, btn: button)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="coding-guide">
+<h2>Coding guide<a class="headerlink" href="#coding-guide" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>Functions:</p>
+<ul>
+<li><p>Try to write function shorter than is 50 lines</p></li>
+<li><p>Always shorter than 200 lines (except very straightforwards)</p></li>
+</ul>
+</li>
+<li><p>Variables:</p>
+<ul>
+<li><p>One line, one declaration (BAD: char x, y;)</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">&lt;stdint.h&gt;</span></code> (<em>uint8_t</em>, <em>int32_t</em> etc)</p></li>
+<li><p>Declare variables where needed (not all at function start)</p></li>
+<li><p>Use the smallest required scope</p></li>
+<li><p>Variables in a file (outside functions) are always <em>static</em></p></li>
+<li><p>Do not use global variables (use functions to set/get static variables)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="comments">
+<h2>Comments<a class="headerlink" href="#comments" title="此标题的永久链接"></a></h2>
+<p>Before every function have a comment like this:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * Return with the screen of an object</span>
+<span class="cm"> * @param obj pointer to an object</span>
+<span class="cm"> * @return pointer to a screen</span>
+<span class="cm"> */</span>
+<span class="n">lv_obj_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">lv_obj_get_scr</span><span class="p">(</span><span class="n">lv_obj_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">obj</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Always use <code class="docutils literal notranslate"><span class="pre">/*Something*/</span></code> format and NOT <code class="docutils literal notranslate"><span class="pre">//Something</span></code></p>
+<p>Write readable code to avoid descriptive comments like:
+<code class="docutils literal notranslate"><span class="pre">x++;</span> <span class="pre">/*Add</span> <span class="pre">1</span> <span class="pre">to</span> <span class="pre">x*/</span></code>.
+The code should show clearly what you are doing.</p>
+<p>You should write <strong>why</strong> have you done this:
+<code class="docutils literal notranslate"><span class="pre">x++;</span> <span class="pre">/*Because</span> <span class="pre">of</span> <span class="pre">closing</span> <span class="pre">'\0'</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">string*/</span></code></p>
+<p>Short &quot;code summaries&quot; of a few lines are accepted. E.g. <code class="docutils literal notranslate"><span class="pre">/*Calculate</span> <span class="pre">the</span> <span class="pre">new</span> <span class="pre">coordinates*/</span></code></p>
+<p>In comments use ` ` when referring to a variable. E.g. <code class="docutils literal notranslate"><span class="pre">/*Update</span> <span class="pre">the</span> <span class="pre">value</span> <span class="pre">of</span> <span class="pre">`x_act`*/</span></code></p>
+<section id="formatting">
+<h3>Formatting<a class="headerlink" href="#formatting" title="此标题的永久链接"></a></h3>
+<p>Here is example to show bracket placing and using of white spaces:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * Set a new text for a label. Memory will be allocated to store the text by the label.</span>
+<span class="cm"> * @param label pointer to a label object</span>
+<span class="cm"> * @param text &#39;\0&#39; terminated character string. NULL to refresh with the current text.</span>
+<span class="cm"> */</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">lv_label_set_text</span><span class="p">(</span><span class="n">lv_obj_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">label</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">text</span><span class="p">)</span>
+<span class="p">{</span><span class="w">   </span><span class="cm">/*Main brackets of functions in new line*/</span>
+
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">label</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w"> </span><span class="cm">/*No bracket only if the command is inline with the if statement*/</span>
+
+<span class="w">    </span><span class="n">lv_obj_inv</span><span class="p">(</span><span class="n">label</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">lv_label_ext_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ext</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_obj_get_ext</span><span class="p">(</span><span class="n">label</span><span class="p">);</span>
+
+<span class="w">    </span><span class="cm">/*Comment before a section*/</span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">text</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">ext</span><span class="o">-&gt;</span><span class="n">txt</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="cm">/*Bracket of statements start inline*/</span>
+<span class="w">        </span><span class="n">lv_label_refr_text</span><span class="p">(</span><span class="n">label</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Use 4 spaces indentation instead of tab.</p>
+<p>You can use <strong>astyle</strong> to format the code. Run <code class="docutils literal notranslate"><span class="pre">code-formatter.sh</span></code> from the <code class="docutils literal notranslate"><span class="pre">scrips</span></code> folder.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2021, LVGL Kft.
+      <span class="lastupdated">最后更新于 2025 年 09 月 02 日.
+      </span></p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<style>
+  .wy-side-nav-search > div[role="search"] {
+    color: black;
+  }
+</style>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            let p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => {
+                let versionName = "";  
+                if(version == "master") versionName = "master (latest)";
+                else versionName = "v" + ((version.indexOf(".") != -1) ? version : (version + " (latest minor)"));
+                return `<option value="${version}">${versionName}</option>`;
+            })}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+document.addEventListener('DOMContentLoaded', (event) => {
+    function onIntersection(entries) {
+        entries.forEach(entry => {
+            let currentlyLoaded = entry.target.getAttribute("data-is-loaded") == "true";
+            let shouldBeLoaded = entry.intersectionRatio > 0;
+            if(currentlyLoaded != shouldBeLoaded) {
+                entry.target.setAttribute("data-is-loaded", shouldBeLoaded);
+                if(shouldBeLoaded) {
+                    let iframe = document.createElement("iframe");
+                    iframe.src = entry.target.getAttribute("data-real-src");
+                    entry.target.appendChild(iframe);
+                } else {
+                    let iframe = entry.target.querySelector("iframe");
+                    iframe.parentNode.removeChild(iframe);
+                }
+            }
+        });
+    }
+    const config = {
+        rootMargin: '600px 0px',
+        threshold: 0.01
+    };
+    let observer = new IntersectionObserver(onIntersection, config);
+    document.querySelectorAll(".lv-example").forEach(iframe => {
+        observer.observe(iframe);
+    });
+});
+</script>
+
+
+</body>
+</html>

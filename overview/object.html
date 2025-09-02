@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Objects &mdash; LVGL  文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/fontawesome.min.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="canonical" href="https://docs.lvgl.io/0.0.1/overview/object.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78811084-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+	gtag('config', 'UA-78811084-3', { 'anonymize_ip': true });
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_lvgl.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Objects</a><ul>
+<li><a class="reference internal" href="#attributes">Attributes</a><ul>
+<li><a class="reference internal" href="#basic-attributes">Basic attributes</a></li>
+<li><a class="reference internal" href="#specific-attributes">Specific attributes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#working-mechanisms">Working mechanisms</a><ul>
+<li><a class="reference internal" href="#parent-child-structure">Parent-child structure</a></li>
+<li><a class="reference internal" href="#moving-together">Moving together</a></li>
+<li><a class="reference internal" href="#visibility-only-on-the-parent">Visibility only on the parent</a></li>
+<li><a class="reference internal" href="#create-and-delete-objects">Create and delete objects</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#screens">Screens</a><ul>
+<li><a class="reference internal" href="#create-screens">Create screens</a></li>
+<li><a class="reference internal" href="#get-the-active-screen">Get the active screen</a></li>
+<li><a class="reference internal" href="#load-screens">Load screens</a></li>
+<li><a class="reference internal" href="#layers">Layers</a><ul>
+<li><a class="reference internal" href="#load-screen-with-animation">Load screen with animation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#handling-multiple-displays">Handling multiple displays</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#parts">Parts</a></li>
+<li><a class="reference internal" href="#states">States</a></li>
+<li><a class="reference internal" href="#snapshot">Snapshot</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LVGL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Objects</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/overview/object.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>.. include:: /header.rst 
+:github_url: |github_link_base|/overview/object.md
+</pre></div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="objects">
+<h1>Objects<a class="headerlink" href="#objects" title="此标题的永久链接"></a></h1>
+<p>In LVGL the <strong>basic building blocks</strong> of a user interface are the objects, also called <em>Widgets</em>.
+For example a <a class="reference internal" href="../widgets/core/btn.html"><span class="doc std std-doc">Button</span></a>, <a class="reference internal" href="../widgets/core/label.html"><span class="doc std std-doc">Label</span></a>, <a class="reference internal" href="../widgets/core/img.html"><span class="doc std std-doc">Image</span></a>, <a class="reference internal" href="../widgets/extra/list.html"><span class="doc std std-doc">List</span></a>, <a class="reference internal" href="../widgets/extra/chart.html"><span class="doc std std-doc">Chart</span></a> or <a class="reference internal" href="../widgets/core/textarea.html"><span class="doc std std-doc">Text area</span></a>.</p>
+<p>You can see all the <a class="reference internal" href="../widgets/index.html"><span class="doc std std-doc">Object types</span></a> here.</p>
+<p>All objects are referenced using an <code class="docutils literal notranslate"><span class="pre">lv_obj_t</span></code> pointer as a handle. This pointer can later be used to set or get the attributes of the object.</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="此标题的永久链接"></a></h2>
+<section id="basic-attributes">
+<h3>Basic attributes<a class="headerlink" href="#basic-attributes" title="此标题的永久链接"></a></h3>
+<p>All object types share some basic attributes:</p>
+<ul class="simple">
+<li><p>Position</p></li>
+<li><p>Size</p></li>
+<li><p>Parent</p></li>
+<li><p>Styles</p></li>
+<li><p>Event handlers</p></li>
+<li><p>Etc</p></li>
+</ul>
+<p>You can set/get these attributes with <code class="docutils literal notranslate"><span class="pre">lv_obj_set_...</span></code> and <code class="docutils literal notranslate"><span class="pre">lv_obj_get_...</span></code> functions. For example:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*Set basic object attributes*/</span>
+<span class="n">lv_obj_set_size</span><span class="p">(</span><span class="n">btn1</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">);</span><span class="w">	  </span><span class="cm">/*Set a button&#39;s size*/</span>
+<span class="n">lv_obj_set_pos</span><span class="p">(</span><span class="n">btn1</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="mi">30</span><span class="p">);</span><span class="w">      </span><span class="cm">/*Set a button&#39;s position*/</span>
+</pre></div>
+</div>
+<p>To see all the available functions visit the <a class="reference internal" href="../widgets/obj.html"><span class="doc std std-doc">Base object's documentation</span></a>.</p>
+</section>
+<section id="specific-attributes">
+<h3>Specific attributes<a class="headerlink" href="#specific-attributes" title="此标题的永久链接"></a></h3>
+<p>The object types have special attributes too. For example, a slider has</p>
+<ul class="simple">
+<li><p>Minimum and maximum values</p></li>
+<li><p>Current value</p></li>
+</ul>
+<p>For these special attributes, every object type may have unique API functions. For example for a slider:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*Set slider specific attributes*/</span>
+<span class="n">lv_slider_set_range</span><span class="p">(</span><span class="n">slider1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span><span class="w">	   				</span><span class="cm">/*Set the min. and max. values*/</span>
+<span class="n">lv_slider_set_value</span><span class="p">(</span><span class="n">slider1</span><span class="p">,</span><span class="w"> </span><span class="mi">40</span><span class="p">,</span><span class="w"> </span><span class="n">LV_ANIM_ON</span><span class="p">);</span><span class="w">		</span><span class="cm">/*Set the current value (position)*/</span>
+</pre></div>
+</div>
+<p>The API of the widgets is described in their <a class="reference internal" href="../widgets/index.html"><span class="doc std std-doc">Documentation</span></a> but you can also check the respective header files (e.g. <em>widgets/lv_slider.h</em>)</p>
+</section>
+</section>
+<section id="working-mechanisms">
+<h2>Working mechanisms<a class="headerlink" href="#working-mechanisms" title="此标题的永久链接"></a></h2>
+<section id="parent-child-structure">
+<h3>Parent-child structure<a class="headerlink" href="#parent-child-structure" title="此标题的永久链接"></a></h3>
+<p>A parent object can be considered as the container of its children. Every object has exactly one parent object (except screens), but a parent can have any number of children.
+There is no limitation for the type of the parent but there are objects which are typically a parent (e.g. button) or a child (e.g. label).</p>
+</section>
+<section id="moving-together">
+<h3>Moving together<a class="headerlink" href="#moving-together" title="此标题的永久链接"></a></h3>
+<p>If the position of a parent changes, the children will move along with it.
+Therefore, all positions are relative to the parent.</p>
+<p><img alt="" src="../_images/par_child1.png" /></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_obj_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">parent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_obj_create</span><span class="p">(</span><span class="n">lv_scr_act</span><span class="p">());</span><span class="w">   </span><span class="cm">/*Create a parent object on the current screen*/</span>
+<span class="n">lv_obj_set_size</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">80</span><span class="p">);</span><span class="w">	                 </span><span class="cm">/*Set the size of the parent*/</span>
+
+<span class="n">lv_obj_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">obj1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_obj_create</span><span class="p">(</span><span class="n">parent</span><span class="p">);</span><span class="w">	         </span><span class="cm">/*Create an object on the previously created parent object*/</span>
+<span class="n">lv_obj_set_pos</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span><span class="w">	                     </span><span class="cm">/*Set the position of the new object*/</span>
+</pre></div>
+</div>
+<p>Modify the position of the parent:</p>
+<p><img alt="" src="../_images/par_child2.png" /></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_obj_set_pos</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">);</span><span class="w">	</span><span class="cm">/*Move the parent. The child will move with it.*/</span>
+</pre></div>
+</div>
+<p>(For simplicity the adjusting of colors of the objects is not shown in the example.)</p>
+</section>
+<section id="visibility-only-on-the-parent">
+<h3>Visibility only on the parent<a class="headerlink" href="#visibility-only-on-the-parent" title="此标题的永久链接"></a></h3>
+<p>If a child is partially or fully outside of its parent then the parts outside will not be visible.</p>
+<p><img alt="" src="../_images/par_child3.png" /></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_obj_set_x</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span><span class="w"> </span><span class="mi">-30</span><span class="p">);</span><span class="w">	</span><span class="cm">/*Move the child a little bit off the parent*/</span>
+</pre></div>
+</div>
+<p>This behavior can be overwritten with <code class="docutils literal notranslate"><span class="pre">lv_obj_add_flag(obj,</span> <span class="pre">LV_OBJ_FLAG_OVERFLOW_VISIBLE);</span></code> which allow the children to be drawn out of the parent.</p>
+</section>
+<section id="create-and-delete-objects">
+<h3>Create and delete objects<a class="headerlink" href="#create-and-delete-objects" title="此标题的永久链接"></a></h3>
+<p>In LVGL, objects can be created and deleted dynamically at run time. It means only the currently created (existing) objects consume RAM.</p>
+<p>This allows for the creation of a screen just when a button is clicked to open it, and for deletion of screens when a new screen is loaded.</p>
+<p>UIs can be created based on the current environment of the device. For example one can create meters, charts, bars and sliders based on the currently attached sensors.</p>
+<p>Every widget has its own <strong>create</strong> function with a prototype like this:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_obj_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">lv_</span><span class="o">&lt;</span><span class="n">widget</span><span class="o">&gt;</span><span class="n">_create</span><span class="p">(</span><span class="n">lv_obj_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">parent</span><span class="p">,</span><span class="w"> </span><span class="o">&lt;</span><span class="n">other</span><span class="w"> </span><span class="n">parameters</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">any</span><span class="o">&gt;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Typically, the create functions only have a <em>parent</em> parameter telling them on which object to create the new widget.</p>
+<p>The return value is a pointer to the created object with <code class="docutils literal notranslate"><span class="pre">lv_obj_t</span> <span class="pre">*</span></code> type.</p>
+<p>There is a common <strong>delete</strong> function for all object types. It deletes the object and all of its children.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">lv_obj_del</span><span class="p">(</span><span class="n">lv_obj_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">obj</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">lv_obj_del</span></code> will delete the object immediately.
+If for any reason you can't delete the object immediately you can use <code class="docutils literal notranslate"><span class="pre">lv_obj_del_async(obj)</span></code> which will perform the deletion on the next call of <code class="docutils literal notranslate"><span class="pre">lv_timer_handler()</span></code>.
+This is useful e.g. if you want to delete the parent of an object in the child's <code class="docutils literal notranslate"><span class="pre">LV_EVENT_DELETE</span></code> handler.</p>
+<p>You can remove all the children of an object (but not the object itself) using <code class="docutils literal notranslate"><span class="pre">lv_obj_clean(obj)</span></code>.</p>
+<p>You can use <code class="docutils literal notranslate"><span class="pre">lv_obj_del_delayed(obj,</span> <span class="pre">1000)</span></code> to delete an object after some time. The delay is expressed in milliseconds.</p>
+</section>
+</section>
+<section id="screens">
+<h2>Screens<a class="headerlink" href="#screens" title="此标题的永久链接"></a></h2>
+<section id="create-screens">
+<h3>Create screens<a class="headerlink" href="#create-screens" title="此标题的永久链接"></a></h3>
+<p>The screens are special objects which have no parent object. So they can be created like:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_obj_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">scr1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_obj_create</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Screens can be created with any object type. For example, a <a class="reference internal" href="../widgets/obj.html"><span class="doc std std-doc">Base object</span></a> or an image to make a wallpaper.</p>
+</section>
+<section id="get-the-active-screen">
+<h3>Get the active screen<a class="headerlink" href="#get-the-active-screen" title="此标题的永久链接"></a></h3>
+<p>There is always an active screen on each display. By default, the library creates and loads a &quot;Base object&quot; as a screen for each display.</p>
+<p>To get the currently active screen use the <code class="docutils literal notranslate"><span class="pre">lv_scr_act()</span></code> function.</p>
+</section>
+<section id="load-screens">
+<h3>Load screens<a class="headerlink" href="#load-screens" title="此标题的永久链接"></a></h3>
+<p>To load a new screen, use <code class="docutils literal notranslate"><span class="pre">lv_scr_load(scr1)</span></code>.</p>
+</section>
+<section id="layers">
+<h3>Layers<a class="headerlink" href="#layers" title="此标题的永久链接"></a></h3>
+<p>There are two automatically generated layers:</p>
+<ul class="simple">
+<li><p>top layer</p></li>
+<li><p>system layer</p></li>
+</ul>
+<p>They are independent of the screens and they will be shown on every screen. The <em>top layer</em> is above every object on the screen and the <em>system layer</em> is above the <em>top layer</em>.
+You can add any pop-up windows to the <em>top layer</em> freely. But, the <em>system layer</em> is restricted to system-level things (e.g. mouse cursor will be placed there with <code class="docutils literal notranslate"><span class="pre">lv_indev_set_cursor()</span></code>).</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">lv_layer_top()</span></code> and <code class="docutils literal notranslate"><span class="pre">lv_layer_sys()</span></code> functions return pointers to the top and system layers respectively.</p>
+<p>Read the <a class="reference internal" href="layer.html"><span class="doc std std-doc">Layer overview</span></a> section to learn more about layers.</p>
+<section id="load-screen-with-animation">
+<h4>Load screen with animation<a class="headerlink" href="#load-screen-with-animation" title="此标题的永久链接"></a></h4>
+<p>A new screen can be loaded with animation by using <code class="docutils literal notranslate"><span class="pre">lv_scr_load_anim(scr,</span> <span class="pre">transition_type,</span> <span class="pre">time,</span> <span class="pre">delay,</span> <span class="pre">auto_del)</span></code>. The following transition types exist:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_SCR_LOAD_ANIM_NONE</span></code> Switch immediately after <code class="docutils literal notranslate"><span class="pre">delay</span></code> milliseconds</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_SCR_LOAD_ANIM_OVER_LEFT/RIGHT/TOP/BOTTOM</span></code> Move the new screen over the current towards the given direction</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_SCR_LOAD_ANIM_MOVE_LEFT/RIGHT/TOP/BOTTOM</span></code> Move both the current and new screens towards the given direction</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_SCR_LOAD_ANIM_FADE_ON</span></code> Fade the new screen over the old screen</p></li>
+</ul>
+<p>Setting <code class="docutils literal notranslate"><span class="pre">auto_del</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code> will automatically delete the old screen when the animation is finished.</p>
+<p>The new screen will become active (returned by <code class="docutils literal notranslate"><span class="pre">lv_scr_act()</span></code>) when the animation starts after <code class="docutils literal notranslate"><span class="pre">delay</span></code> time.</p>
+</section>
+</section>
+<section id="handling-multiple-displays">
+<h3>Handling multiple displays<a class="headerlink" href="#handling-multiple-displays" title="此标题的永久链接"></a></h3>
+<p>Screens are created on the currently selected <em>default display</em>.
+The <em>default display</em> is the last registered display with <code class="docutils literal notranslate"><span class="pre">lv_disp_drv_register</span></code>. You can also explicitly select a new default display using <code class="docutils literal notranslate"><span class="pre">lv_disp_set_default(disp)</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">lv_scr_act()</span></code>, <code class="docutils literal notranslate"><span class="pre">lv_scr_load()</span></code> and <code class="docutils literal notranslate"><span class="pre">lv_scr_load_anim()</span></code> operate on the default screen.</p>
+<p>Visit <a class="reference internal" href="display.html"><span class="doc std std-doc">Multi-display support</span></a> to learn more.</p>
+</section>
+</section>
+<section id="parts">
+<h2>Parts<a class="headerlink" href="#parts" title="此标题的永久链接"></a></h2>
+<p>The widgets are built from multiple parts. For example a <a class="reference internal" href="../widgets/obj.html"><span class="doc std std-doc">Base object</span></a> uses the main and scrollbar parts but a <a class="reference internal" href="../widgets/core/slider.html"><span class="doc std std-doc">Slider</span></a> uses the main, indicator and knob parts.
+Parts are similar to <em>pseudo-elements</em> in CSS.</p>
+<p>The following predefined parts exist in LVGL:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PART_MAIN</span></code> A background like rectangle</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PART_SCROLLBAR</span></code>  The scrollbar(s)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PART_INDICATOR</span></code> Indicator, e.g. for slider, bar, switch, or the tick box of the checkbox</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PART_KNOB</span></code> Like a handle to grab to adjust the value</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PART_SELECTED</span></code> Indicate the currently selected option or section</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PART_ITEMS</span></code> Used if the widget has multiple similar elements (e.g. table cells)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PART_TICKS</span></code> Ticks on scales e.g. for a chart or meter</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PART_CURSOR</span></code> Mark a specific place e.g. text area's or chart's cursor</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PART_CUSTOM_FIRST</span></code> Custom parts can be added from here.</p></li>
+</ul>
+<p>The main purpose of parts is to allow styling the &quot;components&quot; of the widgets.
+They are described in more detail in the <a class="reference internal" href="style.html"><span class="doc std std-doc">Style overview</span></a> section.</p>
+</section>
+<section id="states">
+<h2>States<a class="headerlink" href="#states" title="此标题的永久链接"></a></h2>
+<p>The object can be in a combination of the following states:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_DEFAULT</span></code> Normal, released state</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_CHECKED</span></code> Toggled or checked state</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_FOCUSED</span></code> Focused via keypad or encoder or clicked via touchpad/mouse</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_FOCUS_KEY</span></code> Focused via keypad or encoder but not via touchpad/mouse</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_EDITED</span></code> Edit by an encoder</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_HOVERED</span></code> Hovered by mouse (not supported now)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_PRESSED</span></code> Being pressed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_SCROLLED</span></code> Being scrolled</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_DISABLED</span></code> Disabled state</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_USER_1</span></code> Custom state</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_USER_2</span></code> Custom state</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_USER_3</span></code> Custom state</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_USER_4</span></code> Custom state</p></li>
+</ul>
+<p>The states are usually automatically changed by the library as the userinteracts qith an object (presses, releases, focuses, etc.).
+However, the states can be changed manually too.
+To set or clear given state (but leave the other states untouched) use <code class="docutils literal notranslate"><span class="pre">lv_obj_add/clear_state(obj,</span> <span class="pre">LV_STATE_...)</span></code>
+In both cases OR-ed state values can be used as well. E.g. <code class="docutils literal notranslate"><span class="pre">lv_obj_add_state(obj,</span> <span class="pre">part,</span> <span class="pre">LV_STATE_PRESSED</span> <span class="pre">|</span> <span class="pre">LV_PRESSED_CHECKED)</span></code>.</p>
+<p>To learn more about the states read the related section of the <a class="reference internal" href="style.html"><span class="doc std std-doc">Style overview</span></a>.</p>
+</section>
+<section id="snapshot">
+<h2>Snapshot<a class="headerlink" href="#snapshot" title="此标题的永久链接"></a></h2>
+<p>A snapshot image can be generated for an object together with its children. Check details in <a class="reference internal" href="../others/snapshot.html"><span class="doc std std-doc">Snapshot</span></a>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2021, LVGL Kft.
+      <span class="lastupdated">最后更新于 2025 年 09 月 02 日.
+      </span></p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<style>
+  .wy-side-nav-search > div[role="search"] {
+    color: black;
+  }
+</style>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            let p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => {
+                let versionName = "";  
+                if(version == "master") versionName = "master (latest)";
+                else versionName = "v" + ((version.indexOf(".") != -1) ? version : (version + " (latest minor)"));
+                return `<option value="${version}">${versionName}</option>`;
+            })}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+document.addEventListener('DOMContentLoaded', (event) => {
+    function onIntersection(entries) {
+        entries.forEach(entry => {
+            let currentlyLoaded = entry.target.getAttribute("data-is-loaded") == "true";
+            let shouldBeLoaded = entry.intersectionRatio > 0;
+            if(currentlyLoaded != shouldBeLoaded) {
+                entry.target.setAttribute("data-is-loaded", shouldBeLoaded);
+                if(shouldBeLoaded) {
+                    let iframe = document.createElement("iframe");
+                    iframe.src = entry.target.getAttribute("data-real-src");
+                    entry.target.appendChild(iframe);
+                } else {
+                    let iframe = entry.target.querySelector("iframe");
+                    iframe.parentNode.removeChild(iframe);
+                }
+            }
+        });
+    }
+    const config = {
+        rootMargin: '600px 0px',
+        threshold: 0.01
+    };
+    let observer = new IntersectionObserver(onIntersection, config);
+    document.querySelectorAll(".lv-example").forEach(iframe => {
+        observer.observe(iframe);
+    });
+});
+</script>
+
+
+</body>
+</html>

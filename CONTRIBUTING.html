@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contributing &mdash; LVGL  文档</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/fontawesome.min.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.png"/>
+    <link rel="canonical" href="https://docs.lvgl.io/0.0.1/CONTRIBUTING.html" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/translations.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78811084-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+	gtag('config', 'UA-78811084-3', { 'anonymize_ip': true });
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/logo_lvgl.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Contributing</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#pull-request">Pull request</a><ul>
+<li><a class="reference internal" href="#from-github">From GitHub</a></li>
+<li><a class="reference internal" href="#from-command-line">From command line</a></li>
+<li><a class="reference internal" href="#commit-message-format">Commit message format</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#developer-certification-of-origin-dco">Developer Certification of Origin (DCO)</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#accepted-licenses-and-copyright-notices">Accepted licenses and copyright notices</a><ul>
+<li><a class="reference internal" href="#your-own-work">Your own work</a></li>
+<li><a class="reference internal" href="#use-code-from-online-source">Use code from online source</a></li>
+<li><a class="reference internal" href="#use-mit-licensed-code">Use MIT licensed code</a></li>
+<li><a class="reference internal" href="#use-gpl-licensed-code">Use GPL licensed code</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ways-to-contribute">Ways to contribute</a><ul>
+<li><a class="reference internal" href="#give-lvgl-a-star">Give LVGL a Star</a></li>
+<li><a class="reference internal" href="#tell-what-you-have-achieved">Tell what you have achieved</a></li>
+<li><a class="reference internal" href="#write-examples">Write examples</a></li>
+<li><a class="reference internal" href="#improve-the-docs">Improve the docs</a></li>
+<li><a class="reference internal" href="#report-bugs">Report bugs</a></li>
+<li><a class="reference internal" href="#send-fixes">Send fixes</a></li>
+<li><a class="reference internal" href="#join-the-conversations-in-the-forum">Join the conversations in the Forum</a></li>
+<li><a class="reference internal" href="#add-features">Add features</a></li>
+<li><a class="reference internal" href="#become-a-maintainer">Become a maintainer</a></li>
+<li><a class="reference internal" href="#move-your-project-repository-under-lvgl-organization">Move your project repository under LVGL organization</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">LVGL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Contributing</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/CONTRIBUTING.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>.. include:: /header.rst 
+:github_url: |github_link_base|/CONTRIBUTING.md
+</pre></div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="contributing">
+<h1>Contributing<a class="headerlink" href="#contributing" title="此标题的永久链接"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="此标题的永久链接"></a></h2>
+<p>Join LVGL's community and leave your footprint in the library!</p>
+<p>There are a lot of ways to contribute to LVGL even if you are new to the library or even new to programming.</p>
+<p>It might be scary to make the first step but you have nothing to be afraid of.
+A friendly and helpful community is waiting for you. Get to know like-minded people and make something great together.</p>
+<p>So let's find which contribution option fits you the best and help you join the development of LVGL!</p>
+<p>Before getting started here are some guidelines to make contribution smoother:</p>
+<ul class="simple">
+<li><p>Be kind and friendly.</p></li>
+<li><p>Be sure to read the relevant part of the documentation before posting a question.</p></li>
+<li><p>Ask questions in the <a class="reference external" href="https://forum.lvgl.io/">Forum</a> and use <a class="reference external" href="https://github.com/lvgl/">GitHub</a> for development-related discussions.</p></li>
+<li><p>Always fill out the post or issue templates in the Forum or GitHub (or at least provide equivalent information). It makes understanding your contribution or issue easier and you will get a useful response faster.</p></li>
+<li><p>If possible send an absolute minimal but buildable code example in order to reproduce the issue. Be sure it contains all the required variable declarations, constants, and assets (images, fonts).</p></li>
+<li><p>Use <a class="reference external" href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">Markdown</a> to format your posts. You can learn it in 10 minutes.</p></li>
+<li><p>Speak about one thing in one issue or topic. It makes your post easier to find later for someone with the same question.</p></li>
+<li><p>Give feedback and close the issue or mark the topic as solved if your question is answered.</p></li>
+<li><p>For non-trivial fixes and features, it's better to open an issue first to discuss the details instead of sending a pull request directly.</p></li>
+<li><p>Please read and follow the <a href="https://github.com/lvgl/lvgl/blob/master/docs/CODING_STYLE.md">Coding style</a> guide.</p></li>
+</ul>
+</section>
+<section id="pull-request">
+<h2>Pull request<a class="headerlink" href="#pull-request" title="此标题的永久链接"></a></h2>
+<p>Merging new code into the lvgl, documentation, blog, examples, and other repositories happen via <em>Pull requests</em> (PR for short).
+A PR is a notification like &quot;Hey, I made some updates to your project. Here are the changes, you can add them if you want.&quot;
+To do this you need a copy (called fork) of the original project under your account, make some changes there, and notify the original repository about your updates.
+You can see what it looks like on GitHub for LVGL here: <a class="reference external" href="https://github.com/lvgl/lvgl/pulls">https://github.com/lvgl/lvgl/pulls</a>.</p>
+<p>To add your changes you can edit files online on GitHub and send a new Pull request from there (recommended for small changes) or
+add the updates in your favorite editor/IDE and use git to publish the changes (recommended for more complex updates).</p>
+<section id="from-github">
+<h3>From GitHub<a class="headerlink" href="#from-github" title="此标题的永久链接"></a></h3>
+<ol class="arabic simple">
+<li><p>Navigate to the file you want to edit.</p></li>
+<li><p>Click the Edit button in the top right-hand corner.</p></li>
+<li><p>Add your changes to the file.</p></li>
+<li><p>Add a commit message on the bottom of the page.</p></li>
+<li><p>Click the <em>Propose changes</em> button.</p></li>
+</ol>
+</section>
+<section id="from-command-line">
+<h3>From command line<a class="headerlink" href="#from-command-line" title="此标题的永久链接"></a></h3>
+<p>The instructions describe the main <code class="docutils literal notranslate"><span class="pre">lvgl</span></code> repository but it works the same way for the other repositories.</p>
+<ol class="arabic simple">
+<li><p>Fork the <a class="reference external" href="https://github.com/lvgl/lvgl">lvgl repository</a>. To do this click the &quot;Fork&quot; button in the top right corner.
+It will &quot;copy&quot; the <code class="docutils literal notranslate"><span class="pre">lvgl</span></code> repository to your GitHub account (<code class="docutils literal notranslate"><span class="pre">https://github.com/&lt;YOUR_NAME&gt;?tab=repositories</span></code>)</p></li>
+<li><p>Clone your forked repository.</p></li>
+<li><p>Add your changes. You can create a <em>feature branch</em> from <em>master</em> for the updates: <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">-b</span> <span class="pre">the-new-feature</span></code></p></li>
+<li><p>Commit and push your changes to the forked <code class="docutils literal notranslate"><span class="pre">lvgl</span></code> repository.</p></li>
+<li><p>Create a PR on GitHub from the page of your <code class="docutils literal notranslate"><span class="pre">lvgl</span></code> repository (<code class="docutils literal notranslate"><span class="pre">https://github.com/&lt;YOUR_NAME&gt;/lvgl</span></code>) by clicking the <em>&quot;New pull request&quot;</em> button. Don't forget to select the branch where you added your changes.</p></li>
+<li><p>Set the base branch. It means where you want to merge your update. In the <code class="docutils literal notranslate"><span class="pre">lvgl</span></code> repo both the fixes and new features go to <code class="docutils literal notranslate"><span class="pre">master</span></code> branch.</p></li>
+<li><p>Describe what is in the update. An example code is welcome if applicable.</p></li>
+<li><p>If you need to make more changes, just update your forked <code class="docutils literal notranslate"><span class="pre">lvgl</span></code> repo with new commits. They will automatically appear in the PR.</p></li>
+</ol>
+</section>
+<section id="commit-message-format">
+<h3>Commit message format<a class="headerlink" href="#commit-message-format" title="此标题的永久链接"></a></h3>
+<p>The commit messages format is inspired by <a class="reference external" href="https://gist.github.com/brianclements/841ea7bffdb01346392c">Angular Commit Format</a>.</p>
+<p>The following structure should be used:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">type</span><span class="o">&gt;</span><span class="p">(</span><span class="o">&lt;</span><span class="n">scope</span><span class="o">&gt;</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="o">&lt;</span><span class="n">subject</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">BLANK</span><span class="w"> </span><span class="n">LINE</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">body</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">BLANK</span><span class="w"> </span><span class="n">LINE</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">footer</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Possible <code class="docutils literal notranslate"><span class="pre">&lt;type&gt;</span></code>s:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fix</span></code> bugfix in the source code.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">feat</span></code> new feature</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">arch</span></code> architectural changes</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">perf</span></code> changes that affect the performance</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">example</span></code> anything related to examples (even fixes and new examples)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">docs</span></code> anything related to the documentation (even fixes, formatting, and new pages)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">test</span></code> anything related to tests (new and updated tests or CI actions)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">chore</span></code> any minor formatting or style changes that would make the changelog noisy</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;scope&gt;</span></code> is the module, file, or sub-system that is affected by the commit. It's usually one word and can be chosen freely.
+For example <code class="docutils literal notranslate"><span class="pre">img</span></code>, <code class="docutils literal notranslate"><span class="pre">layout</span></code>, <code class="docutils literal notranslate"><span class="pre">txt</span></code>, <code class="docutils literal notranslate"><span class="pre">anim</span></code>. The scope can be omitted.</p>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;subject&gt;</span></code> contains a short description of the change:</p>
+<ul class="simple">
+<li><p>use the imperative, present tense: &quot;change&quot; not &quot;changed&quot; nor &quot;changes&quot;</p></li>
+<li><p>don't capitalize the first letter</p></li>
+<li><p>no dot (.) at the end</p></li>
+<li><p>max 90 characters</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;body&gt;</span></code> optional and can be used to describe the details of this change.</p>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;footer&gt;</span></code> shall contain</p>
+<ul class="simple">
+<li><p>the words &quot;BREAKING CHANGE&quot; if the changes break the API</p></li>
+<li><p>reference to the GitHub issue or Pull Request if applicable.</p></li>
+</ul>
+<p>Some examples:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">fix</span><span class="p">(</span><span class="n">img</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="n">update</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">source</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">set</span>
+</pre></div>
+</div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>fix(bar): fix memory leak
+
+The animations weren&#39;t deleted in the destructor.
+
+Fixes: #1234
+</pre></div>
+</div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>feat: add span widget
+
+The span widget allows mixing different font sizes, colors and styles.
+It&#39;s similar to HTML &lt;span&gt;
+</pre></div>
+</div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">docs</span><span class="p">(</span><span class="n">porting</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="n">fix</span><span class="w"> </span><span class="n">typo</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="developer-certification-of-origin-dco">
+<h2>Developer Certification of Origin (DCO)<a class="headerlink" href="#developer-certification-of-origin-dco" title="此标题的永久链接"></a></h2>
+<section id="overview">
+<h3>Overview<a class="headerlink" href="#overview" title="此标题的永久链接"></a></h3>
+<p>To ensure all licensing criteria are met for every repository of the LVGL project, we apply a process called DCO (Developer's Certificate of Origin).</p>
+<p>The text of DCO can be read here: <a class="reference external" href="https://developercertificate.org/">https://developercertificate.org/</a>.</p>
+<p>By contributing to any repositories of the LVGL project you agree that your contribution complies with the DCO.</p>
+<p>If your contribution fulfills the requirements of the DCO no further action is needed. If you are unsure feel free to ask us in a comment.</p>
+</section>
+<section id="accepted-licenses-and-copyright-notices">
+<h3>Accepted licenses and copyright notices<a class="headerlink" href="#accepted-licenses-and-copyright-notices" title="此标题的永久链接"></a></h3>
+<p>To make the DCO easier to digest, here are some practical guides about specific cases:</p>
+<section id="your-own-work">
+<h4>Your own work<a class="headerlink" href="#your-own-work" title="此标题的永久链接"></a></h4>
+<p>The simplest case is when the contribution is solely your own work.
+In this case you can just send a Pull Request without worrying about any licensing issues.</p>
+</section>
+<section id="use-code-from-online-source">
+<h4>Use code from online source<a class="headerlink" href="#use-code-from-online-source" title="此标题的永久链接"></a></h4>
+<p>If the code you would like to add is based on an article, post or comment on a website (e.g. StackOverflow) the license and/or rules of that site should be followed.</p>
+<p>For example in case of StackOverflow a notice like this can be used:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* The original version of this code-snippet was published on StackOverflow.</span>
+<span class="cm"> * Post: http://stackoverflow.com/questions/12345</span>
+<span class="cm"> * Author: http://stackoverflow.com/users/12345/username</span>
+<span class="cm"> * The following parts of the snippet were changed:</span>
+<span class="cm"> * - Check this or that</span>
+<span class="cm"> * - Optimize performance here and there</span>
+<span class="cm"> */</span>
+<span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="n">snippet</span><span class="w"> </span><span class="n">here</span><span class="w"> </span><span class="p">...</span>
+</pre></div>
+</div>
+</section>
+<section id="use-mit-licensed-code">
+<h4>Use MIT licensed code<a class="headerlink" href="#use-mit-licensed-code" title="此标题的永久链接"></a></h4>
+<p>As LVGL is MIT licensed, other MIT licensed code can be integrated without issues.
+The MIT license requires a copyright notice be added to the derived work. Any derivative work based on MIT licensed code must copy the original work's license file or text.</p>
+</section>
+<section id="use-gpl-licensed-code">
+<h4>Use GPL licensed code<a class="headerlink" href="#use-gpl-licensed-code" title="此标题的永久链接"></a></h4>
+<p>The GPL license is not compatible with the MIT license. Therefore, LVGL can not accept GPL licensed code.</p>
+</section>
+</section>
+</section>
+<section id="ways-to-contribute">
+<h2>Ways to contribute<a class="headerlink" href="#ways-to-contribute" title="此标题的永久链接"></a></h2>
+<p>Even if you're just getting started with LVGL there are plenty of ways to get your feet wet.
+Most of these options don't even require knowing a single line of LVGL code.</p>
+<p>Below we have collected some opportunities about the ways you can contribute to LVGL.</p>
+<section id="give-lvgl-a-star">
+<h3>Give LVGL a Star<a class="headerlink" href="#give-lvgl-a-star" title="此标题的永久链接"></a></h3>
+<p>Show that you like LVGL by giving it star on GitHub!</p>
+<!-- Place this tag in your head or just before your close body tag. -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<!-- Place this tag where you want the button to render. -->
+<p><a class="github-button" href="https://github.com/lvgl/lvgl" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star lvgl/lvgl on GitHub">Star</a></p>
+<p>This simple click makes LVGL more visible on GitHub and makes it more attractive to other people.
+So with this, you already helped a lot!</p>
+</section>
+<section id="tell-what-you-have-achieved">
+<h3>Tell what you have achieved<a class="headerlink" href="#tell-what-you-have-achieved" title="此标题的永久链接"></a></h3>
+<p>Have you already started using LVGL in a <a class="reference internal" href="get-started/pc-simulator.html"><span class="doc std std-doc">Simulator</span></a>, a development board, or on your custom hardware?
+Was it easy or were there some obstacles? Are you happy with the result?
+Showing your project to others is a win-win situation because it increases your and LVGL's reputation at the same time.</p>
+<p>You can post about your project on Twitter, Facebook, LinkedIn, create a YouTube video, and so on.
+Only one thing: On social media don't forget to add a link to <code class="docutils literal notranslate"><span class="pre">https://lvgl.io</span></code> or <code class="docutils literal notranslate"><span class="pre">https://github.com/lvgl</span></code> and use the hashtag <code class="docutils literal notranslate"><span class="pre">#lvgl</span></code>. Thank you! :)</p>
+<p>You can also open a new topic in the <a class="reference external" href="https://forum.lvgl.io/c/my-projects/10">My projects</a> category of the Forum.</p>
+<p>The <a class="reference external" href="https://blog.lvgl.io">LVGL Blog</a> welcomes posts from anyone.
+It's a good place to talk about a project you created with LVGL, write a tutorial, or share some nice tricks.
+The latest blog posts are shown on the <a class="reference external" href="https://lvgl.io">homepage of LVGL</a> to make your work more visible.</p>
+<p>The blog is hosted on GitHub. If you add a post GitHub automatically turns it into a website.
+See the <a class="reference external" href="https://github.com/lvgl/blog">README</a> of the blog repo to see how to add your post.</p>
+<p>Any of these help to spread the word and familiarize new developers with LVGL.</p>
+<p>If you don't want to speak about your project publicly, feel free to use <a class="reference external" href="https://lvgl.io/#contact">Contact form</a> on <a class="reference external" href="http://lvgl.io">lvgl.io</a> to private message to us.</p>
+</section>
+<section id="write-examples">
+<h3>Write examples<a class="headerlink" href="#write-examples" title="此标题的永久链接"></a></h3>
+<p>As you learn LVGL you will probably play with the features of widgets. Why not publish your experiments?</p>
+<p>Each widgets' documentation contains examples. For instance, here are the examples of the <span class="xref myst">Drop-down list</span> widget.
+The examples are directly loaded from the <a class="reference external" href="https://github.com/lvgl/lvgl/tree/master/examples">lvgl/examples</a> folder.</p>
+<p>So all you need to do is send a <span class="xref myst">Pull request</span> to the <a class="reference external" href="https://github.com/lvgl/lvgl">lvgl</a> repository and follow some conventions:</p>
+<ul class="simple">
+<li><p>Name the examples like <code class="docutils literal notranslate"><span class="pre">lv_example_&lt;widget_name&gt;_&lt;index&gt;</span></code>.</p></li>
+<li><p>Make the example as short and simple as possible.</p></li>
+<li><p>Add comments to explain what the example does.</p></li>
+<li><p>Use 320x240 resolution.</p></li>
+<li><p>Update <code class="docutils literal notranslate"><span class="pre">index.rst</span></code> in the example's folder with your new example. To see how other examples are added, look in the <a class="reference external" href="https://github.com/lvgl/lvgl/tree/master/examples/widgets">lvgl/examples/widgets</a> folder.</p></li>
+</ul>
+</section>
+<section id="improve-the-docs">
+<h3>Improve the docs<a class="headerlink" href="#improve-the-docs" title="此标题的永久链接"></a></h3>
+<p>As you read the documentation you might see some typos or unclear sentences. All the documentation is located in the <a class="reference external" href="https://github.com/lvgl/lvgl/tree/master/docs">lvgl/docs</a> folder.
+For typos and straightforward fixes, you can simply edit the file on GitHub.</p>
+<p>Note that the documentation is also formatted in <a class="reference external" href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">Markdown</a>.</p>
+</section>
+<section id="report-bugs">
+<h3>Report bugs<a class="headerlink" href="#report-bugs" title="此标题的永久链接"></a></h3>
+<p>As you use LVGL you might find bugs. Before reporting them be sure to check the relevant parts of the documentation.</p>
+<p>If it really seems like a bug feel free to open an <a class="reference external" href="https://github.com/lvgl/lvgl/issues">issue on GitHub</a>.</p>
+<p>When filing the issue be sure to fill out the template. It helps find the root of the problem while avoiding extensive questions and exchanges with other developers.</p>
+</section>
+<section id="send-fixes">
+<h3>Send fixes<a class="headerlink" href="#send-fixes" title="此标题的永久链接"></a></h3>
+<p>The beauty of open-source software is you can easily dig in to it to understand how it works. You can also fix or adjust it as you wish.</p>
+<p>If you found and fixed a bug don't hesitate to send a <span class="xref myst">Pull request</span> with the fix.</p>
+<p>In your Pull request please also add a line to <a class="reference external" href="https://github.com/lvgl/lvgl/blob/master/CHANGELOG.md"><code class="docutils literal notranslate"><span class="pre">CHANGELOG.md</span></code></a>.</p>
+</section>
+<section id="join-the-conversations-in-the-forum">
+<h3>Join the conversations in the Forum<a class="headerlink" href="#join-the-conversations-in-the-forum" title="此标题的永久链接"></a></h3>
+<p>It feels great to know you are not alone if something is not working. It's even better to help others when they struggle with something.</p>
+<p>While you were learning LVGL you might have had questions and used the Forum to get answers. As a result, you probably have more knowledge about how LVGL works.</p>
+<p>One of the best ways to give back is to use the Forum and answer the questions of newcomers - like you were once.</p>
+<p>Just read the titles and if you are familiar with the topic don't hesitate to share your thoughts and suggestions.</p>
+<p>Participating in the discussions is one of the best ways to become part of the project and get to know like-minded people!</p>
+</section>
+<section id="add-features">
+<h3>Add features<a class="headerlink" href="#add-features" title="此标题的永久链接"></a></h3>
+<p>If you have created a cool widget, or added useful feature to LVGL feel free to open a new PR for it.
+We collect the optional features (a.k.a. plugins) in <a class="reference external" href="https://github.com/lvgl/lvgl/tree/master/src/extra">lvgl/src/extra</a> folder so if you are interested in adding a new features please use this folder.
+The <a class="reference external" href="https://github.com/lvgl/lvgl/blob/master/src/extra/README.md">README</a> file describes the basics rules of contribution and also lists some ideas.</p>
+<p>For further ideas take a look at the <a class="reference internal" href="ROADMAP.html"><span class="doc std std-doc">Roadmap</span></a> page. If you are interested in any of them feel free to share your opinion and/or participate in the implementation.</p>
+<p>Other features which are (still) not on the road map are listed in the <a class="reference external" href="https://forum.lvgl.io/c/feature-request/9">Feature request</a> category of the Forum.</p>
+<p>When adding a new features the followings also needs to be updated:</p>
+<ul class="simple">
+<li><p>Update <a class="reference external" href="https://github.com/lvgl/lvgl/blob/master/lv_conf_template.h">lv_conf_template.h</a></p></li>
+<li><p>Add description in the <a class="reference external" href="https://github.com/lvgl/lvgl/tree/master/docs">docs</a></p></li>
+<li><p>Add <a class="reference external" href="https://github.com/lvgl/lvgl/tree/master/examples">examples</a></p></li>
+<li><p>Update the <a class="reference external" href="https://github.com/lvgl/lvgl/tree/master/docs/CHANGELOG.md">changelog</a></p></li>
+</ul>
+</section>
+<section id="become-a-maintainer">
+<h3>Become a maintainer<a class="headerlink" href="#become-a-maintainer" title="此标题的永久链接"></a></h3>
+<p>If you want to become part of the core development team, you can become a maintainer of a repository.</p>
+<p>By becoming a maintainer:</p>
+<ul class="simple">
+<li><p>You get write access to that repo:</p>
+<ul>
+<li><p>Add code directly without sending a pull request</p></li>
+<li><p>Accept pull requests</p></li>
+<li><p>Close/reopen/edit issues</p></li>
+</ul>
+</li>
+<li><p>Your input has higher impact when we are making decisions</p></li>
+</ul>
+<p>You can become a maintainer by invitation, however the following conditions need to met</p>
+<ol class="arabic simple">
+<li><p>Have &gt; 50 replies in the Forum. You can look at your stats <a class="reference external" href="https://forum.lvgl.io/u?period=all">here</a></p></li>
+<li><p>Send &gt; 5 non-trivial pull requests to the repo where you would like to be a maintainer</p></li>
+</ol>
+<p>If you are interested, just send a message (e.g. from the Forum) to the current maintainers of the repository. They will check if the prerequisites are met.
+Note that meeting the prerequisites is not a guarantee of acceptance, i.e. if the conditions are met you won't automatically become a maintainer.
+It's up to the current maintainers to make the decision.</p>
+</section>
+<section id="move-your-project-repository-under-lvgl-organization">
+<h3>Move your project repository under LVGL organization<a class="headerlink" href="#move-your-project-repository-under-lvgl-organization" title="此标题的永久链接"></a></h3>
+<p>Besides the core <code class="docutils literal notranslate"><span class="pre">lvgl</span></code> repository there are other repos for ports to development boards, IDEs or other environment.
+If you ported LVGL to a new platform we can host it under the LVGL organization among the other repos.</p>
+<p>This way your project will become part of the whole LVGL project and can get more visibility.
+If you are interested in this opportunity just open an <a class="reference external" href="https://github.com/lvgl/lvgl/issues">issue in lvgl repo</a> and tell what you have!</p>
+<p>If we agree that your port fit well into the LVGL organization, we will open a repository for your project where you will have admin rights.</p>
+<p>To make this concept sustainable there a few rules to follow:</p>
+<ul class="simple">
+<li><p>You need to add a README to your repo.</p></li>
+<li><p>We expect to maintain the repo to some extent:</p>
+<ul>
+<li><p>Follow at least the major versions of LVGL</p></li>
+<li><p>Respond to the issues (in a reasonable time)</p></li>
+</ul>
+</li>
+<li><p>If there is no activity in a repo for 1 year it will be archived</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2021, LVGL Kft.
+      <span class="lastupdated">最后更新于 2025 年 09 月 02 日.
+      </span></p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<style>
+  .wy-side-nav-search > div[role="search"] {
+    color: black;
+  }
+</style>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            let p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => {
+                let versionName = "";  
+                if(version == "master") versionName = "master (latest)";
+                else versionName = "v" + ((version.indexOf(".") != -1) ? version : (version + " (latest minor)"));
+                return `<option value="${version}">${versionName}</option>`;
+            })}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+document.addEventListener('DOMContentLoaded', (event) => {
+    function onIntersection(entries) {
+        entries.forEach(entry => {
+            let currentlyLoaded = entry.target.getAttribute("data-is-loaded") == "true";
+            let shouldBeLoaded = entry.intersectionRatio > 0;
+            if(currentlyLoaded != shouldBeLoaded) {
+                entry.target.setAttribute("data-is-loaded", shouldBeLoaded);
+                if(shouldBeLoaded) {
+                    let iframe = document.createElement("iframe");
+                    iframe.src = entry.target.getAttribute("data-real-src");
+                    entry.target.appendChild(iframe);
+                } else {
+                    let iframe = entry.target.querySelector("iframe");
+                    iframe.parentNode.removeChild(iframe);
+                }
+            }
+        });
+    }
+    const config = {
+        rootMargin: '600px 0px',
+        threshold: 0.01
+    };
+    let observer = new IntersectionObserver(onIntersection, config);
+    document.querySelectorAll(".lv-example").forEach(iframe => {
+        observer.observe(iframe);
+    });
+});
+</script>
+
+
+</body>
+</html>

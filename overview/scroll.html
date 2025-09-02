@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scroll &mdash; LVGL  文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/fontawesome.min.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="canonical" href="https://docs.lvgl.io/0.0.1/overview/scroll.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78811084-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+	gtag('config', 'UA-78811084-3', { 'anonymize_ip': true });
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_lvgl.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Scroll</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a><ul>
+<li><a class="reference internal" href="#scrollbar">Scrollbar</a><ul>
+<li><a class="reference internal" href="#mode">Mode</a></li>
+<li><a class="reference internal" href="#styling">Styling</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#events">Events</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#basic-example">Basic example</a></li>
+<li><a class="reference internal" href="#features-of-scrolling">Features of scrolling</a><ul>
+<li><a class="reference internal" href="#scrollable">Scrollable</a></li>
+<li><a class="reference internal" href="#scroll-chain">Scroll chain</a></li>
+<li><a class="reference internal" href="#scroll-momentum">Scroll momentum</a></li>
+<li><a class="reference internal" href="#elastic-scroll">Elastic scroll</a></li>
+<li><a class="reference internal" href="#snapping">Snapping</a></li>
+<li><a class="reference internal" href="#scroll-one">Scroll one</a></li>
+<li><a class="reference internal" href="#scroll-on-focus">Scroll on focus</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#scroll-manually">Scroll manually</a></li>
+<li><a class="reference internal" href="#self-size">Self size</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LVGL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Scroll</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/overview/scroll.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>.. include:: /header.rst 
+:github_url: |github_link_base|/overview/scroll.md
+</pre></div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="scroll">
+<h1>Scroll<a class="headerlink" href="#scroll" title="此标题的永久链接"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="此标题的永久链接"></a></h2>
+<p>In LVGL scrolling works very intuitively: if an object is outside of its parent content area (the size without padding), the parent becomes scrollable and scrollbar(s) will appear. That's it.</p>
+<p>Any object can be scrollable including <code class="docutils literal notranslate"><span class="pre">lv_obj_t</span></code>, <code class="docutils literal notranslate"><span class="pre">lv_img</span></code>, <code class="docutils literal notranslate"><span class="pre">lv_btn</span></code>, <code class="docutils literal notranslate"><span class="pre">lv_meter</span></code>, etc</p>
+<p>The object can either be scrolled horizontally or vertically in one stroke; diagonal scrolling is not possible.</p>
+<section id="scrollbar">
+<h3>Scrollbar<a class="headerlink" href="#scrollbar" title="此标题的永久链接"></a></h3>
+<section id="mode">
+<h4>Mode<a class="headerlink" href="#mode" title="此标题的永久链接"></a></h4>
+<p>Scrollbars are displayed according to a configured <code class="docutils literal notranslate"><span class="pre">mode</span></code>. The following <code class="docutils literal notranslate"><span class="pre">mode</span></code>s exist:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_SCROLLBAR_MODE_OFF</span></code>  Never show the scrollbars</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_SCROLLBAR_MODE_ON</span></code>  Always show the scrollbars</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_SCROLLBAR_MODE_ACTIVE</span></code> Show scroll bars while a object is being scrolled</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_SCROLLBAR_MODE_AUTO</span></code>  Show scroll bars when the content is large enough to be scrolled</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">lv_obj_set_scrollbar_mode(obj,</span> <span class="pre">LV_SCROLLBAR_MODE_...)</span></code> sets the scrollbar mode on an object.</p>
+</section>
+<section id="styling">
+<h4>Styling<a class="headerlink" href="#styling" title="此标题的永久链接"></a></h4>
+<p>The scrollbars have their own dedicated part, called <code class="docutils literal notranslate"><span class="pre">LV_PART_SCROLLBAR</span></code>. For example a scrollbar can turn to red like this:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="n">lv_style_t</span><span class="w"> </span><span class="n">style_red</span><span class="p">;</span>
+<span class="n">lv_style_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_red</span><span class="p">);</span>
+<span class="n">lv_style_set_bg_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_red</span><span class="p">,</span><span class="w"> </span><span class="n">lv_color_red</span><span class="p">());</span>
+
+<span class="p">...</span>
+
+<span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">style_red</span><span class="p">,</span><span class="w"> </span><span class="n">LV_PART_SCROLLBAR</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>An object goes to the <code class="docutils literal notranslate"><span class="pre">LV_STATE_SCROLLED</span></code> state while it's being scrolled. This allows adding different styles to the scrollbar or the object itself when scrolled.
+This code makes the scrollbar blue when the object is scrolled:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="n">lv_style_t</span><span class="w"> </span><span class="n">style_blue</span><span class="p">;</span>
+<span class="n">lv_style_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_blue</span><span class="p">);</span>
+<span class="n">lv_style_set_bg_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_blue</span><span class="p">,</span><span class="w"> </span><span class="n">lv_color_blue</span><span class="p">());</span>
+
+<span class="p">...</span>
+
+<span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">style_blue</span><span class="p">,</span><span class="w"> </span><span class="n">LV_STATE_SCROLLED</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">LV_PART_SCROLLBAR</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If the base direction of the <code class="docutils literal notranslate"><span class="pre">LV_PART_SCROLLBAR</span></code> is RTL (<code class="docutils literal notranslate"><span class="pre">LV_BASE_DIR_RTL</span></code>) the vertical scrollbar will be placed on the left.
+Note that, the <code class="docutils literal notranslate"><span class="pre">base_dir</span></code> style property is inherited. Therefore, it can be set directly on the <code class="docutils literal notranslate"><span class="pre">LV_PART_SCROLLBAR</span></code> part of an object
+or on the object's or any parent's main part to make a scrollbar inherit the base direction.</p>
+</section>
+</section>
+<section id="events">
+<h3>Events<a class="headerlink" href="#events" title="此标题的永久链接"></a></h3>
+<p>The following events are related to scrolling:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_SCROLL_BEGIN</span></code> Scrolling begins</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_SCROLL_END</span></code> Scrolling ends</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_SCROLL</span></code> Scroll happened. Triggered on every position change.
+Scroll events</p></li>
+</ul>
+</section>
+</section>
+<section id="basic-example">
+<h2>Basic example<a class="headerlink" href="#basic-example" title="此标题的永久链接"></a></h2>
+<p>TODO</p>
+</section>
+<section id="features-of-scrolling">
+<h2>Features of scrolling<a class="headerlink" href="#features-of-scrolling" title="此标题的永久链接"></a></h2>
+<p>Besides, managing &quot;normal&quot; scrolling there are many interesting and useful additional features.</p>
+<section id="scrollable">
+<h3>Scrollable<a class="headerlink" href="#scrollable" title="此标题的永久链接"></a></h3>
+<p>It's possible to make an object non-scrollable with <code class="docutils literal notranslate"><span class="pre">lv_obj_clear_flag(obj,</span> <span class="pre">LV_OBJ_FLAG_SCROLLABLE)</span></code>.</p>
+<p>Non-scrollable objects can still propagate the scrolling (chain) to their parents.</p>
+<p>The direction in which scrolling happens can be controlled by <code class="docutils literal notranslate"><span class="pre">lv_obj_set_scroll_dir(obj,</span> <span class="pre">LV_DIR_...)</span></code>.
+The following values are possible for the direction:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_DIR_TOP</span></code> only scroll up</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_DIR_LEFT</span></code> only scroll left</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_DIR_BOTTOM</span></code> only scroll down</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_DIR_RIGHT</span></code> only scroll right</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_DIR_HOR</span></code> only scroll horizontally</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_DIR_TOP</span></code> only scroll vertically</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_DIR_ALL</span></code> scroll any directions</p></li>
+</ul>
+<p>OR-ed values are also possible. E.g. <code class="docutils literal notranslate"><span class="pre">LV_DIR_TOP</span> <span class="pre">|</span> <span class="pre">LV_DIR_LEFT</span></code>.</p>
+</section>
+<section id="scroll-chain">
+<h3>Scroll chain<a class="headerlink" href="#scroll-chain" title="此标题的永久链接"></a></h3>
+<p>If an object can't be scrolled further (e.g. its content has reached the bottom-most position) additional scrolling is propagated to its parent. If the parent can be scrolled in that direction than it will be scrolled instead.
+It continues propagating to the grandparent and grand-grandparents as well.</p>
+<p>The propagation on scrolling is called &quot;scroll chaining&quot; and it can be enabled/disabled with <code class="docutils literal notranslate"><span class="pre">LV_OBJ_FLAG_SCROLL_CHAIN_HOR/VER</span></code> flag.
+If chaining is disabled the propagation stops on the object and the parent(s) won't be scrolled.</p>
+</section>
+<section id="scroll-momentum">
+<h3>Scroll momentum<a class="headerlink" href="#scroll-momentum" title="此标题的永久链接"></a></h3>
+<p>When the user scrolls an object and releases it, LVGL can emulate inertial momentum for the scrolling. It's like the object was thrown and scrolling slows down smoothly.</p>
+<p>The scroll momentum can be enabled/disabled with the <code class="docutils literal notranslate"><span class="pre">LV_OBJ_FLAG_SCROLL_MOMENTUM</span></code> flag.</p>
+</section>
+<section id="elastic-scroll">
+<h3>Elastic scroll<a class="headerlink" href="#elastic-scroll" title="此标题的永久链接"></a></h3>
+<p>Normally an object can't be scrolled past the extremeties of its content. That is the top side of the content can't be below the top side of the object.</p>
+<p>However, with <code class="docutils literal notranslate"><span class="pre">LV_OBJ_FLAG_SCROLL_ELASTIC</span></code> a fancy effect is added when the user &quot;over-scrolls&quot; the content. The scrolling slows down, and the content can be scrolled inside the object.
+When the object is released the content scrolled in it will be animated back to the valid position.</p>
+</section>
+<section id="snapping">
+<h3>Snapping<a class="headerlink" href="#snapping" title="此标题的永久链接"></a></h3>
+<p>The children of an object can be snapped according to specific rules when scrolling ends. Children can be made snappable individually with the <code class="docutils literal notranslate"><span class="pre">LV_OBJ_FLAG_SNAPPABLE</span></code> flag.</p>
+<p>An object can align snapped children in four ways:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_SCROLL_SNAP_NONE</span></code> Snapping is disabled. (default)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_SCROLL_SNAP_START</span></code> Align the children to the left/top side of a scrolled object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_SCROLL_SNAP_END</span></code> Align the children to the right/bottom side of a scrolled object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_SCROLL_SNAP_CENTER</span></code> Align the children to the center of a scrolled object</p></li>
+</ul>
+<p>Snap alignment is set with <code class="docutils literal notranslate"><span class="pre">lv_obj_set_scroll_snap_x/y(obj,</span> <span class="pre">LV_SCROLL_SNAP_...)</span></code>:</p>
+<p>Under the hood the following happens:</p>
+<ol class="arabic simple">
+<li><p>User scrolls an object and releases the screen</p></li>
+<li><p>LVGL calculates where the scroll would end considering scroll momentum</p></li>
+<li><p>LVGL finds the nearest scroll point</p></li>
+<li><p>LVGL scrolls to the snap point with an animation</p></li>
+</ol>
+</section>
+<section id="scroll-one">
+<h3>Scroll one<a class="headerlink" href="#scroll-one" title="此标题的永久链接"></a></h3>
+<p>The &quot;scroll one&quot; feature tells LVGL to allow scrolling only one snappable child at a time.
+This requires making the children snappable and setting a scroll snap alignment different from <code class="docutils literal notranslate"><span class="pre">LV_SCROLL_SNAP_NONE</span></code>.</p>
+<p>This feature can be enabled by the <code class="docutils literal notranslate"><span class="pre">LV_OBJ_FLAG_SCROLL_ONE</span></code> flag.</p>
+</section>
+<section id="scroll-on-focus">
+<h3>Scroll on focus<a class="headerlink" href="#scroll-on-focus" title="此标题的永久链接"></a></h3>
+<p>Imagine that there a lot of objects in a group that are on a scrollable object. Pressing the &quot;Tab&quot; button focuses the next object but it might be outside the visible area of the scrollable object.
+If the &quot;scroll on focus&quot; feature is enabled LVGL will automatically scroll objects to bring their children into view.
+The scrolling happens recursively therefore even nested scrollable objects are handled properly.
+The object will be scrolled into view even if it's on a different page of a tabview.</p>
+</section>
+</section>
+<section id="scroll-manually">
+<h2>Scroll manually<a class="headerlink" href="#scroll-manually" title="此标题的永久链接"></a></h2>
+<p>The following API functions allow manual scrolling of objects:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_obj_scroll_by(obj,</span> <span class="pre">x,</span> <span class="pre">y,</span> <span class="pre">LV_ANIM_ON/OFF)</span></code> scroll by <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> values</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_obj_scroll_to(obj,</span> <span class="pre">x,</span> <span class="pre">y,</span> <span class="pre">LV_ANIM_ON/OFF)</span></code> scroll to bring the given coordinate to the top left corner</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_obj_scroll_to_x(obj,</span> <span class="pre">x,</span> <span class="pre">LV_ANIM_ON/OFF)</span></code> scroll to bring the given coordinate to the left side</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lv_obj_scroll_to_y(obj,</span> <span class="pre">y,</span> <span class="pre">LV_ANIM_ON/OFF)</span></code> scroll to bring the given coordinate to the top side</p></li>
+</ul>
+</section>
+<section id="self-size">
+<h2>Self size<a class="headerlink" href="#self-size" title="此标题的永久链接"></a></h2>
+<p>Self size is a property of an object. Normally, the user shouldn't use this parameter but if a custom widget is created it might be useful.</p>
+<p>In short, self size establishes the size of an object's content. To understand it better take the example of a table.
+Let's say it has 10 rows each with 50 px height. So the total height of the content is 500 px. In other words the &quot;self height&quot; is 500 px.
+If the user sets only 200 px height for the table LVGL will see that the self size is larger and make the table scrollable.</p>
+<p>This means not only the children can make an object scrollable but a larger self size will too.</p>
+<p>LVGL uses the <code class="docutils literal notranslate"><span class="pre">LV_EVENT_GET_SELF_SIZE</span></code> event to get the self size of an object. Here is an example to see how to handle the event:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="p">(</span><span class="n">event_code</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">LV_EVENT_GET_SELF_SIZE</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">	</span><span class="n">lv_point_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_event_get_param</span><span class="p">(</span><span class="n">e</span><span class="p">);</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="c1">//If x or y &lt; 0 then it doesn&#39;t neesd to be calculated now</span>
+<span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">x</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">p</span><span class="o">-&gt;</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">200</span><span class="p">;</span><span class="w">	</span><span class="c1">//Set or calculate the self width</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">y</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">p</span><span class="o">-&gt;</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">50</span><span class="p">;</span><span class="w">	</span><span class="c1">//Set or calculate the self height</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="此标题的永久链接"></a></h2>
+<div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>
+.. include:: ../../examples/scroll/index.rst
+
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2021, LVGL Kft.
+      <span class="lastupdated">最后更新于 2025 年 09 月 02 日.
+      </span></p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<style>
+  .wy-side-nav-search > div[role="search"] {
+    color: black;
+  }
+</style>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            let p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => {
+                let versionName = "";  
+                if(version == "master") versionName = "master (latest)";
+                else versionName = "v" + ((version.indexOf(".") != -1) ? version : (version + " (latest minor)"));
+                return `<option value="${version}">${versionName}</option>`;
+            })}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+document.addEventListener('DOMContentLoaded', (event) => {
+    function onIntersection(entries) {
+        entries.forEach(entry => {
+            let currentlyLoaded = entry.target.getAttribute("data-is-loaded") == "true";
+            let shouldBeLoaded = entry.intersectionRatio > 0;
+            if(currentlyLoaded != shouldBeLoaded) {
+                entry.target.setAttribute("data-is-loaded", shouldBeLoaded);
+                if(shouldBeLoaded) {
+                    let iframe = document.createElement("iframe");
+                    iframe.src = entry.target.getAttribute("data-real-src");
+                    entry.target.appendChild(iframe);
+                } else {
+                    let iframe = entry.target.querySelector("iframe");
+                    iframe.parentNode.removeChild(iframe);
+                }
+            }
+        });
+    }
+    const config = {
+        rootMargin: '600px 0px',
+        threshold: 0.01
+    };
+    let observer = new IntersectionObserver(onIntersection, config);
+    document.querySelectorAll(".lv-example").forEach(iframe => {
+        observer.observe(iframe);
+    });
+});
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Styles &mdash; LVGL  文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/fontawesome.min.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="canonical" href="https://docs.lvgl.io/0.0.1/overview/style.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78811084-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+	gtag('config', 'UA-78811084-3', { 'anonymize_ip': true });
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_lvgl.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Styles</a><ul>
+<li><a class="reference internal" href="#states">States</a></li>
+<li><a class="reference internal" href="#cascading-styles">Cascading styles</a></li>
+<li><a class="reference internal" href="#inheritance">Inheritance</a></li>
+<li><a class="reference internal" href="#parts">Parts</a></li>
+<li><a class="reference internal" href="#initialize-styles-and-set-get-properties">Initialize styles and set/get properties</a></li>
+<li><a class="reference internal" href="#add-and-remove-styles-to-a-widget">Add and remove styles to a widget</a><ul>
+<li><a class="reference internal" href="#add-styles">Add styles</a></li>
+<li><a class="reference internal" href="#remove-styles">Remove styles</a></li>
+<li><a class="reference internal" href="#report-style-changes">Report style changes</a></li>
+<li><a class="reference internal" href="#get-a-property-s-value-on-an-object">Get a property's value on an object</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#local-styles">Local styles</a></li>
+<li><a class="reference internal" href="#properties">Properties</a><ul>
+<li><a class="reference internal" href="#typical-background-properties">Typical background properties</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#transitions">Transitions</a></li>
+<li><a class="reference internal" href="#color-filter">Color filter</a></li>
+<li><a class="reference internal" href="#themes">Themes</a><ul>
+<li><a class="reference internal" href="#extending-themes">Extending themes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+<li><a class="reference internal" href="#api">API</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LVGL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Styles</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/overview/style.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>.. include:: /header.rst 
+:github_url: |github_link_base|/overview/style.md
+</pre></div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="styles">
+<h1>Styles<a class="headerlink" href="#styles" title="此标题的永久链接"></a></h1>
+<p><em>Styles</em> are used to set the appearance of objects. Styles in lvgl are heavily inspired by CSS. The concept in a nutshell is as follows:</p>
+<ul class="simple">
+<li><p>A style is an <code class="docutils literal notranslate"><span class="pre">lv_style_t</span></code> variable which can hold properties like border width, text color and so on. It's similar to a <code class="docutils literal notranslate"><span class="pre">class</span></code> in CSS.</p></li>
+<li><p>Styles can be assigned to objects to change their appearance. Upon assignment, the target part (<em>pseudo-element</em> in CSS) and target state (<em>pseudo class</em>) can be specified.
+For example one can add <code class="docutils literal notranslate"><span class="pre">style_blue</span></code> to the knob of a slider when it's in pressed state.</p></li>
+<li><p>The same style can be used by any number of objects.</p></li>
+<li><p>Styles can be cascaded which means multiple styles may be assigned to an object and each style can have different properties.
+Therefore, not all properties have to be specified in a style. LVGL will search for a property until a style defines it or use a default if it's not specified by any of the styles.
+For example <code class="docutils literal notranslate"><span class="pre">style_btn</span></code> can result in a default gray button and <code class="docutils literal notranslate"><span class="pre">style_btn_red</span></code> can add only a <code class="docutils literal notranslate"><span class="pre">background-color=red</span></code> to overwrite the background color.</p></li>
+<li><p>The most recently added style has higher precedence. This means if a property is specified in two styles the newest style in the object will be used.</p></li>
+<li><p>Some properties (e.g. text color) can be inherited from a parent(s) if it's not specified in an object.</p></li>
+<li><p>Objects can also have local styles with higher precedence than &quot;normal&quot; styles.</p></li>
+<li><p>Unlike CSS (where pseudo-classes describe different states, e.g. <code class="docutils literal notranslate"><span class="pre">:focus</span></code>), in LVGL a property is assigned to a given state.</p></li>
+<li><p>Transitions can be applied when the object changes state.</p></li>
+</ul>
+<section id="states">
+<h2>States<a class="headerlink" href="#states" title="此标题的永久链接"></a></h2>
+<p>The objects can be in the combination of the following states:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_DEFAULT</span></code> (0x0000) Normal, released state</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_CHECKED</span></code> (0x0001) Toggled or checked state</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_FOCUSED</span></code> (0x0002) Focused via keypad or encoder or clicked via touchpad/mouse</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_FOCUS_KEY</span></code> (0x0004) Focused via keypad or encoder but not via touchpad/mouse</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_EDITED</span></code> (0x0008) Edit by an encoder</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_HOVERED</span></code> (0x0010) Hovered by mouse (not supported now)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_PRESSED</span></code> (0x0020) Being pressed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_SCROLLED</span></code> (0x0040) Being scrolled</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_DISABLED</span></code> (0x0080) Disabled state</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_USER_1</span></code> (0x1000) Custom state</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_USER_2</span></code> (0x2000) Custom state</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_USER_3</span></code> (0x4000) Custom state</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_USER_4</span></code> (0x8000) Custom state</p></li>
+</ul>
+<p>An object can be in a combination of states such as being focused and pressed at the same time. This is represented as <code class="docutils literal notranslate"><span class="pre">LV_STATE_FOCUSED</span> <span class="pre">|</span> <span class="pre">LV_STATE_PRESSED</span></code>.</p>
+<p>A style can be added to any state or state combination.
+For example, setting a different background color for the default and pressed states.
+If a property is not defined in a state the best matching state's property will be used. Typically this means the property with <code class="docutils literal notranslate"><span class="pre">LV_STATE_DEFAULT</span></code> is used.˛
+If the property is not set even for the default state the default value will be used. (See later)</p>
+<p>But what does the &quot;best matching state's property&quot; really mean?
+States have a precedence which is shown by their value (see in the above list). A higher value means higher precedence.
+To determine which state's property to use let's take an example. Imagine the background color is defined like this:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_DEFAULT</span></code>: white</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_PRESSED</span></code>: gray</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_FOCUSED</span></code>: red</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>Initially the object is in the default state, so it's a simple case: the property is perfectly defined in the object's current state as white.</p></li>
+<li><p>When the object is pressed there are 2 related properties: default with white (default is related to every state) and pressed with gray.
+The pressed state has 0x0020 precedence which is higher than the default state's 0x0000 precedence, so gray color will be used.</p></li>
+<li><p>When the object is focused the same thing happens as in pressed state and red color will be used. (Focused state has higher precedence than default state).</p></li>
+<li><p>When the object is focused and pressed both gray and red would work, but the pressed state has higher precedence than focused so gray color will be used.</p></li>
+<li><p>It's possible to set e.g. rose color for <code class="docutils literal notranslate"><span class="pre">LV_STATE_PRESSED</span> <span class="pre">|</span> <span class="pre">LV_STATE_FOCUSED</span></code>.
+In this case, this combined state has 0x0020 + 0x0002 = 0x0022 precedence, which is higher than the pressed state's precedence so rose color would be used.</p></li>
+<li><p>When the object is in the checked state there is no property to set the background color for this state. So for lack of a better option, the object remains white from the default state's property.</p></li>
+</ol>
+<p>Some practical notes:</p>
+<ul class="simple">
+<li><p>The precedence (value) of states is quite intuitive, and it's something the user would expect naturally. E.g. if an object is focused the user will still want to see if it's pressed, therefore the pressed state has a higher precedence.
+If the focused state had a higher precedence it would overwrite the pressed color.</p></li>
+<li><p>If you want to set a property for all states (e.g. red background color) just set it for the default state. If the object can't find a property for its current state it will fall back to the default state's property.</p></li>
+<li><p>Use ORed states to describe the properties for complex cases. (E.g. pressed + checked + focused)</p></li>
+<li><p>It might be a good idea to use different style elements for different states.
+For example, finding background colors for released, pressed, checked + pressed, focused, focused + pressed, focused + pressed + checked, etc. states is quite difficult.
+Instead, for example, use the background color for pressed and checked states and indicate the focused state with a different border color.</p></li>
+</ul>
+</section>
+<section id="cascading-styles">
+<h2>Cascading styles<a class="headerlink" href="#cascading-styles" title="此标题的永久链接"></a></h2>
+<p>It's not required to set all the properties in one style. It's possible to add more styles to an object and have the later added style modify or extend appearance.
+For example, create a general gray button style and create a new one for red buttons where only the new background color is set.</p>
+<p>This is much like in CSS when used classes are listed like <code class="docutils literal notranslate"><span class="pre">&lt;div</span> <span class="pre">class=&quot;.btn</span> <span class="pre">.btn-red&quot;&gt;</span></code>.</p>
+<p>Styles added later have precedence over ones set earlier. So in the gray/red button example above, the normal button style should be added first and the red style second.
+However, the precedence of the states are still taken into account.
+So let's examine the following case:</p>
+<ul class="simple">
+<li><p>the basic button style defines dark-gray color for the default state and light-gray color for the pressed state</p></li>
+<li><p>the red button style defines the background color as red only in the default state</p></li>
+</ul>
+<p>In this case, when the button is released (it's in default state) it will be red because a perfect match is found in the most recently added style (red).
+When the button is pressed the light-gray color is a better match because it describes the current state perfectly, so the button will be light-gray.</p>
+</section>
+<section id="inheritance">
+<h2>Inheritance<a class="headerlink" href="#inheritance" title="此标题的永久链接"></a></h2>
+<p>Some properties (typically those related to text) can be inherited from the parent object's styles.
+Inheritance is applied only if the given property is not set in the object's styles (even in default state).
+In this case, if the property is inheritable, the property's value will be searched in the parents until an object specifies a value for the property. The parents will use their own state to determine the value.
+So if a button is pressed, and the text color comes from here, the pressed text color will be used.</p>
+</section>
+<section id="parts">
+<h2>Parts<a class="headerlink" href="#parts" title="此标题的永久链接"></a></h2>
+<p>Objects can be composed of <em>parts</em> which may each have their own styles.</p>
+<p>The following predefined parts exist in LVGL:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PART_MAIN</span></code> A background like rectangle</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PART_SCROLLBAR</span></code>  The scrollbar(s)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PART_INDICATOR</span></code> Indicator, e.g. for slider, bar, switch, or the tick box of the checkbox</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PART_KNOB</span></code> Like a handle to grab to adjust a value</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PART_SELECTED</span></code> Indicate the currently selected option or section</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PART_ITEMS</span></code> Used if the widget has multiple similar elements (e.g. table cells)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PART_TICKS</span></code> Ticks on scales e.g. for a chart or meter</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PART_CURSOR</span></code> Mark a specific place e.g. text area's or chart's cursor</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PART_CUSTOM_FIRST</span></code> Custom part identifiers can be added starting from here.</p></li>
+</ul>
+<p>For example a <a class="reference internal" href="../widgets/core/slider.html"><span class="doc std std-doc">Slider</span></a> has three parts:</p>
+<ul class="simple">
+<li><p>Background</p></li>
+<li><p>Indicator</p></li>
+<li><p>Knob</p></li>
+</ul>
+<p>This means all three parts of the slider can have their own styles. See later how to add styles to objects and parts.</p>
+</section>
+<section id="initialize-styles-and-set-get-properties">
+<h2>Initialize styles and set/get properties<a class="headerlink" href="#initialize-styles-and-set-get-properties" title="此标题的永久链接"></a></h2>
+<p>Styles are stored in <code class="docutils literal notranslate"><span class="pre">lv_style_t</span></code> variables. Style variables should be <code class="docutils literal notranslate"><span class="pre">static</span></code>, global or dynamically allocated.
+In other words they cannot be local variables in functions which are destroyed when the function exits.
+Before using a style it should be initialized with <code class="docutils literal notranslate"><span class="pre">lv_style_init(&amp;my_style)</span></code>.
+After initializing a style, properties can be added or changed.</p>
+<p>Property set functions looks like this: <code class="docutils literal notranslate"><span class="pre">lv_style_set_&lt;property_name&gt;(&amp;style,</span> <span class="pre">&lt;value&gt;);</span></code> For example:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="n">lv_style_t</span><span class="w"> </span><span class="n">style_btn</span><span class="p">;</span>
+<span class="n">lv_style_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn</span><span class="p">);</span>
+<span class="n">lv_style_set_bg_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn</span><span class="p">,</span><span class="w"> </span><span class="n">lv_color_hex</span><span class="p">(</span><span class="mh">0x115588</span><span class="p">));</span>
+<span class="n">lv_style_set_bg_opa</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn</span><span class="p">,</span><span class="w"> </span><span class="n">LV_OPA_50</span><span class="p">);</span>
+<span class="n">lv_style_set_border_width</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="n">lv_style_set_border_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn</span><span class="p">,</span><span class="w"> </span><span class="n">lv_color_black</span><span class="p">());</span>
+
+<span class="k">static</span><span class="w"> </span><span class="n">lv_style_t</span><span class="w"> </span><span class="n">style_btn_red</span><span class="p">;</span>
+<span class="n">lv_style_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn_red</span><span class="p">);</span>
+<span class="n">lv_style_set_bg_color</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn_red</span><span class="p">,</span><span class="w"> </span><span class="n">lv_plaette_main</span><span class="p">(</span><span class="n">LV_PALETTE_RED</span><span class="p">));</span>
+<span class="n">lv_style_set_bg_opa</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style_btn_red</span><span class="p">,</span><span class="w"> </span><span class="n">LV_OPA_COVER</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>To remove a property use:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_style_remove_prop</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span><span class="w"> </span><span class="n">LV_STYLE_BG_COLOR</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>To get a property's value from a style:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_style_value_t</span><span class="w"> </span><span class="n">v</span><span class="p">;</span>
+<span class="n">lv_res_t</span><span class="w"> </span><span class="n">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_style_get_prop</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">,</span><span class="w"> </span><span class="n">LV_STYLE_BG_COLOR</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">v</span><span class="p">);</span>
+<span class="k">if</span><span class="p">(</span><span class="n">res</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">LV_RES_OK</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">	</span><span class="cm">/*Found*/</span>
+<span class="w">	</span><span class="n">do_something</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">color</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">lv_style_value_t</span></code> has 3 fields:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">num</span></code> for integer, boolean and opacity properties</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">color</span></code> for color properties</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ptr</span></code> for pointer properties</p></li>
+</ul>
+<p>To reset a style (free all its data) use:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_style_reset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Styles can be built as <code class="docutils literal notranslate"><span class="pre">const</span></code> too to save RAM:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="n">lv_style_const_prop_t</span><span class="w"> </span><span class="n">style1_props</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">LV_STYLE_CONST_WIDTH</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
+<span class="w">   </span><span class="n">LV_STYLE_CONST_HEIGHT</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
+<span class="w">   </span><span class="n">LV_STYLE_PROP_INV</span><span class="p">,</span>
+<span class="p">};</span>
+<span class="w">     </span>
+<span class="n">LV_STYLE_CONST_INIT</span><span class="p">(</span><span class="n">style1</span><span class="p">,</span><span class="w"> </span><span class="n">style1_props</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Later <code class="docutils literal notranslate"><span class="pre">const</span></code> style can be used like any other style but (obviously) new properties can not be added.</p>
+</section>
+<section id="add-and-remove-styles-to-a-widget">
+<h2>Add and remove styles to a widget<a class="headerlink" href="#add-and-remove-styles-to-a-widget" title="此标题的永久链接"></a></h2>
+<p>A style on its own is not that useful. It must be assigned to an object to take effect.</p>
+<section id="add-styles">
+<h3>Add styles<a class="headerlink" href="#add-styles" title="此标题的永久链接"></a></h3>
+<p>To add a style to an object use <code class="docutils literal notranslate"><span class="pre">lv_obj_add_style(obj,</span> <span class="pre">&amp;style,</span> <span class="pre">&lt;selector&gt;)</span></code>. <code class="docutils literal notranslate"><span class="pre">&lt;selector&gt;</span></code> is an OR-ed value of parts and state to which the style should be added. Some examples:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PART_MAIN</span> <span class="pre">|</span> <span class="pre">LV_STATE_DEFAULT</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_STATE_PRESSED</span></code>: The main part in pressed state. <code class="docutils literal notranslate"><span class="pre">LV_PART_MAIN</span></code> can be omitted</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PART_SCROLLBAR</span></code>: The scrollbar part in the default state. <code class="docutils literal notranslate"><span class="pre">LV_STATE_DEFAULT</span></code> can be omitted.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PART_SCROLLBAR</span> <span class="pre">|</span> <span class="pre">LV_STATE_SCROLLED</span></code>: The scrollbar part when the object is being scrolled</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code> Same as <code class="docutils literal notranslate"><span class="pre">LV_PART_MAIN</span> <span class="pre">|</span> <span class="pre">LV_STATE_DEFAULT</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PART_INDICATOR</span> <span class="pre">|</span> <span class="pre">LV_STATE_PRESSED</span> <span class="pre">|</span> <span class="pre">LV_STATE_CHECKED</span></code> The indicator part when the object is pressed and checked at the same time.</p></li>
+</ul>
+<p>Using <code class="docutils literal notranslate"><span class="pre">lv_obj_add_style</span></code>:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">btn</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">style_btn</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w">      				  </span><span class="cm">/*Default button style*/</span>
+<span class="n">lv_obj_add_style</span><span class="p">(</span><span class="n">btn</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">btn_red</span><span class="p">,</span><span class="w"> </span><span class="n">LV_STATE_PRESSED</span><span class="p">);</span><span class="w">  </span><span class="cm">/*Overwrite only some colors to red when pressed*/</span>
+</pre></div>
+</div>
+</section>
+<section id="remove-styles">
+<h3>Remove styles<a class="headerlink" href="#remove-styles" title="此标题的永久链接"></a></h3>
+<p>To remove all styles from an object use <code class="docutils literal notranslate"><span class="pre">lv_obj_remove_style_all(obj)</span></code>.</p>
+<p>To remove specific styles use <code class="docutils literal notranslate"><span class="pre">lv_obj_remove_style(obj,</span> <span class="pre">style,</span> <span class="pre">selector)</span></code>. This function will remove <code class="docutils literal notranslate"><span class="pre">style</span></code> only if the <code class="docutils literal notranslate"><span class="pre">selector</span></code> matches with the <code class="docutils literal notranslate"><span class="pre">selector</span></code> used in <code class="docutils literal notranslate"><span class="pre">lv_obj_add_style</span></code>.
+<code class="docutils literal notranslate"><span class="pre">style</span></code> can be <code class="docutils literal notranslate"><span class="pre">NULL</span></code> to check only the <code class="docutils literal notranslate"><span class="pre">selector</span></code> and remove all matching styles. The <code class="docutils literal notranslate"><span class="pre">selector</span></code> can use the <code class="docutils literal notranslate"><span class="pre">LV_STATE_ANY</span></code> and <code class="docutils literal notranslate"><span class="pre">LV_PART_ANY</span></code> values to remove the style from any state or part.</p>
+</section>
+<section id="report-style-changes">
+<h3>Report style changes<a class="headerlink" href="#report-style-changes" title="此标题的永久链接"></a></h3>
+<p>If a style which is already assigned to an object changes (i.e. a property is added or changed), the objects using that style should be notified. There are 3 options to do this:</p>
+<ol class="arabic simple">
+<li><p>If you know that the changed properties can be applied by a simple redraw (e.g. color or opacity changes) just call <code class="docutils literal notranslate"><span class="pre">lv_obj_invalidate(obj)</span></code> or <code class="docutils literal notranslate"><span class="pre">lv_obj_invalidate(lv_scr_act())</span></code>.</p></li>
+<li><p>If more complex style properties were changed or added, and you know which object(s) are affected by that style call <code class="docutils literal notranslate"><span class="pre">lv_obj_refresh_style(obj,</span> <span class="pre">part,</span> <span class="pre">property)</span></code>.
+To refresh all parts and properties use <code class="docutils literal notranslate"><span class="pre">lv_obj_refresh_style(obj,</span> <span class="pre">LV_PART_ANY,</span> <span class="pre">LV_STYLE_PROP_ANY)</span></code>.</p></li>
+<li><p>To make LVGL check all objects to see if they use a style and refresh them when needed, call <code class="docutils literal notranslate"><span class="pre">lv_obj_report_style_change(&amp;style)</span></code>. If <code class="docutils literal notranslate"><span class="pre">style</span></code> is <code class="docutils literal notranslate"><span class="pre">NULL</span></code> all objects will be notified about a style change.</p></li>
+</ol>
+</section>
+<section id="get-a-property-s-value-on-an-object">
+<h3>Get a property's value on an object<a class="headerlink" href="#get-a-property-s-value-on-an-object" title="此标题的永久链接"></a></h3>
+<p>To get a final value of property - considering cascading, inheritance, local styles and transitions (see below) - property get functions like this can be used:
+<code class="docutils literal notranslate"><span class="pre">lv_obj_get_style_&lt;property_name&gt;(obj,</span> <span class="pre">&lt;part&gt;)</span></code>.
+These functions use the object's current state and if no better candidate exists they return a default value.  
+For example:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_color_t</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_obj_get_style_bg_color</span><span class="p">(</span><span class="n">btn</span><span class="p">,</span><span class="w"> </span><span class="n">LV_PART_MAIN</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="local-styles">
+<h2>Local styles<a class="headerlink" href="#local-styles" title="此标题的永久链接"></a></h2>
+<p>In addition to &quot;normal&quot; styles, objects can also store local styles. This concept is similar to inline styles in CSS (e.g. <code class="docutils literal notranslate"><span class="pre">&lt;div</span> <span class="pre">style=&quot;color:red&quot;&gt;</span></code>) with some modification.</p>
+<p>Local styles are like normal styles, but they can't be shared among other objects. If used, local styles are allocated automatically, and freed when the object is deleted.
+They are useful to add local customization to an object.</p>
+<p>Unlike in CSS, LVGL local styles can be assigned to states (<em>pseudo-classes</em>) and parts (<em>pseudo-elements</em>).</p>
+<p>To set a local property use functions like <code class="docutils literal notranslate"><span class="pre">lv_obj_set_style_&lt;property_name&gt;(obj,</span> <span class="pre">&lt;value&gt;,</span> <span class="pre">&lt;selector&gt;);</span></code>  
+For example:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_obj_set_style_bg_color</span><span class="p">(</span><span class="n">slider</span><span class="p">,</span><span class="w"> </span><span class="n">lv_color_red</span><span class="p">(),</span><span class="w"> </span><span class="n">LV_PART_INDICATOR</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">LV_STATE_FOCUSED</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="properties">
+<h2>Properties<a class="headerlink" href="#properties" title="此标题的永久链接"></a></h2>
+<p>For the full list of style properties click <a class="reference internal" href="style-props.html"><span class="doc std std-doc">here</span></a>.</p>
+<section id="typical-background-properties">
+<h3>Typical background properties<a class="headerlink" href="#typical-background-properties" title="此标题的永久链接"></a></h3>
+<p>In the documentation of the widgets you will see sentences like &quot;The widget uses the typical background properties&quot;. These &quot;typical background properties&quot; are the ones related to:</p>
+<ul class="simple">
+<li><p>Background</p></li>
+<li><p>Border</p></li>
+<li><p>Outline</p></li>
+<li><p>Shadow</p></li>
+<li><p>Padding</p></li>
+<li><p>Width and height transformation</p></li>
+<li><p>X and Y translation</p></li>
+</ul>
+</section>
+</section>
+<section id="transitions">
+<h2>Transitions<a class="headerlink" href="#transitions" title="此标题的永久链接"></a></h2>
+<p>By default, when an object changes state (e.g. it's pressed) the new properties from the new state are set immediately. However, with transitions it's possible to play an animation on state change.
+For example, on pressing a button its background color can be animated to the pressed color over 300 ms.</p>
+<p>The parameters of the transitions are stored in the styles. It's possible to set</p>
+<ul class="simple">
+<li><p>the time of the transition</p></li>
+<li><p>the delay before starting the transition</p></li>
+<li><p>the animation path (also known as the timing or easing function)</p></li>
+<li><p>the properties to animate</p></li>
+</ul>
+<p>The transition properties can be defined for each state. For example, setting a 500 ms transition time in the default state means that when the object goes to the default state a 500 ms transition time is applied.
+Setting a 100 ms transition time in the pressed state causes a 100 ms transition when going to the pressed state.
+This example configuration results in going to the pressed state quickly and then going back to default slowly.</p>
+<p>To describe a transition an <code class="docutils literal notranslate"><span class="pre">lv_transition_dsc_t</span></code> variable needs to be initialized and added to a style:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*Only its pointer is saved so must static, global or dynamically allocated */</span>
+<span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">lv_style_prop_t</span><span class="w"> </span><span class="n">trans_props</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">											</span><span class="n">LV_STYLE_BG_OPA</span><span class="p">,</span><span class="w"> </span><span class="n">LV_STYLE_BG_COLOR</span><span class="p">,</span>
+<span class="w">											</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="cm">/*End marker*/</span>
+<span class="p">};</span>
+
+<span class="k">static</span><span class="w"> </span><span class="n">lv_style_transition_dsc_t</span><span class="w"> </span><span class="n">trans1</span><span class="p">;</span>
+<span class="n">lv_style_transition_dsc_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">trans1</span><span class="p">,</span><span class="w"> </span><span class="n">trans_props</span><span class="p">,</span><span class="w"> </span><span class="n">lv_anim_path_ease_out</span><span class="p">,</span><span class="w"> </span><span class="n">duration_ms</span><span class="p">,</span><span class="w"> </span><span class="n">delay_ms</span><span class="p">);</span>
+
+<span class="n">lv_style_set_transition</span><span class="p">(</span><span class="o">&amp;</span><span class="n">style1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">trans1</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="color-filter">
+<h2>Color filter<a class="headerlink" href="#color-filter" title="此标题的永久链接"></a></h2>
+<p>TODO</p>
+</section>
+<section id="themes">
+<h2>Themes<a class="headerlink" href="#themes" title="此标题的永久链接"></a></h2>
+<p>Themes are a collection of styles. If there is an active theme LVGL applies it on every created widget.
+This will give a default appearance to the UI which can then be modified by adding further styles.</p>
+<p>Every display can have a different theme. For example, you could have a colorful theme on a TFT and monochrome theme on a secondary monochrome display.</p>
+<p>To set a theme for a display, two steps are required:</p>
+<ol class="arabic simple">
+<li><p>Initialize a theme</p></li>
+<li><p>Assign the initialized theme to a display.</p></li>
+</ol>
+<p>Theme initialization functions can have different prototypes. This example shows how to set the &quot;default&quot; theme:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">lv_theme_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">th</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lv_theme_default_init</span><span class="p">(</span><span class="n">display</span><span class="p">,</span><span class="w">  </span><span class="cm">/*Use the DPI, size, etc from this display*/</span><span class="w"> </span>
+<span class="w">                                        </span><span class="n">LV_COLOR_PALETTE_BLUE</span><span class="p">,</span><span class="w"> </span><span class="n">LV_COLOR_PALETTE_CYAN</span><span class="p">,</span><span class="w">   </span><span class="cm">/*Primary and secondary palette*/</span>
+<span class="w">                                        </span><span class="nb">false</span><span class="p">,</span><span class="w">    </span><span class="cm">/*Light or dark mode*/</span><span class="w"> </span>
+<span class="w">                                        </span><span class="o">&amp;</span><span class="n">lv_font_montserrat_10</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">lv_font_montserrat_14</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">lv_font_montserrat_18</span><span class="p">);</span><span class="w"> </span><span class="cm">/*Small, normal, large fonts*/</span>
+<span class="w">                                        </span>
+<span class="n">lv_disp_set_theme</span><span class="p">(</span><span class="n">display</span><span class="p">,</span><span class="w"> </span><span class="n">th</span><span class="p">);</span><span class="w"> </span><span class="cm">/*Assign the theme to the display*/</span>
+</pre></div>
+</div>
+<p>The included themes are enabled in <code class="docutils literal notranslate"><span class="pre">lv_conf.h</span></code>. If the default theme is enabled by <code class="docutils literal notranslate"><span class="pre">LV_USE_THEME_DEFAULT</span> <span class="pre">1</span></code> LVGL automatically initializes and sets it when a display is created.</p>
+<section id="extending-themes">
+<h3>Extending themes<a class="headerlink" href="#extending-themes" title="此标题的永久链接"></a></h3>
+<p>Built-in themes can be extended.
+If a custom theme is created, a parent theme can be selected. The parent theme's styles will be added before the custom theme's styles.
+Any number of themes can be chained this way. E.g. default theme -&gt; custom theme -&gt; dark theme.</p>
+<p><code class="docutils literal notranslate"><span class="pre">lv_theme_set_parent(new_theme,</span> <span class="pre">base_theme)</span></code> extends the <code class="docutils literal notranslate"><span class="pre">base_theme</span></code> with the <code class="docutils literal notranslate"><span class="pre">new_theme</span></code>.</p>
+<p>There is an example for it below.</p>
+</section>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="此标题的永久链接"></a></h2>
+<div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>
+.. include:: ../../examples/styles/index.rst
+
+</pre></div>
+</div>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="此标题的永久链接"></a></h2>
+<div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>
+.. doxygenfile:: lv_style.h
+  :project: lvgl
+
+.. doxygenfile:: lv_theme.h
+  :project: lvgl
+
+.. doxygenfile:: lv_obj_style_gen.h
+  :project: lvgl
+  
+.. doxygenfile:: lv_style_gen.h
+  :project: lvgl
+  
+
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2021, LVGL Kft.
+      <span class="lastupdated">最后更新于 2025 年 09 月 02 日.
+      </span></p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<style>
+  .wy-side-nav-search > div[role="search"] {
+    color: black;
+  }
+</style>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            let p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => {
+                let versionName = "";  
+                if(version == "master") versionName = "master (latest)";
+                else versionName = "v" + ((version.indexOf(".") != -1) ? version : (version + " (latest minor)"));
+                return `<option value="${version}">${versionName}</option>`;
+            })}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+document.addEventListener('DOMContentLoaded', (event) => {
+    function onIntersection(entries) {
+        entries.forEach(entry => {
+            let currentlyLoaded = entry.target.getAttribute("data-is-loaded") == "true";
+            let shouldBeLoaded = entry.intersectionRatio > 0;
+            if(currentlyLoaded != shouldBeLoaded) {
+                entry.target.setAttribute("data-is-loaded", shouldBeLoaded);
+                if(shouldBeLoaded) {
+                    let iframe = document.createElement("iframe");
+                    iframe.src = entry.target.getAttribute("data-real-src");
+                    entry.target.appendChild(iframe);
+                } else {
+                    let iframe = entry.target.querySelector("iframe");
+                    iframe.parentNode.removeChild(iframe);
+                }
+            }
+        });
+    }
+    const config = {
+        rootMargin: '600px 0px',
+        threshold: 0.01
+    };
+    let observer = new IntersectionObserver(onIntersection, config);
+    document.querySelectorAll(".lv-example").forEach(iframe => {
+        observer.observe(iframe);
+    });
+});
+</script>
+
+
+</body>
+</html>

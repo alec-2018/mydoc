@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chart (lv_chart) &mdash; LVGL  文档</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/fontawesome.min.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.png"/>
+    <link rel="canonical" href="https://docs.lvgl.io/0.0.1/widgets/extra/chart.html" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/translations.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+ 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78811084-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+	gtag('config', 'UA-78811084-3', { 'anonymize_ip': true });
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_lvgl.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Chart (lv_chart)</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#parts-and-styles">Parts and Styles</a></li>
+<li><a class="reference internal" href="#usage">Usage</a><ul>
+<li><a class="reference internal" href="#chart-type">Chart type</a></li>
+<li><a class="reference internal" href="#data-series">Data series</a></li>
+<li><a class="reference internal" href="#modify-the-data">Modify the data</a></li>
+<li><a class="reference internal" href="#update-modes">Update modes</a></li>
+<li><a class="reference internal" href="#number-of-points">Number of points</a><ul>
+<li><a class="reference internal" href="#handling-large-number-of-points">Handling large number of points</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#vertical-range">Vertical range</a></li>
+<li><a class="reference internal" href="#division-lines">Division lines</a></li>
+<li><a class="reference internal" href="#override-default-start-point-for-series">Override default start point for series</a></li>
+<li><a class="reference internal" href="#tick-marks-and-labels">Tick marks and labels</a></li>
+<li><a class="reference internal" href="#zoom">Zoom</a></li>
+<li><a class="reference internal" href="#cursor">Cursor</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#events">Events</a></li>
+<li><a class="reference internal" href="#keys">Keys</a></li>
+<li><a class="reference internal" href="#example">Example</a></li>
+<li><a class="reference internal" href="#api">API</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">LVGL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Chart (lv_chart)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/widgets/extra/chart.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>.. include:: /header.rst 
+:github_url: |github_link_base|/widgets/extra/chart.md
+</pre></div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="chart-lv-chart">
+<h1>Chart (lv_chart)<a class="headerlink" href="#chart-lv-chart" title="此标题的永久链接"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="此标题的永久链接"></a></h2>
+<p>Charts are a basic object to visualize data points. Currently <em>Line</em> charts (connect points with lines and/or draw points on them) and <em>Bar</em> charts are supported.</p>
+<p>Charts can have:</p>
+<ul class="simple">
+<li><p>division lines</p></li>
+<li><p>2 y axis</p></li>
+<li><p>axis ticks and texts on ticks</p></li>
+<li><p>cursors</p></li>
+<li><p>scrolling and zooming</p></li>
+</ul>
+</section>
+<section id="parts-and-styles">
+<h2>Parts and Styles<a class="headerlink" href="#parts-and-styles" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PART_MAIN</span></code> The background of the chart. Uses all the typical background and <em>line</em> (for the division lines) related style properties. <em>Padding</em> makes the series area smaller.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PART_SCROLLBAR</span></code> The scrollbar used if the chart is zoomed. See the <a class="reference internal" href="../obj.html"><span class="doc std std-doc">Base object</span></a>'s documentation for details.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PART_ITEMS</span></code> Refers to the line or bar series.</p>
+<ul>
+<li><p>Line chart: The <em>line</em> properties are used by the lines. <code class="docutils literal notranslate"><span class="pre">width</span></code>, <code class="docutils literal notranslate"><span class="pre">height</span></code>, <code class="docutils literal notranslate"><span class="pre">bg_color</span></code> and <code class="docutils literal notranslate"><span class="pre">radius</span></code> is used to set the appearance of points.</p></li>
+<li><p>Bar chart: The typical background properties are used to style the bars.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PART_INDICATOR</span></code> Refers to the points on line and scatter chart (small circles or squares).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PART_CURSOR</span></code> <em>Line</em> properties are used to style the cursors.  <code class="docutils literal notranslate"><span class="pre">width</span></code>, <code class="docutils literal notranslate"><span class="pre">height</span></code>, <code class="docutils literal notranslate"><span class="pre">bg_color</span></code> and <code class="docutils literal notranslate"><span class="pre">radius</span></code> are used to set the appearance of points.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_PART_TICKS</span></code> <em>Line</em> and <em>Text</em> style properties are used to style the ticks</p></li>
+</ul>
+</section>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="此标题的永久链接"></a></h2>
+<section id="chart-type">
+<h3>Chart type<a class="headerlink" href="#chart-type" title="此标题的永久链接"></a></h3>
+<p>The following data display types exist:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_CHART_TYPE_NONE</span></code>  Do not display any data. Can be used to hide the series.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_CHART_TYPE_LINE</span></code>  Draw lines between the data points and/or points (rectangles or circles) on the data points.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_CHART_TYPE_BAR</span></code> - Draw bars.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_CHART_TYPE_SCATTER</span></code> - X/Y chart drawing point's and lines between the points. .</p></li>
+</ul>
+<p>You can specify the display type with <code class="docutils literal notranslate"><span class="pre">lv_chart_set_type(chart,</span> <span class="pre">LV_CHART_TYPE_...)</span></code>.</p>
+</section>
+<section id="data-series">
+<h3>Data series<a class="headerlink" href="#data-series" title="此标题的永久链接"></a></h3>
+<p>You can add any number of series to the charts by <code class="docutils literal notranslate"><span class="pre">lv_chart_add_series(chart,</span> <span class="pre">color,</span> <span class="pre">axis)</span></code>. This allocates an <code class="docutils literal notranslate"><span class="pre">lv_chart_series_t</span></code> structure which contains the chosen <code class="docutils literal notranslate"><span class="pre">color</span></code> and an array for the data points.
+<code class="docutils literal notranslate"><span class="pre">axis</span></code> can have the following values:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_CHART_AXIS_PRIMARY_Y</span></code> Left axis</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_CHART_AXIS_SECONDARY_Y</span></code> Right axis</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_CHART_AXIS_PRIMARY_X</span></code> Bottom axis</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_CHART_AXIS_SECONDARY_X</span></code> Top axis</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">axis</span></code> tells which axis's range should be used te scale the values.</p>
+<p><code class="docutils literal notranslate"><span class="pre">lv_chart_set_ext_y_array(chart,</span> <span class="pre">ser,</span> <span class="pre">value_array)</span></code> makes the chart use an external array for the given series.
+<code class="docutils literal notranslate"><span class="pre">value_array</span></code> should look like this: <code class="docutils literal notranslate"><span class="pre">lv_coord_t</span> <span class="pre">*</span> <span class="pre">value_array[num_points]</span></code>. The array size needs to be large enough to hold all the points of that series.
+The array's pointer will be saved in the chart so it needs to be global, static or dynamically allocated.
+Note: you should call <code class="docutils literal notranslate"><span class="pre">lv_chart_refresh(chart)</span></code> after the external data source has been updated to update the chart.</p>
+<p>The value array of a series can be obtained with <code class="docutils literal notranslate"><span class="pre">lv_chart_get_y_array(chart,</span> <span class="pre">ser)</span></code>, which can be used with <code class="docutils literal notranslate"><span class="pre">ext_array</span></code> or <em>normal array</em>s.</p>
+<p>For <code class="docutils literal notranslate"><span class="pre">LV_CHART_TYPE_SCATTER</span></code> type  <code class="docutils literal notranslate"><span class="pre">lv_chart_set_ext_x_array(chart,</span> <span class="pre">ser,</span> <span class="pre">value_array)</span></code> and <code class="docutils literal notranslate"><span class="pre">lv_chart_get_x_array(chart,</span> <span class="pre">ser)</span></code> can be used as well.</p>
+</section>
+<section id="modify-the-data">
+<h3>Modify the data<a class="headerlink" href="#modify-the-data" title="此标题的永久链接"></a></h3>
+<p>You have several options to set the data of series:</p>
+<ol class="arabic simple">
+<li><p>Set the values manually in the array like <code class="docutils literal notranslate"><span class="pre">ser1-&gt;points[3]</span> <span class="pre">=</span> <span class="pre">7</span></code> and refresh the chart with <code class="docutils literal notranslate"><span class="pre">lv_chart_refresh(chart)</span></code>.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">lv_chart_set_value_by_id(chart,</span> <span class="pre">ser,</span> <span class="pre">id,</span> <span class="pre">value)</span></code> where <code class="docutils literal notranslate"><span class="pre">id</span></code> is the index of the point you wish to update.</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">lv_chart_set_next_value(chart,</span> <span class="pre">ser,</span> <span class="pre">value)</span></code>.</p></li>
+<li><p>Initialize all points to a given value with: <code class="docutils literal notranslate"><span class="pre">lv_chart_set_all_value(chart,</span> <span class="pre">ser,</span> <span class="pre">value)</span></code>.</p></li>
+</ol>
+<p>Use <code class="docutils literal notranslate"><span class="pre">LV_CHART_POINT_NONE</span></code> as value to make the library skip drawing that point, column, or line segment.</p>
+<p>For <code class="docutils literal notranslate"><span class="pre">LV_CHART_TYPE_SCATTER</span></code> type  <code class="docutils literal notranslate"><span class="pre">lv_chart_set_value_by_id2(chart,</span> <span class="pre">ser,</span> <span class="pre">id,</span> <span class="pre">value)</span></code> and <code class="docutils literal notranslate"><span class="pre">lv_chart_set_next_value2(chart,</span> <span class="pre">ser,</span> <span class="pre">x_valuem</span> <span class="pre">y_value)</span></code> can be used as well.</p>
+</section>
+<section id="update-modes">
+<h3>Update modes<a class="headerlink" href="#update-modes" title="此标题的永久链接"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">lv_chart_set_next_value</span></code> can behave in two ways depending on <em>update mode</em>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_CHART_UPDATE_MODE_SHIFT</span></code> Shift old data to the left and add the new one to the right.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_CHART_UPDATE_MODE_CIRCULAR</span></code> - Add the new data in circular fashion, like an ECG diagram.</p></li>
+</ul>
+<p>The update mode can be changed with <code class="docutils literal notranslate"><span class="pre">lv_chart_set_update_mode(chart,</span> <span class="pre">LV_CHART_UPDATE_MODE_...)</span></code>.</p>
+</section>
+<section id="number-of-points">
+<h3>Number of points<a class="headerlink" href="#number-of-points" title="此标题的永久链接"></a></h3>
+<p>The number of points in the series can be modified by <code class="docutils literal notranslate"><span class="pre">lv_chart_set_point_count(chart,</span> <span class="pre">point_num)</span></code>. The default value is 10.
+Note: this also affects the number of points processed when an external buffer is assigned to a series, so you need to be sure the external array is large enough.</p>
+<section id="handling-large-number-of-points">
+<h4>Handling large number of points<a class="headerlink" href="#handling-large-number-of-points" title="此标题的永久链接"></a></h4>
+<p>On line charts, if the number of points is greater than the pixels horizontally, the Chart will draw only vertical lines to make the drawing of large amount of data effective.
+If there are, let's say, 10 points to a pixel, LVGL searches the smallest and the largest value and draws a vertical lines between them to ensure no peaks are missed.</p>
+</section>
+</section>
+<section id="vertical-range">
+<h3>Vertical range<a class="headerlink" href="#vertical-range" title="此标题的永久链接"></a></h3>
+<p>You can specify the minimum and maximum values in y-direction with <code class="docutils literal notranslate"><span class="pre">lv_chart_set_range(chart,</span> <span class="pre">axis,</span> <span class="pre">min,</span> <span class="pre">max)</span></code>.
+<code class="docutils literal notranslate"><span class="pre">axis</span></code> can be <code class="docutils literal notranslate"><span class="pre">LV_CHART_AXIS_PRIMARY</span></code> (left axis) or <code class="docutils literal notranslate"><span class="pre">LV_CHART_AXIS_SECONDARY</span></code> (right axis).</p>
+<p>The value of the points will be scaled proportionally. The default range is: 0..100.</p>
+</section>
+<section id="division-lines">
+<h3>Division lines<a class="headerlink" href="#division-lines" title="此标题的永久链接"></a></h3>
+<p>The number of horizontal and vertical division lines can be modified by <code class="docutils literal notranslate"><span class="pre">lv_chart_set_div_line_count(chart,</span> <span class="pre">hdiv_num,</span> <span class="pre">vdiv_num)</span></code>.
+The default settings are 3 horizontal and 5 vertical division lines.
+If there is a visible border on a side and no padding on that side, the division line would be drawn on top of the border and therefore it won't be drawn.</p>
+</section>
+<section id="override-default-start-point-for-series">
+<h3>Override default start point for series<a class="headerlink" href="#override-default-start-point-for-series" title="此标题的永久链接"></a></h3>
+<p>If you want a plot to start from a point other than the default which is <code class="docutils literal notranslate"><span class="pre">point[0]</span></code> of the series, you can set an alternative
+index with the function <code class="docutils literal notranslate"><span class="pre">lv_chart_set_x_start_point(chart,</span> <span class="pre">ser,</span> <span class="pre">id)</span></code> where <code class="docutils literal notranslate"><span class="pre">id</span></code> is the new index position to start plotting from.</p>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">LV_CHART_UPDATE_MODE_SHIFT</span></code> also changes the <code class="docutils literal notranslate"><span class="pre">start_point</span></code>.</p>
+</section>
+<section id="tick-marks-and-labels">
+<h3>Tick marks and labels<a class="headerlink" href="#tick-marks-and-labels" title="此标题的永久链接"></a></h3>
+<p>Ticks and labels can be added to the axis with <code class="docutils literal notranslate"><span class="pre">lv_chart_set_axis_tick(chart,</span> <span class="pre">axis,</span> <span class="pre">major_len,</span> <span class="pre">minor_len,</span> <span class="pre">major_cnt,</span> <span class="pre">minor_cnt,</span> <span class="pre">label_en,</span> <span class="pre">draw_size)</span></code>.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">axis</span></code> can be <code class="docutils literal notranslate"><span class="pre">LV_CHART_AXIS_X/PRIMARY_Y/SECONDARY_Y</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">major_len</span></code> is the length of major ticks</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">minor_len</span></code> is the length of minor ticks</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">major_cnt</span></code> is the number of major ticks on the axis</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">minor_cnt</span></code> in the number of minor ticks between two major ticks</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">label_en</span></code> <code class="docutils literal notranslate"><span class="pre">true</span></code>: enable label drawing on major ticks</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">draw_size</span></code> extra size required to draw the tick and labels (start with 20 px and increase if the ticks/labels are clipped)</p></li>
+</ul>
+</section>
+<section id="zoom">
+<h3>Zoom<a class="headerlink" href="#zoom" title="此标题的永久链接"></a></h3>
+<p>The chart can be zoomed independently in x and y directions with <code class="docutils literal notranslate"><span class="pre">lv_chart_set_zoom_x(chart,</span> <span class="pre">factor)</span></code> and <code class="docutils literal notranslate"><span class="pre">lv_chart_set_zoom_y(chart,</span> <span class="pre">factor)</span></code>.
+If <code class="docutils literal notranslate"><span class="pre">factor</span></code> is 256 there is no zoom. 512 means double zoom, etc. Fractional values are also possible but &lt; 256 value is not allowed.</p>
+</section>
+<section id="cursor">
+<h3>Cursor<a class="headerlink" href="#cursor" title="此标题的永久链接"></a></h3>
+<p>A cursor can be added with <code class="docutils literal notranslate"><span class="pre">lv_chart_cursor_t</span> <span class="pre">*</span> <span class="pre">c1</span> <span class="pre">=</span> <span class="pre">lv_chart_add_cursor(chart,</span> <span class="pre">color,</span> <span class="pre">dir);</span></code>.
+The possible values of <code class="docutils literal notranslate"><span class="pre">dir</span></code>  <code class="docutils literal notranslate"><span class="pre">LV_DIR_NONE/RIGHT/UP/LEFT/DOWN/HOR/VER/ALL</span></code> or their OR-ed values to tell in which direction(s) should the cursor be drawn.</p>
+<p><code class="docutils literal notranslate"><span class="pre">lv_chart_set_cursor_pos(chart,</span> <span class="pre">cursor,</span> <span class="pre">&amp;point)</span></code> sets the position of the cursor.
+<code class="docutils literal notranslate"><span class="pre">pos</span></code> is a pointer to an <code class="docutils literal notranslate"><span class="pre">lv_point_t</span></code> variable. E.g. <code class="docutils literal notranslate"><span class="pre">lv_point_t</span> <span class="pre">point</span> <span class="pre">=</span> <span class="pre">{10,</span> <span class="pre">20};</span></code>. If the chart is scrolled the cursor will remain in the same place.</p>
+<p><code class="docutils literal notranslate"><span class="pre">lv_chart_get_point_pos_by_id(chart,</span> <span class="pre">series,</span> <span class="pre">id,</span> <span class="pre">&amp;point_out)</span></code> gets the coordinate of a given point. It's useful to place the cursor at a given point.</p>
+<p><code class="docutils literal notranslate"><span class="pre">lv_chart_set_cursor_point(chart,</span> <span class="pre">cursor,</span> <span class="pre">series,</span> <span class="pre">point_id)</span></code> sticks the cursor at a point. If the point's position changes (new value or scrolling) the cursor will move with the point.</p>
+</section>
+</section>
+<section id="events">
+<h2>Events<a class="headerlink" href="#events" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_VALUE_CHANGED</span></code> Sent when a new point is clicked pressed.  <code class="docutils literal notranslate"><span class="pre">lv_chart_get_pressed_point(chart)</span></code> returns the zero-based index of the pressed point.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_EVENT_DRAW_PART_BEGIN</span></code> and <code class="docutils literal notranslate"><span class="pre">LV_EVENT_DRAW_PART_END</span></code> are sent with the following types:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_CHART_DRAW_PART_DIV_LINE_INIT</span></code>  Used before/after drawn the div lines to add masks to any extra drawings. The following fields are set:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">part</span></code>: <code class="docutils literal notranslate"><span class="pre">LV_PART_MAIN</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">line_dsc</span></code></p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_CHART_DRAW_PART_DIV_LINE_HOR</span></code>, <code class="docutils literal notranslate"><span class="pre">LV_CHART_DRAW_PART_DIV_LINE_VER</span></code> Used for each horizontal and vertical division lines.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">part</span></code>: <code class="docutils literal notranslate"><span class="pre">LV_PART_MAIN</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">id</span></code>: index of the line</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p1</span></code>, <code class="docutils literal notranslate"><span class="pre">p2</span></code>: points of the line</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">line_dsc</span></code></p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_CHART_DRAW_PART_LINE_AND_POINT</span></code> Used on line and scatter charts for lines and points.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">part</span></code>: <code class="docutils literal notranslate"><span class="pre">LV_PART_ITEMS</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">id</span></code>: index of the point</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>: value of <code class="docutils literal notranslate"><span class="pre">id</span></code>th point</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p1</span></code>, <code class="docutils literal notranslate"><span class="pre">p2</span></code>: points of the line</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">draw_area</span></code>: area of the point</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">line_dsc</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rect_dsc</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sub_part_ptr</span></code>: pointer to the series</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_CHART_DRAW_PART_BAR</span></code> Used on bar charts for the rectangles.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">part</span></code>: <code class="docutils literal notranslate"><span class="pre">LV_PART_ITEMS</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">id</span></code>: index of the point</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>: value of <code class="docutils literal notranslate"><span class="pre">id</span></code>th point</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">draw_area</span></code>: area of the point</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rect_dsc</span></code>:</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sub_part_ptr</span></code>: pointer to the series</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_CHART_DRAW_PART_CURSOR</span></code>  Used on cursor lines and points.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">part</span></code>: <code class="docutils literal notranslate"><span class="pre">LV_PART_CURSOR</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p1</span></code>, <code class="docutils literal notranslate"><span class="pre">p2</span></code>: points of the line</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">line_dsc</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rect_dsc</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">draw_area</span></code>: area of the points</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LV_CHART_DRAW_PART_TICK_LABEL</span></code>  Used on tick lines and labels.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">part</span></code>: <code class="docutils literal notranslate"><span class="pre">LV_PART_TICKS</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">id</span></code>: axis</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>: value of the tick</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">text</span></code>: <code class="docutils literal notranslate"><span class="pre">value</span></code> converted to decimal or <code class="docutils literal notranslate"><span class="pre">NULL</span></code> for minor ticks</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">line_dsc</span></code>,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">label_dsc</span></code>,</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>See the events of the <a class="reference internal" href="../obj.html"><span class="doc std std-doc">Base object</span></a> too.</p>
+<p>Learn more about <a class="reference internal" href="../../overview/event.html"><span class="doc std std-doc">Events</span></a>.</p>
+</section>
+<section id="keys">
+<h2>Keys<a class="headerlink" href="#keys" title="此标题的永久链接"></a></h2>
+<p>No <em>Keys</em> are processed by the object type.</p>
+<p>Learn more about <a class="reference internal" href="../../overview/indev.html"><span class="doc std std-doc">Keys</span></a>.</p>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="此标题的永久链接"></a></h2>
+<div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>
+.. include:: ../../../examples/widgets/chart/index.rst
+
+</pre></div>
+</div>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="此标题的永久链接"></a></h2>
+<div class="highlight-eval_rst notranslate"><div class="highlight"><pre><span></span>
+.. doxygenfile:: lv_chart.h
+  :project: lvgl
+
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2021, LVGL Kft.
+      <span class="lastupdated">最后更新于 2025 年 09 月 02 日.
+      </span></p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<style>
+  .wy-side-nav-search > div[role="search"] {
+    color: black;
+  }
+</style>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+<script type="text/javascript">
+function add_version_selector()
+{
+    return fetch("https://raw.githubusercontent.com/lvgl/docs_compiled/gh-pages/versionlist.txt")
+        .then(res => res.text())
+        .then(text => {
+            const versions = text.split("\n").filter(version => version.trim().length > 0);
+            let p = document.getElementById("rtd-search-form").parentElement;
+            p.innerHTML = `
+            <select name="versions" id="versions" onchange="ver_sel()" style="border-radius:5px; margin-bottom:15px">
+            ${versions.map(version => {
+                let versionName = "";  
+                if(version == "master") versionName = "master (latest)";
+                else versionName = "v" + ((version.indexOf(".") != -1) ? version : (version + " (latest minor)"));
+                return `<option value="${version}">${versionName}</option>`;
+            })}
+            </select>` + p.innerHTML;
+        });
+}
+
+function ver_sel()
+{
+  var x = document.getElementById("versions").value;
+  window.location.href = window.location.protocol + "//" + window.location.host + "/" + x + "/";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    add_version_selector().then(() => {
+        var value = window.location.pathname.split('/')[1];
+        document.getElementById("versions").value = value;
+    });
+    
+})
+document.addEventListener('DOMContentLoaded', (event) => {
+    function onIntersection(entries) {
+        entries.forEach(entry => {
+            let currentlyLoaded = entry.target.getAttribute("data-is-loaded") == "true";
+            let shouldBeLoaded = entry.intersectionRatio > 0;
+            if(currentlyLoaded != shouldBeLoaded) {
+                entry.target.setAttribute("data-is-loaded", shouldBeLoaded);
+                if(shouldBeLoaded) {
+                    let iframe = document.createElement("iframe");
+                    iframe.src = entry.target.getAttribute("data-real-src");
+                    entry.target.appendChild(iframe);
+                } else {
+                    let iframe = entry.target.querySelector("iframe");
+                    iframe.parentNode.removeChild(iframe);
+                }
+            }
+        });
+    }
+    const config = {
+        rootMargin: '600px 0px',
+        threshold: 0.01
+    };
+    let observer = new IntersectionObserver(onIntersection, config);
+    document.querySelectorAll(".lv-example").forEach(iframe => {
+        observer.observe(iframe);
+    });
+});
+</script>
+
+
+</body>
+</html>
